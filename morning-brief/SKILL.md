@@ -111,7 +111,7 @@ Ask the user:
 **2. Copy the Slack module**
 
 ```bash
-cp <path-to-intelligems-core>/references/ig_slack.py ~/intelligems-analytics/ig_slack.py
+cp ../intelligems-core/references/ig_slack.py ~/intelligems-analytics/ig_slack.py
 ```
 
 **3. Test it**
@@ -129,7 +129,7 @@ Verify the message appears in Slack with per-test cards, status indicators, and 
 Copy and run the automation setup script:
 
 ```bash
-cp <path-to-intelligems-core>/references/setup_automation.sh ~/intelligems-analytics/
+cp ../intelligems-core/references/setup_automation.sh ~/intelligems-analytics/
 bash ~/intelligems-analytics/setup_automation.sh brief.py "<webhook_url>" 8 0
 ```
 

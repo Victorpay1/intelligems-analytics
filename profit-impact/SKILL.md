@@ -22,16 +22,16 @@ ls ~/intelligems-analytics/venv/bin/activate 2>/dev/null && echo "READY" || echo
 **If NEEDS_SETUP:** Copy and run the setup script from `intelligems-core/references/`:
 
 ```bash
-bash <path-to-intelligems-core>/references/setup_workspace.sh
+bash ../intelligems-core/references/setup_workspace.sh
 ```
 
 Then copy the core libraries:
 
 ```bash
-cp <path-to-intelligems-core>/references/ig_client.py ~/intelligems-analytics/
-cp <path-to-intelligems-core>/references/ig_metrics.py ~/intelligems-analytics/
-cp <path-to-intelligems-core>/references/ig_helpers.py ~/intelligems-analytics/
-cp <path-to-intelligems-core>/references/ig_config.py ~/intelligems-analytics/
+cp ../intelligems-core/references/ig_client.py ~/intelligems-analytics/
+cp ../intelligems-core/references/ig_metrics.py ~/intelligems-analytics/
+cp ../intelligems-core/references/ig_helpers.py ~/intelligems-analytics/
+cp ../intelligems-core/references/ig_config.py ~/intelligems-analytics/
 ```
 
 ---
@@ -69,10 +69,10 @@ cp references/impact.py ~/intelligems-analytics/impact.py
 Also ensure the core libraries are up to date:
 
 ```bash
-cp <path-to-intelligems-core>/references/ig_client.py ~/intelligems-analytics/
-cp <path-to-intelligems-core>/references/ig_metrics.py ~/intelligems-analytics/
-cp <path-to-intelligems-core>/references/ig_helpers.py ~/intelligems-analytics/
-cp <path-to-intelligems-core>/references/ig_config.py ~/intelligems-analytics/
+cp ../intelligems-core/references/ig_client.py ~/intelligems-analytics/
+cp ../intelligems-core/references/ig_metrics.py ~/intelligems-analytics/
+cp ../intelligems-core/references/ig_helpers.py ~/intelligems-analytics/
+cp ../intelligems-core/references/ig_config.py ~/intelligems-analytics/
 ```
 
 ---
@@ -137,7 +137,7 @@ Ask the user:
 **2. Copy the Slack module**
 
 ```bash
-cp <path-to-intelligems-core>/references/ig_slack.py ~/intelligems-analytics/ig_slack.py
+cp ../intelligems-core/references/ig_slack.py ~/intelligems-analytics/ig_slack.py
 ```
 
 **3. Test it**
@@ -155,7 +155,7 @@ Verify the message appears in Slack with dollar projections, ranges, and busines
 Copy and run the automation setup script:
 
 ```bash
-cp <path-to-intelligems-core>/references/setup_automation.sh ~/intelligems-analytics/
+cp ../intelligems-core/references/setup_automation.sh ~/intelligems-analytics/
 bash ~/intelligems-analytics/setup_automation.sh impact.py "<webhook_url>" 9 0
 ```
 

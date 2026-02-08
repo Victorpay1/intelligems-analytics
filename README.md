@@ -2,6 +2,8 @@
 
 **Turn A/B test data into business decisions.**
 
+[View Landing Page](https://victorpay1.github.io/intelligems-analytics/) | [GitHub](https://github.com/Victorpay1/intelligems-analytics)
+
 Intelligems Analytics is a skill library for [Claude Code](https://claude.ai/code) that transforms raw Intelligems API data into plain-English business intelligence. Instead of staring at dashboards, get clear verdicts, financial projections, and prioritized action items.
 
 ---
