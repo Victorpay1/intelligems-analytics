@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intelligems Analytics — Claude Code Skills</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background: #ffffff;
+            color: #1a1a1a;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1024px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Nav */
+        nav {
+            padding: 24px 0;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            font-size: 13px;
+        }
+
+        .nav-links a {
+            color: #666;
+            text-decoration: none;
+        }
+
+        .nav-links a:hover {
+            color: #1a1a1a;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 80px 0 60px;
+        }
+
+        .badge {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #6366f1;
+            border: 1px solid #6366f1;
+            border-radius: 20px;
+            padding: 4px 14px;
+            margin-bottom: 24px;
+        }
+
+        .hero h1 {
+            font-size: 42px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 16px;
+            max-width: 700px;
+        }
+
+        .hero p {
+            font-size: 16px;
+            color: #666;
+            max-width: 600px;
+            margin-bottom: 40px;
+        }
+
+        .install-box {
+            background: #fafafa;
+            border: 1px solid #e5e5e5;
+            border-radius: 8px;
+            padding: 16px 24px;
+            display: inline-flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 14px;
+        }
+
+        .install-box code {
+            color: #1a1a1a;
+            font-weight: 500;
+        }
+
+        .copy-btn {
+            background: #6366f1;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 16px;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            letter-spacing: 0.05em;
+        }
+
+        .copy-btn:hover {
+            background: #5558e6;
+        }
+
+        /* Stats bar */
+        .stats {
+            display: flex;
+            gap: 48px;
+            padding: 40px 0;
+            border-top: 1px solid #e5e5e5;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .stat {
+            text-align: left;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #999;
+            margin-top: 4px;
+        }
+
+        /* Section headers */
+        .section-header {
+            font-size: 11px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #999;
+            margin-bottom: 32px;
+            padding-top: 60px;
+        }
+
+        /* Skills grid */
+        .skills-list {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            padding-bottom: 60px;
+        }
+
+        .skill-card {
+            display: grid;
+            grid-template-columns: 60px 1fr 200px;
+            gap: 24px;
+            padding: 32px 0;
+            border-bottom: 1px solid #f0f0f0;
+            align-items: start;
+        }
+
+        .skill-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: #e0e0e0;
+        }
+
+        .skill-body h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .skill-body .command {
+            font-size: 13px;
+            color: #6366f1;
+            margin-bottom: 12px;
+        }
+
+        .skill-body p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 12px;
+        }
+
+        .skill-features {
+            font-size: 13px;
+            color: #888;
+            list-style: none;
+        }
+
+        .skill-features li {
+            padding: 2px 0;
+        }
+
+        .skill-features li::before {
+            content: "—";
+            margin-right: 8px;
+            color: #ccc;
+        }
+
+        .skill-meta {
+            text-align: right;
+            font-size: 12px;
+            color: #999;
+        }
+
+        .skill-meta .runtime {
+            margin-bottom: 8px;
+        }
+
+        /* Tags */
+        .tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+
+        .tag {
+            font-size: 11px;
+            letter-spacing: 0.05em;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            padding: 3px 12px;
+            color: #888;
+        }
+
+        /* Coming soon */
+        .coming-soon {
+            padding: 40px 0 80px;
+        }
+
+        .coming-soon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .coming-card {
+            padding: 20px;
+            border: 1px solid #f0f0f0;
+            border-radius: 8px;
+        }
+
+        .coming-card h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .coming-card p {
+            font-size: 13px;
+            color: #888;
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px 0;
+            border-top: 1px solid #e5e5e5;
+            font-size: 13px;
+            color: #999;
+        }
+
+        footer .container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        footer a {
+            color: #6366f1;
+            text-decoration: none;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 28px;
+            }
+
+            .stats {
+                flex-wrap: wrap;
+                gap: 24px;
+            }
+
+            .skill-card {
+                grid-template-columns: 1fr;
+            }
+
+            .skill-number {
+                font-size: 24px;
+            }
+
+            .skill-meta {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="container">
+        <div class="logo">INTELLIGEMS ANALYTICS</div>
+        <div class="nav-links">
+            <a href="#skills">Skills</a>
+            <a href="#coming-soon">Roadmap</a>
+            <a href="https://github.com/Victorpay1/intelligems-analytics">GitHub</a>
+        </div>
+    </div>
+</nav>
+
+<section class="hero">
+    <div class="container">
+        <span class="badge">Claude Code Skills</span>
+        <h1>Turn A/B test data into business decisions</h1>
+        <p>Stop staring at dashboards. Get clear verdicts, financial projections, and prioritized action items from your Intelligems tests — powered by Claude.</p>
+        <div class="install-box">
+            <code>npx skills add Victorpay1/intelligems-analytics</code>
+            <button class="copy-btn" onclick="navigator.clipboard.writeText('npx skills add Victorpay1/intelligems-analytics')">Copy</button>
+        </div>
+    </div>
+</section>
+
+<section class="stats">
+    <div class="container" style="display:flex;gap:48px;">
+        <div class="stat">
+            <div class="stat-value">3</div>
+            <div class="stat-label">SKILLS</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">~5s</div>
+            <div class="stat-label">AVG RUNTIME</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">80%</div>
+            <div class="stat-label">CONFIDENCE THRESHOLD</div>
+        </div>
+        <div class="stat">
+            <div class="stat-value">Slack</div>
+            <div class="stat-label">AUTOMATION READY</div>
+        </div>
+    </div>
+</section>
+
+<section id="skills">
+    <div class="container">
+        <div class="section-header">INCLUDED SKILLS</div>
+        <div class="skills-list">
+
+            <div class="skill-card">
+                <div class="skill-number">01</div>
+                <div class="skill-body">
+                    <h3>Test Verdict</h3>
+                    <div class="command">/test-verdict</div>
+                    <p>"Should I roll this out?" — Analyzes a single test and gives a plain-English verdict with risk assessment, segment nuance, and what to test next.</p>
+                    <ul class="skill-features">
+                        <li>WINNER / LOSER / FLAT / KEEP RUNNING / TOO EARLY</li>
+                        <li>Risk framing with confidence context</li>
+                        <li>Revenue vs. conversion divergence detection</li>
+                        <li>Segment quick-check for hidden risks</li>
+                    </ul>
+                </div>
+                <div class="skill-meta">
+                    <div class="runtime">~5 sec</div>
+                    <div>2–3 API calls</div>
+                </div>
+            </div>
+
+            <div class="skill-card">
+                <div class="skill-number">02</div>
+                <div class="skill-body">
+                    <h3>Morning Brief</h3>
+                    <div class="command">/morning-brief</div>
+                    <p>"What's happening with my tests?" — Prioritized daily summary of all active tests with health status and action items.</p>
+                    <ul class="skill-features">
+                        <li>RED / YELLOW / GREEN health status per test</li>
+                        <li>Daily run rates and time-to-verdict estimates</li>
+                        <li>Specific action items sorted by priority</li>
+                        <li>Program pulse with aggregate traffic stats</li>
+                    </ul>
+                </div>
+                <div class="skill-meta">
+                    <div class="runtime">~15 sec</div>
+                    <div>1 + N API calls</div>
+                </div>
+            </div>
+
+            <div class="skill-card">
+                <div class="skill-number">03</div>
+                <div class="skill-body">
+                    <h3>Profit Impact</h3>
+                    <div class="command">/profit-impact</div>
+                    <p>"What is this test worth in dollars?" — Translates lift percentages into annualized revenue projections with confidence ranges.</p>
+                    <ul class="skill-features">
+                        <li>Conservative / Expected / Optimistic projections</li>
+                        <li>Break-even and opportunity-cost analysis</li>
+                        <li>Daily cost of waiting to roll out</li>
+                        <li>Stakeholder-ready business case summary</li>
+                    </ul>
+                </div>
+                <div class="skill-meta">
+                    <div class="runtime">~5 sec</div>
+                    <div>2 API calls</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section id="coming-soon" class="coming-soon">
+    <div class="container">
+        <div class="section-header">COMING SOON</div>
+        <div class="coming-soon-grid">
+            <div class="coming-card">
+                <h4>/test-debrief</h4>
+                <p>Post-mortem for any test outcome. Extract learnings, customer behavior insights, and next-test suggestions.</p>
+            </div>
+            <div class="coming-card">
+                <h4>/funnel-diagnosis</h4>
+                <p>Stage-by-stage funnel comparison. Find exactly where the variant diverges from control.</p>
+            </div>
+            <div class="coming-card">
+                <h4>/test-portfolio</h4>
+                <p>Program-level scorecard. Win rate, test velocity, coverage gaps, and what to test next.</p>
+            </div>
+            <div class="coming-card">
+                <h4>/segment-spotlight</h4>
+                <p>Revenue-opportunity-ranked segments with per-segment dollar values and rollout recommendations.</p>
+            </div>
+            <div class="coming-card">
+                <h4>/rollout-brief</h4>
+                <p>Stakeholder-ready summary document. Executive summary, results, impact, and next steps.</p>
+            </div>
+        </div>
+
+        <div class="tags">
+            <span class="tag">ecommerce</span>
+            <span class="tag">a/b-testing</span>
+            <span class="tag">analytics</span>
+            <span class="tag">pricing</span>
+            <span class="tag">cro</span>
+            <span class="tag">claude-code</span>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="container">
+        <span>Built for the <a href="https://intelligems.io">Intelligems</a> community</span>
+        <span><a href="https://github.com/Victorpay1/intelligems-analytics">View on GitHub</a></span>
+    </div>
+</footer>
+
+</body>
+</html>
