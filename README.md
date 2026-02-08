@@ -10,11 +10,25 @@ Intelligems Analytics is a skill library for [Claude Code](https://claude.ai/cod
 
 ## Install
 
-```
+```bash
+# All skills (recommended)
 npx skills add Victorpay1/intelligems-analytics
 ```
 
-This installs all skills into your `.claude/skills/` directory.
+Or install just what you need (always include `intelligems-core`):
+
+```bash
+# Morning Brief only
+npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-morning-brief
+
+# Test Verdict only
+npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-test-verdict
+
+# Profit Impact only
+npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-profit-impact
+```
+
+This installs skills into your `.claude/skills/` directory.
 
 ---
 

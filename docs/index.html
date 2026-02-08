@@ -219,6 +219,26 @@
             color: #ccc;
         }
 
+        .skill-install {
+            margin-top: 16px;
+            font-size: 12px;
+            color: #888;
+            background: #fafafa;
+            border: 1px solid #f0f0f0;
+            border-radius: 6px;
+            padding: 8px 12px;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .skill-install:hover {
+            background: #f0f0f0;
+        }
+
+        .skill-install code {
+            color: #6366f1;
+        }
+
         .skill-meta {
             text-align: right;
             font-size: 12px;
@@ -380,6 +400,9 @@
                         <li>Revenue vs. conversion divergence detection</li>
                         <li>Segment quick-check for hidden risks</li>
                     </ul>
+                    <div class="skill-install" onclick="navigator.clipboard.writeText('npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-test-verdict')">
+                        <code>npx skills add ... --skill intelligems-test-verdict</code> · click to copy
+                    </div>
                 </div>
                 <div class="skill-meta">
                     <div class="runtime">~5 sec</div>
@@ -399,6 +422,9 @@
                         <li>Specific action items sorted by priority</li>
                         <li>Program pulse with aggregate traffic stats</li>
                     </ul>
+                    <div class="skill-install" onclick="navigator.clipboard.writeText('npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-morning-brief')">
+                        <code>npx skills add ... --skill intelligems-morning-brief</code> · click to copy
+                    </div>
                 </div>
                 <div class="skill-meta">
                     <div class="runtime">~15 sec</div>
@@ -418,6 +444,9 @@
                         <li>Daily cost of waiting to roll out</li>
                         <li>Stakeholder-ready business case summary</li>
                     </ul>
+                    <div class="skill-install" onclick="navigator.clipboard.writeText('npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-profit-impact')">
+                        <code>npx skills add ... --skill intelligems-profit-impact</code> · click to copy
+                    </div>
                 </div>
                 <div class="skill-meta">
                     <div class="runtime">~5 sec</div>
