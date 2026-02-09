@@ -26,6 +26,9 @@ npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill
 
 # Profit Impact only
 npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-profit-impact
+
+# API Docs only (no core needed)
+npx skills add Victorpay1/intelligems-analytics --skill intelligems-api
 ```
 
 This installs skills into your `.claude/skills/` directory.
@@ -93,6 +96,27 @@ Translates lift percentages into annualized dollar projections. "+12% RPV" means
 - Stakeholder-ready business case summary
 
 **API calls:** 2 | **Runtime:** ~5 seconds
+
+---
+
+### 04 — API Docs
+
+> "What endpoints does Intelligems have?"
+
+Loads the full Intelligems External API documentation — endpoints, metrics, Python examples, health check formulas, and rate limiting strategies. The foundation for building custom integrations.
+
+```
+/intelligems-api
+```
+
+**What you get:**
+- Complete API reference (experiences-list, experiences/{id}, analytics)
+- 30+ available metrics with descriptions
+- Ready-to-use Python code examples
+- Health check formulas and thresholds
+- Rate limiting strategies and gotchas
+
+**Note:** This is a documentation skill — no Python setup required.
 
 ---
 
@@ -186,10 +210,15 @@ intelligems-analytics/
 │   ├── SKILL.md
 │   └── references/
 │       └── brief.py
-└── profit-impact/
+├── profit-impact/
+│   ├── SKILL.md
+│   └── references/
+│       └── impact.py
+└── intelligems-api/
     ├── SKILL.md
+    ├── README.md
     └── references/
-        └── impact.py
+        └── external-api.md
 ```
 
 ---

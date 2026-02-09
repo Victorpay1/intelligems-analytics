@@ -11,47 +11,50 @@
     <meta property="og:type" content="website">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
     <style>
-        /* ── Reset ─────────────────────────────────────────── */
-        * {
+        /* ── Reset ─────────────────────────────────── */
+        *, *::before, *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        /* ── Base ──────────────────────────────────────────── */
+        /* ── Variables ─────────────────────────────── */
         :root {
-            --accent: #6366f1;
-            --accent-hover: #5558e6;
-            --accent-light: rgba(99, 102, 241, 0.08);
-            --text: #1a1a1a;
-            --text-secondary: #6b7280;
-            --text-muted: #9ca3af;
-            --border: #e5e7eb;
-            --border-light: #f3f4f6;
-            --surface: #f9fafb;
-            --bg: #ffffff;
+            --black: #000000;
+            --white: #ffffff;
+            --gray: #888888;
+            --gray-light: #e0e0e0;
+            --font: 'JetBrains Mono', monospace;
+            --max-width: 720px;
+            --ease: 0.25s ease;
+        }
+
+        /* ── Base ──────────────────────────────────── */
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
-            font-family: 'JetBrains Mono', monospace;
-            background: var(--bg);
-            color: var(--text);
+            font-family: var(--font);
+            background: var(--white);
+            color: var(--black);
             line-height: 1.7;
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         .container {
-            max-width: 1024px;
+            max-width: var(--max-width);
             margin: 0 auto;
             padding: 0 24px;
         }
 
-        /* ── Nav ───────────────────────────────────────────── */
+        /* ── Nav ───────────────────────────────────── */
         nav {
-            padding: 24px 0;
-            border-bottom: 1px solid var(--border);
+            padding: 20px 0;
+            border-bottom: 1px solid var(--black);
         }
 
         nav .container {
@@ -61,347 +64,295 @@
         }
 
         .logo {
-            font-size: 14px;
-            font-weight: 600;
-            letter-spacing: 0.05em;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
         }
 
         .nav-links {
             display: flex;
             gap: 24px;
-            font-size: 13px;
         }
 
         .nav-links a {
-            color: var(--text-secondary);
+            font-size: 12px;
+            color: var(--gray);
             text-decoration: none;
-            transition: color 0.2s ease;
+            transition: color var(--ease);
         }
 
         .nav-links a:hover {
-            color: var(--text);
+            color: var(--black);
         }
 
-        /* ── Hero ──────────────────────────────────────────── */
+        /* ── Hero ──────────────────────────────────── */
         .hero {
-            padding: 80px 0 60px;
+            padding: 100px 0 80px;
         }
 
-        .badge {
-            display: inline-block;
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 0.1em;
+        .hero-label {
+            font-size: 10px;
+            font-weight: 400;
+            letter-spacing: 0.2em;
             text-transform: uppercase;
-            color: var(--accent);
-            border: 1px solid var(--accent);
-            border-radius: 20px;
-            padding: 4px 14px;
+            color: var(--gray);
             margin-bottom: 24px;
         }
 
         .hero h1 {
-            font-size: 42px;
+            font-size: 36px;
             font-weight: 700;
-            line-height: 1.2;
-            margin-bottom: 16px;
-            max-width: 700px;
-            letter-spacing: -0.02em;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+            margin-bottom: 20px;
         }
 
-        .hero p {
+        .hero-description {
             font-size: 15px;
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin-bottom: 40px;
+            color: var(--gray);
             line-height: 1.8;
+            margin-bottom: 48px;
         }
 
+        /* ── Install Box ───────────────────────────── */
         .install-box {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 16px 24px;
-            display: inline-flex;
+            display: flex;
             align-items: center;
+            justify-content: space-between;
+            border: 1px solid var(--black);
+            padding: 14px 20px;
+            cursor: pointer;
+            transition: background var(--ease), color var(--ease);
             gap: 16px;
-            font-size: 14px;
+        }
+
+        .install-box:hover {
+            background: var(--black);
+        }
+
+        .install-box:hover code,
+        .install-box:hover .copy-label {
+            color: var(--white);
         }
 
         .install-box code {
-            color: var(--text);
+            font-size: 13px;
+            font-family: var(--font);
+            font-weight: 400;
+            color: var(--black);
+            transition: color var(--ease);
+        }
+
+        .install-box .copy-label {
+            font-size: 10px;
             font-weight: 500;
-        }
-
-        .copy-btn {
-            background: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            padding: 8px 16px;
-            font-family: inherit;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            letter-spacing: 0.05em;
-            transition: background 0.2s ease;
-            min-width: 72px;
-        }
-
-        .copy-btn:hover {
-            background: var(--accent-hover);
-        }
-
-        .copy-btn.copied {
-            background: #059669;
-        }
-
-        /* ── Stats ─────────────────────────────────────────── */
-        .stats {
-            padding: 40px 0;
-            border-top: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .stats .container {
-            display: flex;
-            gap: 48px;
-        }
-
-        .stat {
-            text-align: left;
-        }
-
-        .stat-value {
-            font-size: 28px;
-            font-weight: 700;
-        }
-
-        .stat-label {
-            font-size: 11px;
             letter-spacing: 0.1em;
             text-transform: uppercase;
-            color: var(--text-muted);
-            margin-top: 4px;
+            color: var(--gray);
+            white-space: nowrap;
+            transition: color var(--ease);
         }
 
-        /* ── Section Headers ───────────────────────────────── */
-        .section-header {
-            font-size: 11px;
-            letter-spacing: 0.15em;
+        /* ── Skills ────────────────────────────────── */
+        .skills {
+            padding-top: 80px;
+            border-top: 1px solid var(--black);
+        }
+
+        .section-label {
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.2em;
             text-transform: uppercase;
-            color: var(--text-muted);
-            margin-bottom: 32px;
-            padding-top: 60px;
+            color: var(--gray);
+            margin-bottom: 48px;
         }
 
-        /* ── Skill Cards ───────────────────────────────────── */
-        .skills-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0;
-            padding-bottom: 60px;
+        .skill-block {
+            padding: 48px 0;
+            border-bottom: 1px solid var(--gray-light);
         }
 
-        .skill-card {
-            display: grid;
-            grid-template-columns: 60px 1fr 200px;
-            gap: 24px;
-            padding: 32px 0;
-            border-bottom: 1px solid var(--border-light);
-            align-items: start;
-        }
-
-        .skill-card:last-child {
+        .skill-block:last-child {
             border-bottom: none;
         }
 
+        .skill-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 16px;
+        }
+
         .skill-number {
-            font-size: 32px;
-            font-weight: 700;
-            color: var(--border);
+            font-size: 11px;
+            color: var(--gray);
+            letter-spacing: 0.1em;
         }
 
-        .skill-body h3 {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .skill-body .command {
+        .skill-command {
             font-size: 13px;
-            color: var(--accent);
-            margin-bottom: 12px;
+            font-weight: 600;
         }
 
-        .skill-body p {
+        .skill-name {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            margin-bottom: 8px;
+        }
+
+        .skill-pitch {
             font-size: 14px;
-            color: var(--text-secondary);
-            margin-bottom: 12px;
+            font-style: italic;
+            color: var(--gray);
+            margin-bottom: 16px;
+        }
+
+        .skill-description {
+            font-size: 14px;
+            color: var(--gray);
+            line-height: 1.7;
+            margin-bottom: 20px;
         }
 
         .skill-features {
-            font-size: 13px;
-            color: var(--text-muted);
             list-style: none;
+            margin-bottom: 28px;
         }
 
         .skill-features li {
-            padding: 2px 0;
+            font-size: 13px;
+            color: var(--gray);
+            padding: 3px 0;
         }
 
         .skill-features li::before {
-            content: "\2014";
-            margin-right: 8px;
-            color: var(--border);
+            content: "\2014\00a0\00a0";
         }
 
         .skill-install {
-            margin-top: 16px;
-            background: var(--surface);
-            border: 1px solid var(--border-light);
-            border-radius: 6px;
-            padding: 10px 14px;
             display: inline-flex;
             align-items: center;
-            gap: 12px;
+            justify-content: space-between;
+            border: 1px solid var(--black);
+            padding: 10px 16px;
             cursor: pointer;
-            transition: all 0.2s ease;
-            max-width: 100%;
+            transition: background var(--ease), color var(--ease);
+            gap: 16px;
         }
 
         .skill-install:hover {
-            border-color: var(--border);
-            background: var(--bg);
+            background: var(--black);
+        }
+
+        .skill-install:hover code,
+        .skill-install:hover .copy-label {
+            color: var(--white);
         }
 
         .skill-install code {
             font-size: 12px;
-            color: var(--text-secondary);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            font-family: var(--font);
+            color: var(--black);
+            transition: color var(--ease);
         }
 
         .skill-install .copy-label {
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--accent);
-            white-space: nowrap;
-            letter-spacing: 0.05em;
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
-            transition: color 0.2s ease;
+            color: var(--gray);
+            white-space: nowrap;
+            transition: color var(--ease);
         }
 
-        .skill-install .copy-label.copied {
-            color: #059669;
+        /* ── Roadmap ───────────────────────────────── */
+        .roadmap {
+            padding-top: 80px;
+            padding-bottom: 60px;
+            border-top: 1px solid var(--black);
         }
 
-        .skill-meta {
-            text-align: right;
-            font-size: 12px;
-            color: var(--text-muted);
-        }
-
-        .skill-meta .runtime {
-            margin-bottom: 8px;
-        }
-
-        /* ── Coming Soon ───────────────────────────────────── */
-        .coming-soon {
-            padding: 40px 0 60px;
-        }
-
-        .coming-soon-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 16px;
-        }
-
-        .coming-card {
-            padding: 20px;
-            border: 1px solid var(--border-light);
-            border-radius: 8px;
-            transition: all 0.2s ease;
-        }
-
-        .coming-card:hover {
-            border-color: var(--border);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-            transform: translateY(-1px);
-        }
-
-        .coming-card h4 {
+        .roadmap-item {
+            margin-bottom: 16px;
             font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .roadmap-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .roadmap-command {
             font-weight: 600;
-            margin-bottom: 4px;
-            color: var(--text);
         }
 
-        .coming-card p {
-            font-size: 13px;
-            color: var(--text-muted);
+        .roadmap-desc {
+            color: var(--gray);
+            font-weight: 400;
         }
 
-        /* ── Tags ──────────────────────────────────────────── */
-        .tags-section {
-            padding: 40px 0;
-            border-top: 1px solid var(--border-light);
-        }
-
+        /* ── Tags ──────────────────────────────────── */
         .tags {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .tag {
-            font-size: 11px;
-            letter-spacing: 0.05em;
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 3px 12px;
-            color: var(--text-muted);
-        }
-
-        /* ── Footer ────────────────────────────────────────── */
-        footer {
             padding: 40px 0;
-            border-top: 1px solid var(--border);
-            font-size: 13px;
-            color: var(--text-muted);
+            border-top: 1px solid var(--gray-light);
+        }
+
+        .tags-text {
+            font-size: 11px;
+            color: var(--gray);
+            letter-spacing: 0.05em;
+        }
+
+        /* ── Footer ────────────────────────────────── */
+        footer {
+            padding: 32px 0 80px;
+            border-top: 1px solid var(--black);
         }
 
         footer .container {
             display: flex;
             justify-content: space-between;
+            align-items: center;
+        }
+
+        footer span {
+            font-size: 12px;
+            color: var(--gray);
         }
 
         footer a {
-            color: var(--accent);
+            color: var(--black);
             text-decoration: none;
-            transition: color 0.2s ease;
+            transition: text-decoration var(--ease);
         }
 
         footer a:hover {
-            color: var(--accent-hover);
+            text-decoration: underline;
         }
 
-        /* ── Mobile ────────────────────────────────────────── */
+        /* ── Mobile 768px ──────────────────────────── */
         @media (max-width: 768px) {
             .hero {
-                padding: 48px 0 40px;
+                padding: 60px 0 56px;
             }
 
             .hero h1 {
                 font-size: 28px;
             }
 
+            .hero-description {
+                margin-bottom: 36px;
+            }
+
             .install-box {
                 flex-direction: column;
                 align-items: stretch;
                 gap: 12px;
-                width: 100%;
                 padding: 14px 16px;
             }
 
@@ -410,45 +361,37 @@
                 word-break: break-all;
             }
 
-            .copy-btn {
+            .install-box .copy-label {
                 text-align: center;
             }
 
-            .stats .container {
-                flex-wrap: wrap;
-                gap: 24px 48px;
+            .skills {
+                padding-top: 56px;
             }
 
-            .skill-card {
-                grid-template-columns: 1fr;
-                gap: 12px;
+            .skill-block {
+                padding: 32px 0;
             }
 
-            .skill-number {
-                font-size: 24px;
-            }
-
-            .skill-meta {
-                text-align: left;
-                display: flex;
-                gap: 16px;
-            }
-
-            .skill-meta .runtime {
-                margin-bottom: 0;
+            .skill-top {
+                flex-direction: column;
+                gap: 4px;
             }
 
             .skill-install {
                 width: 100%;
-                overflow: hidden;
+                justify-content: space-between;
             }
 
             .skill-install code {
                 font-size: 11px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
             }
 
-            .coming-soon-grid {
-                grid-template-columns: 1fr;
+            .roadmap {
+                padding-top: 56px;
             }
 
             footer .container {
@@ -457,22 +400,26 @@
             }
         }
 
+        /* ── Mobile 480px ──────────────────────────── */
         @media (max-width: 480px) {
             .hero h1 {
                 font-size: 24px;
             }
 
-            .stats .container {
-                gap: 20px 32px;
+            .section-label {
+                margin-bottom: 32px;
             }
 
-            .stat-value {
-                font-size: 22px;
+            .skills, .roadmap {
+                padding-top: 48px;
             }
 
             .nav-links {
-                gap: 16px;
-                font-size: 12px;
+                gap: 12px;
+            }
+
+            .nav-links a {
+                font-size: 11px;
             }
         }
     </style>
@@ -481,194 +428,162 @@
 
 <nav>
     <div class="container">
-        <div class="logo">INTELLIGEMS ANALYTICS</div>
+        <div class="logo">Intelligems Analytics</div>
         <div class="nav-links">
             <a href="#skills">Skills</a>
-            <a href="#coming-soon">Roadmap</a>
+            <a href="#roadmap">Roadmap</a>
             <a href="https://github.com/Victorpay1/intelligems-analytics">GitHub</a>
         </div>
     </div>
 </nav>
 
-<section class="hero">
-    <div class="container">
-        <span class="badge">Claude Code Skills</span>
-        <h1>Turn A/B test data into business decisions</h1>
-        <p>Stop staring at dashboards. Get clear verdicts, financial projections, and prioritized action items from your Intelligems tests — powered by Claude.</p>
-        <div class="install-box">
-            <code>npx skills add Victorpay1/intelligems-analytics</code>
-            <button class="copy-btn" onclick="copyText(this, 'npx skills add Victorpay1/intelligems-analytics')">Copy</button>
+<main>
+    <section class="hero">
+        <div class="container">
+            <div class="hero-label">Claude Code Skills</div>
+            <h1>Turn A/B test data into business decisions</h1>
+            <p class="hero-description">Stop staring at dashboards. Get clear verdicts, financial projections, and prioritized action items from your Intelligems tests — powered by Claude.</p>
+            <div class="install-box" onclick="copyText(this, 'npx skills add Victorpay1/intelligems-analytics')">
+                <code>npx skills add Victorpay1/intelligems-analytics</code>
+                <span class="copy-label">Copy</span>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<section class="stats">
-    <div class="container">
-        <div class="stat">
-            <div class="stat-value">3</div>
-            <div class="stat-label">SKILLS</div>
-        </div>
-        <div class="stat">
-            <div class="stat-value">~5s</div>
-            <div class="stat-label">AVG RUNTIME</div>
-        </div>
-        <div class="stat">
-            <div class="stat-value">80%</div>
-            <div class="stat-label">CONFIDENCE THRESHOLD</div>
-        </div>
-        <div class="stat">
-            <div class="stat-value">Slack</div>
-            <div class="stat-label">AUTOMATION READY</div>
-        </div>
-    </div>
-</section>
+    <section class="skills" id="skills">
+        <div class="container">
+            <div class="section-label">Skills</div>
 
-<section id="skills">
-    <div class="container">
-        <div class="section-header">INCLUDED SKILLS</div>
-        <div class="skills-list">
-
-            <div class="skill-card">
-                <div class="skill-number">01</div>
-                <div class="skill-body">
-                    <h3>Test Verdict</h3>
-                    <div class="command">/test-verdict</div>
-                    <p>"Should I roll this out?" — Analyzes a single test and gives a plain-English verdict with risk assessment, segment nuance, and what to test next.</p>
-                    <ul class="skill-features">
-                        <li>WINNER / LOSER / FLAT / KEEP RUNNING / TOO EARLY</li>
-                        <li>Risk framing with confidence context</li>
-                        <li>Revenue vs. conversion divergence detection</li>
-                        <li>Segment quick-check for hidden risks</li>
-                    </ul>
-                    <div class="skill-install" onclick="copySkill(this, 'npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-test-verdict')">
-                        <code>npx skills add ... --skill intelligems-test-verdict</code>
-                        <span class="copy-label">Copy</span>
-                    </div>
+            <div class="skill-block">
+                <div class="skill-top">
+                    <span class="skill-number">01</span>
+                    <span class="skill-command">/test-verdict</span>
                 </div>
-                <div class="skill-meta">
-                    <div class="runtime">~5 sec</div>
-                    <div>2-3 API calls</div>
+                <h3 class="skill-name">Test Verdict</h3>
+                <p class="skill-pitch">"Should I roll this out?"</p>
+                <p class="skill-description">Analyzes a single test and gives a plain-English verdict with risk assessment, segment nuance, and what to test next.</p>
+                <ul class="skill-features">
+                    <li>WINNER / LOSER / FLAT / KEEP RUNNING / TOO EARLY</li>
+                    <li>Risk framing with confidence context</li>
+                    <li>Revenue vs. conversion divergence detection</li>
+                    <li>Segment quick-check for hidden risks</li>
+                </ul>
+                <div class="skill-install" onclick="copyText(this, 'npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-test-verdict')">
+                    <code>npx skills add ... --skill intelligems-test-verdict</code>
+                    <span class="copy-label">Copy</span>
                 </div>
             </div>
 
-            <div class="skill-card">
-                <div class="skill-number">02</div>
-                <div class="skill-body">
-                    <h3>Morning Brief</h3>
-                    <div class="command">/morning-brief</div>
-                    <p>"What's happening with my tests?" — Prioritized daily summary of all active tests with health status and action items.</p>
-                    <ul class="skill-features">
-                        <li>RED / YELLOW / GREEN health status per test</li>
-                        <li>Daily run rates and time-to-verdict estimates</li>
-                        <li>Specific action items sorted by priority</li>
-                        <li>Program pulse with aggregate traffic stats</li>
-                    </ul>
-                    <div class="skill-install" onclick="copySkill(this, 'npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-morning-brief')">
-                        <code>npx skills add ... --skill intelligems-morning-brief</code>
-                        <span class="copy-label">Copy</span>
-                    </div>
+            <div class="skill-block">
+                <div class="skill-top">
+                    <span class="skill-number">02</span>
+                    <span class="skill-command">/morning-brief</span>
                 </div>
-                <div class="skill-meta">
-                    <div class="runtime">~15 sec</div>
-                    <div>1 + N API calls</div>
+                <h3 class="skill-name">Morning Brief</h3>
+                <p class="skill-pitch">"What's happening with my tests?"</p>
+                <p class="skill-description">Prioritized daily summary of all active tests with health status and action items. Designed for daily Slack delivery.</p>
+                <ul class="skill-features">
+                    <li>RED / YELLOW / GREEN health status per test</li>
+                    <li>Daily run rates and time-to-verdict estimates</li>
+                    <li>Specific action items sorted by priority</li>
+                    <li>Program pulse with aggregate traffic stats</li>
+                </ul>
+                <div class="skill-install" onclick="copyText(this, 'npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-morning-brief')">
+                    <code>npx skills add ... --skill intelligems-morning-brief</code>
+                    <span class="copy-label">Copy</span>
                 </div>
             </div>
 
-            <div class="skill-card">
-                <div class="skill-number">03</div>
-                <div class="skill-body">
-                    <h3>Profit Impact</h3>
-                    <div class="command">/profit-impact</div>
-                    <p>"What is this test worth in dollars?" — Translates lift percentages into annualized revenue projections with confidence ranges.</p>
-                    <ul class="skill-features">
-                        <li>Conservative / Expected / Optimistic projections</li>
-                        <li>Break-even and opportunity-cost analysis</li>
-                        <li>Daily cost of waiting to roll out</li>
-                        <li>Stakeholder-ready business case summary</li>
-                    </ul>
-                    <div class="skill-install" onclick="copySkill(this, 'npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-profit-impact')">
-                        <code>npx skills add ... --skill intelligems-profit-impact</code>
-                        <span class="copy-label">Copy</span>
-                    </div>
+            <div class="skill-block">
+                <div class="skill-top">
+                    <span class="skill-number">03</span>
+                    <span class="skill-command">/profit-impact</span>
                 </div>
-                <div class="skill-meta">
-                    <div class="runtime">~5 sec</div>
-                    <div>2 API calls</div>
+                <h3 class="skill-name">Profit Impact</h3>
+                <p class="skill-pitch">"What is this test worth in dollars?"</p>
+                <p class="skill-description">Translates lift percentages into annualized revenue projections with confidence ranges. Stakeholder-ready business case.</p>
+                <ul class="skill-features">
+                    <li>Conservative / Expected / Optimistic projections</li>
+                    <li>Break-even and opportunity-cost analysis</li>
+                    <li>Daily cost of waiting to roll out</li>
+                    <li>Stakeholder-ready business case summary</li>
+                </ul>
+                <div class="skill-install" onclick="copyText(this, 'npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-profit-impact')">
+                    <code>npx skills add ... --skill intelligems-profit-impact</code>
+                    <span class="copy-label">Copy</span>
                 </div>
             </div>
 
-        </div>
-    </div>
-</section>
-
-<section id="coming-soon" class="coming-soon">
-    <div class="container">
-        <div class="section-header">COMING SOON</div>
-        <div class="coming-soon-grid">
-            <div class="coming-card">
-                <h4>/test-debrief</h4>
-                <p>Post-mortem for any test outcome. Extract learnings, customer behavior insights, and next-test suggestions.</p>
-            </div>
-            <div class="coming-card">
-                <h4>/funnel-diagnosis</h4>
-                <p>Stage-by-stage funnel comparison. Find exactly where the variant diverges from control.</p>
-            </div>
-            <div class="coming-card">
-                <h4>/test-portfolio</h4>
-                <p>Program-level scorecard. Win rate, test velocity, coverage gaps, and what to test next.</p>
-            </div>
-            <div class="coming-card">
-                <h4>/segment-spotlight</h4>
-                <p>Revenue-opportunity-ranked segments with per-segment dollar values and rollout recommendations.</p>
-            </div>
-            <div class="coming-card">
-                <h4>/rollout-brief</h4>
-                <p>Stakeholder-ready summary document. Executive summary, results, impact, and next steps.</p>
+            <div class="skill-block">
+                <div class="skill-top">
+                    <span class="skill-number">04</span>
+                    <span class="skill-command">/intelligems-api</span>
+                </div>
+                <h3 class="skill-name">API Docs</h3>
+                <p class="skill-pitch">"What endpoints does Intelligems have?"</p>
+                <p class="skill-description">Loads the full Intelligems External API documentation — endpoints, metrics, Python examples, health check formulas, and rate limiting strategies. The foundation for building custom integrations.</p>
+                <ul class="skill-features">
+                    <li>Complete API reference with 3 endpoints</li>
+                    <li>30+ available metrics documented</li>
+                    <li>Ready-to-use Python code examples</li>
+                    <li>Health check formulas and thresholds</li>
+                </ul>
+                <div class="skill-install" onclick="copyText(this, 'npx skills add Victorpay1/intelligems-analytics --skill intelligems-api')">
+                    <code>npx skills add ... --skill intelligems-api</code>
+                    <span class="copy-label">Copy</span>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<section class="tags-section">
-    <div class="container">
-        <div class="tags">
-            <span class="tag">ecommerce</span>
-            <span class="tag">a/b-testing</span>
-            <span class="tag">analytics</span>
-            <span class="tag">pricing</span>
-            <span class="tag">cro</span>
-            <span class="tag">claude-code</span>
+    <section class="roadmap" id="roadmap">
+        <div class="container">
+            <div class="section-label">Roadmap</div>
+            <div class="roadmap-item">
+                <span class="roadmap-command">/test-debrief</span>
+                <span class="roadmap-desc"> — Post-mortem for any test outcome. Extract learnings, customer behavior insights, and next-test suggestions.</span>
+            </div>
+            <div class="roadmap-item">
+                <span class="roadmap-command">/funnel-diagnosis</span>
+                <span class="roadmap-desc"> — Stage-by-stage funnel comparison. Find exactly where the variant diverges from control.</span>
+            </div>
+            <div class="roadmap-item">
+                <span class="roadmap-command">/test-portfolio</span>
+                <span class="roadmap-desc"> — Program-level scorecard. Win rate, test velocity, coverage gaps, and what to test next.</span>
+            </div>
+            <div class="roadmap-item">
+                <span class="roadmap-command">/segment-spotlight</span>
+                <span class="roadmap-desc"> — Revenue-opportunity-ranked segments with per-segment dollar values and rollout recommendations.</span>
+            </div>
+            <div class="roadmap-item">
+                <span class="roadmap-command">/rollout-brief</span>
+                <span class="roadmap-desc"> — Stakeholder-ready summary document. Executive summary, results, impact, and next steps.</span>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
+
+    <section class="tags">
+        <div class="container">
+            <span class="tags-text">ecommerce&ensp;&middot;&ensp;a/b-testing&ensp;&middot;&ensp;analytics&ensp;&middot;&ensp;pricing&ensp;&middot;&ensp;cro&ensp;&middot;&ensp;claude-code</span>
+        </div>
+    </section>
+</main>
 
 <footer>
     <div class="container">
         <span>Built for the <a href="https://intelligems.io">Intelligems</a> community</span>
-        <span><a href="https://github.com/Victorpay1/intelligems-analytics">View on GitHub</a></span>
+        <span><a href="https://github.com/Victorpay1/intelligems-analytics">GitHub</a></span>
     </div>
 </footer>
 
 <script>
-    function copyText(btn, text) {
-        navigator.clipboard.writeText(text);
-        var original = btn.textContent;
-        btn.textContent = 'Copied!';
-        btn.classList.add('copied');
-        setTimeout(function() {
-            btn.textContent = original;
-            btn.classList.remove('copied');
-        }, 2000);
-    }
-
-    function copySkill(el, text) {
+    function copyText(el, text) {
         navigator.clipboard.writeText(text);
         var label = el.querySelector('.copy-label');
-        label.textContent = 'Copied!';
-        label.classList.add('copied');
+        var original = label.textContent;
+        label.textContent = 'Copied';
         setTimeout(function() {
-            label.textContent = 'Copy';
-            label.classList.remove('copied');
+            label.textContent = original;
         }, 2000);
     }
 </script>
