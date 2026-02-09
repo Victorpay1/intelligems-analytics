@@ -154,6 +154,75 @@
             transition: color var(--ease);
         }
 
+        /* ── Search ───────────────────────────────── */
+        .search-wrapper {
+            position: relative;
+            margin-bottom: 48px;
+        }
+
+        .search-input {
+            width: 100%;
+            font-family: var(--font);
+            font-size: 14px;
+            padding: 14px 40px 14px 20px;
+            border: 1px solid var(--gray-light);
+            background: var(--white);
+            color: var(--black);
+            outline: none;
+            transition: border-color var(--ease);
+        }
+
+        .search-input:focus {
+            border-color: var(--black);
+        }
+
+        .search-input::placeholder {
+            color: var(--gray);
+            font-style: italic;
+        }
+
+        .search-clear {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            color: var(--gray);
+            cursor: pointer;
+            display: none;
+            transition: color var(--ease);
+            line-height: 1;
+        }
+
+        .search-clear:hover {
+            color: var(--black);
+        }
+
+        .skill-block.hidden,
+        .roadmap-item.hidden {
+            opacity: 0;
+            max-height: 0;
+            padding: 0;
+            margin: 0;
+            border: none;
+            overflow: hidden;
+            transition: opacity 0.2s ease, max-height 0.3s ease, padding 0.3s ease, margin 0.3s ease;
+        }
+
+        .skill-block:not(.hidden),
+        .roadmap-item:not(.hidden) {
+            max-height: 600px;
+            transition: opacity 0.2s ease, max-height 0.3s ease;
+        }
+
+        .no-results {
+            font-size: 14px;
+            font-style: italic;
+            color: var(--gray);
+            padding: 32px 0;
+            display: none;
+        }
+
         /* ── Skills ────────────────────────────────── */
         .skills {
             padding-top: 80px;
@@ -454,7 +523,14 @@
         <div class="container">
             <div class="section-label">Skills</div>
 
-            <div class="skill-block">
+            <div class="search-wrapper">
+                <input type="text" id="skill-search" class="search-input" placeholder="Search skills... try &quot;revenue&quot; or &quot;daily report&quot;">
+                <span class="search-clear" id="search-clear">&times;</span>
+            </div>
+
+            <div class="no-results" id="no-results">No skills match your search.</div>
+
+            <div class="skill-block" data-search="01 test verdict /test-verdict should i roll this out analyzes a single test gives plain-english verdict risk assessment segment nuance what to test next winner loser flat keep running too early risk framing confidence context revenue conversion divergence detection segment quick-check hidden risks roll out decision call it ship launch ab test">
                 <div class="skill-top">
                     <span class="skill-number">01</span>
                     <span class="skill-command">/test-verdict</span>
@@ -474,7 +550,7 @@
                 </div>
             </div>
 
-            <div class="skill-block">
+            <div class="skill-block" data-search="02 morning brief /morning-brief what's happening with my tests prioritized daily summary active tests health status action items designed for daily slack delivery red yellow green health status per test daily run rates time-to-verdict estimates specific action items sorted priority program pulse aggregate traffic stats daily report overview check status slack notification monitoring alert">
                 <div class="skill-top">
                     <span class="skill-number">02</span>
                     <span class="skill-command">/morning-brief</span>
@@ -494,7 +570,7 @@
                 </div>
             </div>
 
-            <div class="skill-block">
+            <div class="skill-block" data-search="03 profit impact /profit-impact what is this test worth in dollars translates lift percentages annualized revenue projections confidence ranges stakeholder-ready business case conservative expected optimistic projections break-even opportunity-cost analysis daily cost waiting roll out stakeholder-ready business case summary money dollars roi financial revenue projection annual value worth how much">
                 <div class="skill-top">
                     <span class="skill-number">03</span>
                     <span class="skill-command">/profit-impact</span>
@@ -514,7 +590,7 @@
                 </div>
             </div>
 
-            <div class="skill-block">
+            <div class="skill-block" data-search="04 api docs /intelligems-api what endpoints does intelligems have loads full intelligems external api documentation endpoints metrics python examples health check formulas rate limiting strategies foundation building custom integrations complete api reference 3 endpoints 30+ available metrics documented ready-to-use python code examples health check formulas thresholds endpoint integration build developer reference documentation">
                 <div class="skill-top">
                     <span class="skill-number">04</span>
                     <span class="skill-command">/intelligems-api</span>
@@ -539,23 +615,24 @@
     <section class="roadmap" id="roadmap">
         <div class="container">
             <div class="section-label">Roadmap</div>
-            <div class="roadmap-item">
+            <div class="no-results" id="no-results-roadmap" style="display:none">No roadmap items match your search.</div>
+            <div class="roadmap-item" data-search="/test-debrief post-mortem test outcome extract learnings customer behavior insights next-test suggestions retrospective review analysis what happened why">
                 <span class="roadmap-command">/test-debrief</span>
                 <span class="roadmap-desc"> — Post-mortem for any test outcome. Extract learnings, customer behavior insights, and next-test suggestions.</span>
             </div>
-            <div class="roadmap-item">
+            <div class="roadmap-item" data-search="/funnel-diagnosis stage-by-stage funnel comparison find exactly where variant diverges control cart checkout browse add-to-cart conversion drop-off where losing">
                 <span class="roadmap-command">/funnel-diagnosis</span>
                 <span class="roadmap-desc"> — Stage-by-stage funnel comparison. Find exactly where the variant diverges from control.</span>
             </div>
-            <div class="roadmap-item">
+            <div class="roadmap-item" data-search="/test-portfolio program-level scorecard win rate test velocity coverage gaps what to test next overview program summary how many tests performance">
                 <span class="roadmap-command">/test-portfolio</span>
                 <span class="roadmap-desc"> — Program-level scorecard. Win rate, test velocity, coverage gaps, and what to test next.</span>
             </div>
-            <div class="roadmap-item">
+            <div class="roadmap-item" data-search="/segment-spotlight revenue-opportunity-ranked segments per-segment dollar values rollout recommendations audience device mobile desktop visitor type new returning">
                 <span class="roadmap-command">/segment-spotlight</span>
                 <span class="roadmap-desc"> — Revenue-opportunity-ranked segments with per-segment dollar values and rollout recommendations.</span>
             </div>
-            <div class="roadmap-item">
+            <div class="roadmap-item" data-search="/rollout-brief stakeholder-ready summary document executive summary results impact next steps presentation report share team management">
                 <span class="roadmap-command">/rollout-brief</span>
                 <span class="roadmap-desc"> — Stakeholder-ready summary document. Executive summary, results, impact, and next steps.</span>
             </div>
@@ -586,6 +663,52 @@
             label.textContent = original;
         }, 2000);
     }
+
+    (function() {
+        var input = document.getElementById('skill-search');
+        var clearBtn = document.getElementById('search-clear');
+        var noResults = document.getElementById('no-results');
+        var noResultsRoadmap = document.getElementById('no-results-roadmap');
+        var skillBlocks = document.querySelectorAll('.skill-block[data-search]');
+        var roadmapItems = document.querySelectorAll('.roadmap-item[data-search]');
+
+        function doSearch() {
+            var query = input.value.toLowerCase().trim();
+            var words = query ? query.split(/\s+/) : [];
+
+            clearBtn.style.display = query ? 'block' : 'none';
+
+            var skillVisible = 0;
+            skillBlocks.forEach(function(block) {
+                var text = block.getAttribute('data-search');
+                var match = words.length === 0 || words.every(function(w) {
+                    return text.indexOf(w) !== -1;
+                });
+                block.classList.toggle('hidden', !match);
+                if (match) skillVisible++;
+            });
+            noResults.style.display = (words.length > 0 && skillVisible === 0) ? 'block' : 'none';
+
+            var roadmapVisible = 0;
+            roadmapItems.forEach(function(item) {
+                var text = item.getAttribute('data-search');
+                var match = words.length === 0 || words.every(function(w) {
+                    return text.indexOf(w) !== -1;
+                });
+                item.classList.toggle('hidden', !match);
+                if (match) roadmapVisible++;
+            });
+            noResultsRoadmap.style.display = (words.length > 0 && roadmapVisible === 0) ? 'block' : 'none';
+        }
+
+        input.addEventListener('input', doSearch);
+
+        clearBtn.addEventListener('click', function() {
+            input.value = '';
+            doSearch();
+            input.focus();
+        });
+    })();
 </script>
 
 </body>
