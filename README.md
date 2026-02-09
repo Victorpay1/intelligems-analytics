@@ -18,14 +18,15 @@ npx skills add Victorpay1/intelligems-analytics
 Or install just what you need (always include `intelligems-core`):
 
 ```bash
-# Morning Brief only
-npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-morning-brief
-
-# Test Verdict only
+# Individual skills (include core for Python-based skills)
 npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-test-verdict
-
-# Profit Impact only
+npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-morning-brief
 npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-profit-impact
+npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-funnel-diagnosis
+npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-segment-spotlight
+npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-test-debrief
+npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-test-portfolio
+npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-rollout-brief
 
 # API Docs only (no core needed)
 npx skills add Victorpay1/intelligems-analytics --skill intelligems-api
@@ -120,6 +121,106 @@ Loads the full Intelligems External API documentation — endpoints, metrics, Py
 
 ---
 
+### 05 — Funnel Diagnosis
+
+> "Where in the funnel does the variant diverge?"
+
+Stage-by-stage funnel comparison: Add to Cart → Begin Checkout → Contact Info → Address → Purchase. Find exactly where the variant wins or loses.
+
+```
+/funnel-diagnosis
+```
+
+**What you get:**
+- 5-stage funnel comparison (control vs. variant)
+- Biggest gain and biggest drop identification
+- Breakpoint detection where behavior flips direction
+- Plain-English diagnosis with specific next steps
+
+**API calls:** 2 | **Runtime:** ~5 seconds
+
+---
+
+### 06 — Segment Spotlight
+
+> "Which segments should I target or exclude?"
+
+Revenue-opportunity-ranked segment analysis across device type, visitor type, and traffic source. Shows per-segment dollar values and rollout recommendations.
+
+```
+/segment-spotlight
+```
+
+**What you get:**
+- Revenue opportunity in annual dollars per segment
+- Per-segment verdicts with confidence levels
+- Contradiction detection vs. overall result
+- Rollout recommendation: full, segment-specific, or hold
+
+**API calls:** 5 | **Runtime:** ~15 seconds
+
+---
+
+### 07 — Test Debrief
+
+> "What happened and what did we learn?"
+
+Post-mortem analysis combining funnel data, segment patterns, and auto-generated customer behavior insights. Extracts learnings and suggests specific next tests.
+
+```
+/test-debrief
+```
+
+**What you get:**
+- Structured post-mortem: What Happened, Why, Insights, Next
+- Auto-generated customer behavior observations
+- Funnel + segment pattern analysis
+- Specific next-test suggestions based on findings
+
+**API calls:** 5 | **Runtime:** ~15 seconds
+
+---
+
+### 08 — Test Portfolio
+
+> "How is our testing program doing?"
+
+Program-level scorecard across your entire testing history. No test ID needed — analyzes all active and ended experiments.
+
+```
+/test-portfolio
+```
+
+**What you get:**
+- Win/loss record across all ended tests
+- Test velocity tracking by month
+- Coverage map: Pricing, Shipping, Offer, Content
+- Gap analysis with specific recommendations
+
+**API calls:** 2 + N (N = ended tests) | **Runtime:** varies
+
+---
+
+### 09 — Rollout Brief
+
+> "Give me a doc I can share with my team."
+
+Stakeholder-ready summary document combining verdict, financial impact, segment analysis, and recommendations. Copy-paste to Slack, email, or present in a meeting.
+
+```
+/rollout-brief
+```
+
+**What you get:**
+- Executive summary with business case
+- Financial projections (annual + monthly)
+- Segment analysis with contradiction flags
+- Clear recommendation and next steps
+
+**API calls:** 5 | **Runtime:** ~15 seconds
+
+---
+
 ## Slack Automation
 
 Every skill supports `--slack <webhook_url>` to send results directly to Slack instead of the terminal. This is the recommended way to use these skills — set them up once and get daily insights delivered automatically.
@@ -160,11 +261,9 @@ This creates a macOS LaunchAgent that runs at your chosen time (default 8:00 AM)
 
 | Skill | What it does |
 |-------|-------------|
-| `/test-debrief` | Post-mortem for any test — extract learnings and next tests |
-| `/funnel-diagnosis` | Where in the funnel is it winning or losing? |
-| `/test-portfolio` | Program-level scorecard: win rate, velocity, coverage gaps |
-| `/segment-spotlight` | Revenue-opportunity-ranked segments with dollar values |
-| `/rollout-brief` | Stakeholder-ready summary document |
+| `/trend-tracker` | Day-by-day performance trends, seasonality, and ramp-up effects |
+| `/test-comparison` | Head-to-head comparison of two tests side-by-side |
+| `/landing-page-analysis` | Page-level performance breakdown by landing page |
 
 ---
 
@@ -202,23 +301,34 @@ intelligems-analytics/
 │       ├── ig_slack.py        Slack Block Kit formatting
 │       ├── setup_workspace.sh Workspace setup script
 │       └── setup_automation.sh LaunchAgent scheduler
-├── test-verdict/
+├── test-verdict/              01 — Single test verdict
 │   ├── SKILL.md
-│   └── references/
-│       └── verdict.py
-├── morning-brief/
+│   └── references/verdict.py
+├── morning-brief/             02 — Daily summary
 │   ├── SKILL.md
-│   └── references/
-│       └── brief.py
-├── profit-impact/
+│   └── references/brief.py
+├── profit-impact/             03 — Financial projections
 │   ├── SKILL.md
-│   └── references/
-│       └── impact.py
-└── intelligems-api/
-    ├── SKILL.md
-    ├── README.md
-    └── references/
-        └── external-api.md
+│   └── references/impact.py
+├── intelligems-api/           04 — API documentation
+│   ├── SKILL.md
+│   └── references/external-api.md
+├── funnel-diagnosis/          05 — Funnel comparison
+│   ├── SKILL.md
+│   └── references/funnel.py
+├── segment-spotlight/         06 — Segment analysis
+│   ├── SKILL.md
+│   └── references/spotlight.py
+├── test-debrief/              07 — Post-mortem
+│   ├── SKILL.md
+│   └── references/debrief.py
+├── test-portfolio/            08 — Program scorecard
+│   ├── SKILL.md
+│   └── references/portfolio.py
+├── rollout-brief/             09 — Stakeholder doc
+│   ├── SKILL.md
+│   └── references/rollout.py
+└── docs/index.html            Landing page
 ```
 
 ---
