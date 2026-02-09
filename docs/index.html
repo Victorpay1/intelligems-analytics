@@ -214,6 +214,37 @@
             display: none;
         }
 
+        /* ── How It Works ─────────────────────────── */
+        .how-it-works {
+            padding: 60px 0;
+            border-top: 1px solid var(--gray-light);
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 32px;
+            margin-top: 40px;
+        }
+
+        .step-number {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .step-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .step-desc {
+            font-size: 13px;
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
         /* ── Skills ────────────────────────────────── */
         .skills {
             padding-top: 80px;
@@ -459,6 +490,15 @@
                 text-align: center;
             }
 
+            .steps {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .how-it-works {
+                padding: 48px 0;
+            }
+
             .skills {
                 padding-top: 56px;
             }
@@ -543,6 +583,29 @@
             <div class="install-box" onclick="copyText(this, 'npx skills add Victorpay1/intelligems-analytics')">
                 <code>npx skills add Victorpay1/intelligems-analytics</code>
                 <span class="copy-label">Copy</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="how-it-works">
+        <div class="container">
+            <div class="section-label">How it works</div>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Copy the install command</div>
+                    <div class="step-desc">Grab it from above or from any skill below.</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Paste into your terminal</div>
+                    <div class="step-desc">Run it where Claude Code is installed. Skills download automatically.</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Use the skill</div>
+                    <div class="step-desc">Open Claude Code and type the command (e.g. /morning-brief). That's it.</div>
+                </div>
             </div>
         </div>
     </section>
