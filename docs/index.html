@@ -198,21 +198,12 @@
             color: var(--black);
         }
 
-        .skill-block.hidden,
-        .roadmap-item.hidden {
-            opacity: 0;
-            max-height: 0;
-            padding: 0;
-            margin: 0;
-            border: none;
-            overflow: hidden;
-            transition: opacity 0.2s ease, max-height 0.3s ease, padding 0.3s ease, margin 0.3s ease;
+        .skill-block.hidden {
+            display: none;
         }
 
-        .skill-block:not(.hidden),
-        .roadmap-item:not(.hidden) {
-            max-height: 600px;
-            transition: opacity 0.2s ease, max-height 0.3s ease;
+        .roadmap-item.hidden {
+            display: none;
         }
 
         .no-results {
@@ -238,20 +229,35 @@
             margin-bottom: 48px;
         }
 
-        .skill-block {
-            padding: 48px 0;
-            border-bottom: 1px solid var(--gray-light);
+        .skills-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1px;
+            background: var(--black);
+            border: 1px solid var(--black);
         }
 
-        .skill-block:last-child {
-            border-bottom: none;
+        .skill-block {
+            background: var(--white);
+            padding: 24px;
+            cursor: pointer;
+            transition: background 0.15s ease;
+            position: relative;
+        }
+
+        .skill-block:hover {
+            background: #fafafa;
+        }
+
+        .skill-block.expanded {
+            grid-column: 1 / -1;
         }
 
         .skill-top {
             display: flex;
             justify-content: space-between;
             align-items: baseline;
-            margin-bottom: 16px;
+            margin-bottom: 10px;
         }
 
         .skill-number {
@@ -265,19 +271,38 @@
             font-weight: 600;
         }
 
+        .skill-toggle {
+            font-size: 18px;
+            font-weight: 300;
+            line-height: 1;
+            color: var(--gray);
+            user-select: none;
+        }
+
         .skill-name {
-            font-size: 22px;
+            font-size: 18px;
             font-weight: 700;
             letter-spacing: -0.02em;
             line-height: 1.2;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .skill-pitch {
-            font-size: 14px;
+            font-size: 13px;
             font-style: italic;
             color: var(--gray);
-            margin-bottom: 16px;
+            margin-bottom: 0;
+        }
+
+        .skill-details {
+            display: none;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--gray-light);
+        }
+
+        .skill-block.expanded .skill-details {
+            display: block;
         }
 
         .skill-description {
@@ -438,13 +463,16 @@
                 padding-top: 56px;
             }
 
-            .skill-block {
-                padding: 32px 0;
+            .skills-grid {
+                grid-template-columns: 1fr;
             }
 
-            .skill-top {
-                flex-direction: column;
-                gap: 4px;
+            .skill-block {
+                padding: 20px;
+            }
+
+            .skill-block.expanded {
+                grid-column: 1;
             }
 
             .skill-install {
@@ -530,185 +558,207 @@
 
             <div class="no-results" id="no-results">No skills match your search.</div>
 
+            <div class="skills-grid" id="skills-grid">
+
             <div class="skill-block" data-search="01 test verdict /test-verdict should i roll this out analyzes a single test gives plain-english verdict risk assessment segment nuance what to test next winner loser flat keep running too early risk framing confidence context revenue conversion divergence detection segment quick-check hidden risks roll out decision call it ship launch ab test">
                 <div class="skill-top">
-                    <span class="skill-number">01</span>
-                    <span class="skill-command">/test-verdict</span>
+                    <div><span class="skill-number">01</span> <span class="skill-command">/test-verdict</span></div>
+                    <span class="skill-toggle">+</span>
                 </div>
                 <h3 class="skill-name">Test Verdict</h3>
                 <p class="skill-pitch">"Should I roll this out?"</p>
-                <p class="skill-description">Analyzes a single test and gives a plain-English verdict with risk assessment, segment nuance, and what to test next.</p>
-                <ul class="skill-features">
-                    <li>WINNER / LOSER / FLAT / KEEP RUNNING / TOO EARLY</li>
-                    <li>Risk framing with confidence context</li>
-                    <li>Revenue vs. conversion divergence detection</li>
-                    <li>Segment quick-check for hidden risks</li>
-                </ul>
-                <div class="skill-install" onclick="copyText(this, 'npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-test-verdict')">
-                    <code>npx skills add ... --skill intelligems-test-verdict</code>
-                    <span class="copy-label">Copy</span>
+                <div class="skill-details">
+                    <p class="skill-description">Analyzes a single test and gives a plain-English verdict with risk assessment, segment nuance, and what to test next.</p>
+                    <ul class="skill-features">
+                        <li>WINNER / LOSER / FLAT / KEEP RUNNING / TOO EARLY</li>
+                        <li>Risk framing with confidence context</li>
+                        <li>Revenue vs. conversion divergence detection</li>
+                        <li>Segment quick-check for hidden risks</li>
+                    </ul>
+                    <div class="skill-install" onclick="event.stopPropagation(); copyText(this, 'npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-test-verdict')">
+                        <code>npx skills add ... --skill intelligems-test-verdict</code>
+                        <span class="copy-label">Copy</span>
+                    </div>
                 </div>
             </div>
 
             <div class="skill-block" data-search="02 morning brief /morning-brief what's happening with my tests prioritized daily summary active tests health status action items designed for daily slack delivery red yellow green health status per test daily run rates time-to-verdict estimates specific action items sorted priority program pulse aggregate traffic stats daily report overview check status slack notification monitoring alert">
                 <div class="skill-top">
-                    <span class="skill-number">02</span>
-                    <span class="skill-command">/morning-brief</span>
+                    <div><span class="skill-number">02</span> <span class="skill-command">/morning-brief</span></div>
+                    <span class="skill-toggle">+</span>
                 </div>
                 <h3 class="skill-name">Morning Brief</h3>
                 <p class="skill-pitch">"What's happening with my tests?"</p>
-                <p class="skill-description">Prioritized daily summary of all active tests with health status and action items. Designed for daily Slack delivery.</p>
-                <ul class="skill-features">
-                    <li>RED / YELLOW / GREEN health status per test</li>
-                    <li>Daily run rates and time-to-verdict estimates</li>
-                    <li>Specific action items sorted by priority</li>
-                    <li>Program pulse with aggregate traffic stats</li>
-                </ul>
-                <div class="skill-install" onclick="copyText(this, 'npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-morning-brief')">
-                    <code>npx skills add ... --skill intelligems-morning-brief</code>
-                    <span class="copy-label">Copy</span>
+                <div class="skill-details">
+                    <p class="skill-description">Prioritized daily summary of all active tests with health status and action items. Designed for daily Slack delivery.</p>
+                    <ul class="skill-features">
+                        <li>RED / YELLOW / GREEN health status per test</li>
+                        <li>Daily run rates and time-to-verdict estimates</li>
+                        <li>Specific action items sorted by priority</li>
+                        <li>Program pulse with aggregate traffic stats</li>
+                    </ul>
+                    <div class="skill-install" onclick="event.stopPropagation(); copyText(this, 'npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-morning-brief')">
+                        <code>npx skills add ... --skill intelligems-morning-brief</code>
+                        <span class="copy-label">Copy</span>
+                    </div>
                 </div>
             </div>
 
             <div class="skill-block" data-search="03 profit impact /profit-impact what is this test worth in dollars translates lift percentages annualized revenue projections confidence ranges stakeholder-ready business case conservative expected optimistic projections break-even opportunity-cost analysis daily cost waiting roll out stakeholder-ready business case summary money dollars roi financial revenue projection annual value worth how much">
                 <div class="skill-top">
-                    <span class="skill-number">03</span>
-                    <span class="skill-command">/profit-impact</span>
+                    <div><span class="skill-number">03</span> <span class="skill-command">/profit-impact</span></div>
+                    <span class="skill-toggle">+</span>
                 </div>
                 <h3 class="skill-name">Profit Impact</h3>
                 <p class="skill-pitch">"What is this test worth in dollars?"</p>
-                <p class="skill-description">Translates lift percentages into annualized revenue projections with confidence ranges. Stakeholder-ready business case.</p>
-                <ul class="skill-features">
-                    <li>Conservative / Expected / Optimistic projections</li>
-                    <li>Break-even and opportunity-cost analysis</li>
-                    <li>Daily cost of waiting to roll out</li>
-                    <li>Stakeholder-ready business case summary</li>
-                </ul>
-                <div class="skill-install" onclick="copyText(this, 'npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-profit-impact')">
-                    <code>npx skills add ... --skill intelligems-profit-impact</code>
-                    <span class="copy-label">Copy</span>
+                <div class="skill-details">
+                    <p class="skill-description">Translates lift percentages into annualized revenue projections with confidence ranges. Stakeholder-ready business case.</p>
+                    <ul class="skill-features">
+                        <li>Conservative / Expected / Optimistic projections</li>
+                        <li>Break-even and opportunity-cost analysis</li>
+                        <li>Daily cost of waiting to roll out</li>
+                        <li>Stakeholder-ready business case summary</li>
+                    </ul>
+                    <div class="skill-install" onclick="event.stopPropagation(); copyText(this, 'npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-profit-impact')">
+                        <code>npx skills add ... --skill intelligems-profit-impact</code>
+                        <span class="copy-label">Copy</span>
+                    </div>
                 </div>
             </div>
 
             <div class="skill-block" data-search="04 api docs /intelligems-api what endpoints does intelligems have loads full intelligems external api documentation endpoints metrics python examples health check formulas rate limiting strategies foundation building custom integrations complete api reference 3 endpoints 30+ available metrics documented ready-to-use python code examples health check formulas thresholds endpoint integration build developer reference documentation">
                 <div class="skill-top">
-                    <span class="skill-number">04</span>
-                    <span class="skill-command">/intelligems-api</span>
+                    <div><span class="skill-number">04</span> <span class="skill-command">/intelligems-api</span></div>
+                    <span class="skill-toggle">+</span>
                 </div>
                 <h3 class="skill-name">API Docs</h3>
                 <p class="skill-pitch">"What endpoints does Intelligems have?"</p>
-                <p class="skill-description">Loads the full Intelligems External API documentation — endpoints, metrics, Python examples, health check formulas, and rate limiting strategies. The foundation for building custom integrations.</p>
-                <ul class="skill-features">
-                    <li>Complete API reference with 3 endpoints</li>
-                    <li>30+ available metrics documented</li>
-                    <li>Ready-to-use Python code examples</li>
-                    <li>Health check formulas and thresholds</li>
-                </ul>
-                <div class="skill-install" onclick="copyText(this, 'npx skills add Victorpay1/intelligems-analytics --skill intelligems-api')">
-                    <code>npx skills add ... --skill intelligems-api</code>
-                    <span class="copy-label">Copy</span>
+                <div class="skill-details">
+                    <p class="skill-description">Loads the full Intelligems External API documentation — endpoints, metrics, Python examples, health check formulas, and rate limiting strategies. The foundation for building custom integrations.</p>
+                    <ul class="skill-features">
+                        <li>Complete API reference with 3 endpoints</li>
+                        <li>30+ available metrics documented</li>
+                        <li>Ready-to-use Python code examples</li>
+                        <li>Health check formulas and thresholds</li>
+                    </ul>
+                    <div class="skill-install" onclick="event.stopPropagation(); copyText(this, 'npx skills add Victorpay1/intelligems-analytics --skill intelligems-api')">
+                        <code>npx skills add ... --skill intelligems-api</code>
+                        <span class="copy-label">Copy</span>
+                    </div>
                 </div>
             </div>
 
             <div class="skill-block" data-search="05 funnel diagnosis /funnel-diagnosis where is the variant diverging stage-by-stage funnel comparison find exactly where control cart checkout browse add-to-cart conversion drop-off where losing breakpoint biggest gain biggest drop purchase begin checkout contact info address friction bottleneck">
                 <div class="skill-top">
-                    <span class="skill-number">05</span>
-                    <span class="skill-command">/funnel-diagnosis</span>
+                    <div><span class="skill-number">05</span> <span class="skill-command">/funnel-diagnosis</span></div>
+                    <span class="skill-toggle">+</span>
                 </div>
                 <h3 class="skill-name">Funnel Diagnosis</h3>
                 <p class="skill-pitch">"Where in the funnel does the variant diverge?"</p>
-                <p class="skill-description">Stage-by-stage funnel comparison for any A/B test. Find exactly where the variant diverges from control — Add to Cart through Purchase.</p>
-                <ul class="skill-features">
-                    <li>5-stage funnel: Add to Cart → Purchase</li>
-                    <li>Biggest gain and biggest drop identification</li>
-                    <li>Breakpoint detection where behavior flips</li>
-                    <li>Plain-English diagnosis with next steps</li>
-                </ul>
-                <div class="skill-install" onclick="copyText(this, 'npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-funnel-diagnosis')">
-                    <code>npx skills add ... --skill intelligems-funnel-diagnosis</code>
-                    <span class="copy-label">Copy</span>
+                <div class="skill-details">
+                    <p class="skill-description">Stage-by-stage funnel comparison for any A/B test. Find exactly where the variant diverges from control — Add to Cart through Purchase.</p>
+                    <ul class="skill-features">
+                        <li>5-stage funnel: Add to Cart → Purchase</li>
+                        <li>Biggest gain and biggest drop identification</li>
+                        <li>Breakpoint detection where behavior flips</li>
+                        <li>Plain-English diagnosis with next steps</li>
+                    </ul>
+                    <div class="skill-install" onclick="event.stopPropagation(); copyText(this, 'npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-funnel-diagnosis')">
+                        <code>npx skills add ... --skill intelligems-funnel-diagnosis</code>
+                        <span class="copy-label">Copy</span>
+                    </div>
                 </div>
             </div>
 
             <div class="skill-block" data-search="06 segment spotlight /segment-spotlight which segments should i target revenue-opportunity-ranked segments per-segment dollar values rollout recommendations audience device mobile desktop visitor type new returning traffic source channel contradiction annual value exclude segment-specific">
                 <div class="skill-top">
-                    <span class="skill-number">06</span>
-                    <span class="skill-command">/segment-spotlight</span>
+                    <div><span class="skill-number">06</span> <span class="skill-command">/segment-spotlight</span></div>
+                    <span class="skill-toggle">+</span>
                 </div>
                 <h3 class="skill-name">Segment Spotlight</h3>
                 <p class="skill-pitch">"Which segments should I target or exclude?"</p>
-                <p class="skill-description">Revenue-opportunity-ranked segment analysis with per-segment dollar values and rollout recommendations across device, visitor type, and traffic source.</p>
-                <ul class="skill-features">
-                    <li>Revenue opportunity in annual dollars per segment</li>
-                    <li>Per-segment verdicts with confidence levels</li>
-                    <li>Contradiction detection vs. overall result</li>
-                    <li>Rollout recommendation: full, segment-specific, or hold</li>
-                </ul>
-                <div class="skill-install" onclick="copyText(this, 'npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-segment-spotlight')">
-                    <code>npx skills add ... --skill intelligems-segment-spotlight</code>
-                    <span class="copy-label">Copy</span>
+                <div class="skill-details">
+                    <p class="skill-description">Revenue-opportunity-ranked segment analysis with per-segment dollar values and rollout recommendations across device, visitor type, and traffic source.</p>
+                    <ul class="skill-features">
+                        <li>Revenue opportunity in annual dollars per segment</li>
+                        <li>Per-segment verdicts with confidence levels</li>
+                        <li>Contradiction detection vs. overall result</li>
+                        <li>Rollout recommendation: full, segment-specific, or hold</li>
+                    </ul>
+                    <div class="skill-install" onclick="event.stopPropagation(); copyText(this, 'npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-segment-spotlight')">
+                        <code>npx skills add ... --skill intelligems-segment-spotlight</code>
+                        <span class="copy-label">Copy</span>
+                    </div>
                 </div>
             </div>
 
             <div class="skill-block" data-search="07 test debrief /test-debrief what happened what did we learn post-mortem test outcome extract learnings customer behavior insights next-test suggestions retrospective review analysis why funnel segment patterns new returning mobile desktop">
                 <div class="skill-top">
-                    <span class="skill-number">07</span>
-                    <span class="skill-command">/test-debrief</span>
+                    <div><span class="skill-number">07</span> <span class="skill-command">/test-debrief</span></div>
+                    <span class="skill-toggle">+</span>
                 </div>
                 <h3 class="skill-name">Test Debrief</h3>
                 <p class="skill-pitch">"What happened and what did we learn?"</p>
-                <p class="skill-description">Post-mortem analysis combining funnel data, segment patterns, and customer behavior insights. Extracts learnings and suggests specific next tests.</p>
-                <ul class="skill-features">
-                    <li>Structured post-mortem: What, Why, Insights, Next</li>
-                    <li>Auto-generated customer behavior observations</li>
-                    <li>Funnel + segment pattern analysis</li>
-                    <li>Specific next-test suggestions based on findings</li>
-                </ul>
-                <div class="skill-install" onclick="copyText(this, 'npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-test-debrief')">
-                    <code>npx skills add ... --skill intelligems-test-debrief</code>
-                    <span class="copy-label">Copy</span>
+                <div class="skill-details">
+                    <p class="skill-description">Post-mortem analysis combining funnel data, segment patterns, and customer behavior insights. Extracts learnings and suggests specific next tests.</p>
+                    <ul class="skill-features">
+                        <li>Structured post-mortem: What, Why, Insights, Next</li>
+                        <li>Auto-generated customer behavior observations</li>
+                        <li>Funnel + segment pattern analysis</li>
+                        <li>Specific next-test suggestions based on findings</li>
+                    </ul>
+                    <div class="skill-install" onclick="event.stopPropagation(); copyText(this, 'npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-test-debrief')">
+                        <code>npx skills add ... --skill intelligems-test-debrief</code>
+                        <span class="copy-label">Copy</span>
+                    </div>
                 </div>
             </div>
 
             <div class="skill-block" data-search="08 test portfolio /test-portfolio how is our testing program doing program-level scorecard win rate test velocity coverage gaps what to test next overview program summary how many tests performance history winners losers pricing shipping content offer">
                 <div class="skill-top">
-                    <span class="skill-number">08</span>
-                    <span class="skill-command">/test-portfolio</span>
+                    <div><span class="skill-number">08</span> <span class="skill-command">/test-portfolio</span></div>
+                    <span class="skill-toggle">+</span>
                 </div>
                 <h3 class="skill-name">Test Portfolio</h3>
                 <p class="skill-pitch">"How is our testing program doing?"</p>
-                <p class="skill-description">Program-level scorecard across your entire testing history. Win rate, test velocity, coverage gaps, and what to test next.</p>
-                <ul class="skill-features">
-                    <li>Win/loss record across all ended tests</li>
-                    <li>Test velocity tracking by month</li>
-                    <li>Coverage map: Pricing, Shipping, Offer, Content</li>
-                    <li>Gap analysis with specific recommendations</li>
-                </ul>
-                <div class="skill-install" onclick="copyText(this, 'npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-test-portfolio')">
-                    <code>npx skills add ... --skill intelligems-test-portfolio</code>
-                    <span class="copy-label">Copy</span>
+                <div class="skill-details">
+                    <p class="skill-description">Program-level scorecard across your entire testing history. Win rate, test velocity, coverage gaps, and what to test next.</p>
+                    <ul class="skill-features">
+                        <li>Win/loss record across all ended tests</li>
+                        <li>Test velocity tracking by month</li>
+                        <li>Coverage map: Pricing, Shipping, Offer, Content</li>
+                        <li>Gap analysis with specific recommendations</li>
+                    </ul>
+                    <div class="skill-install" onclick="event.stopPropagation(); copyText(this, 'npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-test-portfolio')">
+                        <code>npx skills add ... --skill intelligems-test-portfolio</code>
+                        <span class="copy-label">Copy</span>
+                    </div>
                 </div>
             </div>
 
             <div class="skill-block" data-search="09 rollout brief /rollout-brief give me a document share boss team stakeholder-ready summary executive summary results impact next steps presentation report management recommendation financial segment verdict copy-paste email slack meeting">
                 <div class="skill-top">
-                    <span class="skill-number">09</span>
-                    <span class="skill-command">/rollout-brief</span>
+                    <div><span class="skill-number">09</span> <span class="skill-command">/rollout-brief</span></div>
+                    <span class="skill-toggle">+</span>
                 </div>
                 <h3 class="skill-name">Rollout Brief</h3>
                 <p class="skill-pitch">"Give me a doc I can share with my team."</p>
-                <p class="skill-description">Stakeholder-ready summary document combining verdict, financial impact, segment analysis, and recommendations. Copy-paste to Slack, email, or a meeting.</p>
-                <ul class="skill-features">
-                    <li>Executive summary with business case</li>
-                    <li>Financial projections (annual + monthly)</li>
-                    <li>Segment analysis with contradiction flags</li>
-                    <li>Clear recommendation and next steps</li>
-                </ul>
-                <div class="skill-install" onclick="copyText(this, 'npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-rollout-brief')">
-                    <code>npx skills add ... --skill intelligems-rollout-brief</code>
-                    <span class="copy-label">Copy</span>
+                <div class="skill-details">
+                    <p class="skill-description">Stakeholder-ready summary document combining verdict, financial impact, segment analysis, and recommendations. Copy-paste to Slack, email, or a meeting.</p>
+                    <ul class="skill-features">
+                        <li>Executive summary with business case</li>
+                        <li>Financial projections (annual + monthly)</li>
+                        <li>Segment analysis with contradiction flags</li>
+                        <li>Clear recommendation and next steps</li>
+                    </ul>
+                    <div class="skill-install" onclick="event.stopPropagation(); copyText(this, 'npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-rollout-brief')">
+                        <code>npx skills add ... --skill intelligems-rollout-brief</code>
+                        <span class="copy-label">Copy</span>
+                    </div>
                 </div>
             </div>
+
+            </div><!-- /skills-grid -->
         </div>
     </section>
 
@@ -756,6 +806,36 @@
         }, 2000);
     }
 
+    // Accordion: click tile to expand/collapse
+    (function() {
+        var grid = document.getElementById('skills-grid');
+        var blocks = grid.querySelectorAll('.skill-block');
+
+        blocks.forEach(function(block) {
+            block.addEventListener('click', function(e) {
+                // Don't toggle if clicking install button
+                if (e.target.closest('.skill-install')) return;
+
+                var wasExpanded = block.classList.contains('expanded');
+
+                // Close all
+                blocks.forEach(function(b) {
+                    b.classList.remove('expanded');
+                    var toggle = b.querySelector('.skill-toggle');
+                    if (toggle) toggle.textContent = '+';
+                });
+
+                // Open this one (if it wasn't already open)
+                if (!wasExpanded) {
+                    block.classList.add('expanded');
+                    var toggle = block.querySelector('.skill-toggle');
+                    if (toggle) toggle.textContent = '\u2212';
+                }
+            });
+        });
+    })();
+
+    // Search
     (function() {
         var input = document.getElementById('skill-search');
         var clearBtn = document.getElementById('search-clear');
