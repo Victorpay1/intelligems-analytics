@@ -628,7 +628,7 @@ See the [intelligems-segment-analysis skill](https://github.com/Victorpay1/intel
 Shows which segments (device, visitor type, traffic source) each active experiment is winning in. Demonstrates audience view API usage, segment extraction, and winner determination logic.
 
 **Temporal Analysis Tool:**
-Location: `02 - Areas/Intelligems/Claude Code Projects/intelligems-temporal-analysis/`
+Available as a standalone project (not yet published).
 
 Analyzes day-by-day A/B test performance to identify:
 - Days the variant underperformed
