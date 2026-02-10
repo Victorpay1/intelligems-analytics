@@ -861,6 +861,7 @@
 <script>
     function copyText(el, text) {
         navigator.clipboard.writeText(text);
+        if (window._trackCopy) window._trackCopy(text);
         var label = el.querySelector('.copy-label');
         var original = label.textContent;
         label.textContent = 'Copied';
@@ -943,6 +944,38 @@
             doSearch();
             input.focus();
         });
+    })();
+
+    // ── Analytics ─────────────────────────────────
+    (function() {
+        var SUPABASE_URL = 'https://vklhpsdenwuhanjhbtzv.supabase.co';
+        var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrbGhwc2Rlbnd1aGFuamhidHp2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA3NTA0OTMsImV4cCI6MjA4NjMyNjQ5M30.1B35fNXBD8B6af54TmMdcmft2PvnSO3_G9osINcX7GE';
+
+        function send(type, data) {
+            try {
+                fetch(SUPABASE_URL + '/rest/v1/events', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+                        'Prefer': 'return=minimal'
+                    },
+                    body: JSON.stringify({
+                        type: type,
+                        data: data || {},
+                        referrer: document.referrer || null
+                    })
+                });
+            } catch(e) { /* silent */ }
+        }
+
+        send('pageview', { path: location.pathname });
+
+        window._trackCopy = function(text) {
+            var skill = text.match(/--skill\s+intelligems-(\S+)/);
+            send('copy', { command: text, skill: skill ? skill[1] : 'all' });
+        };
     })();
 </script>
 

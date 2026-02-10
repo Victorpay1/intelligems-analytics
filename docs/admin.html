@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics — Intelligems Analytics</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --black: #000; --white: #fff; --gray: #666; --gray-light: #e0e0e0; --font: 'JetBrains Mono', monospace; --max-width: 720px; }
+        body { font-family: var(--font); background: var(--white); color: var(--black); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+        .container { max-width: var(--max-width); margin: 0 auto; padding: 0 24px; }
+        nav { padding: 20px 0; border-bottom: 1px solid var(--black); }
+        nav .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 13px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; }
+        .nav-links a { font-size: 14px; color: var(--gray); text-decoration: none; }
+        .nav-links a:hover { color: var(--black); }
+
+        /* Login */
+        .login { padding: 120px 0; text-align: center; }
+        .login h2 { font-size: 20px; margin-bottom: 8px; }
+        .login p { font-size: 14px; color: var(--gray); margin-bottom: 24px; }
+        .login input { font-family: var(--font); font-size: 14px; padding: 12px 16px; border: 1px solid var(--gray-light); width: 100%; max-width: 400px; outline: none; }
+        .login input:focus { border-color: var(--black); }
+        .login button { font-family: var(--font); font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 12px 24px; border: 1px solid var(--black); background: var(--black); color: var(--white); cursor: pointer; margin-top: 12px; }
+        .login .error { font-size: 13px; color: #c00; margin-top: 12px; display: none; }
+
+        /* Dashboard */
+        .dashboard { display: none; padding: 48px 0 80px; }
+        .dashboard.visible { display: block; }
+        .section-label { font-size: 12px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray); margin-bottom: 24px; }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--black); border: 1px solid var(--black); margin-bottom: 48px; }
+        .stat { background: var(--white); padding: 20px; }
+        .stat-label { font-size: 12px; color: var(--gray); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
+        .stat-value { font-size: 28px; font-weight: 700; }
+        .stat-sub { font-size: 12px; color: var(--gray); margin-top: 2px; }
+
+        /* Tables */
+        .data-section { margin-bottom: 48px; }
+        .data-table { width: 100%; border-collapse: collapse; }
+        .data-table th { font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray); text-align: left; padding: 8px 0; border-bottom: 1px solid var(--black); }
+        .data-table td { font-size: 14px; padding: 8px 0; border-bottom: 1px solid var(--gray-light); }
+        .data-table td:last-child { text-align: right; font-weight: 600; }
+
+        /* Bar chart */
+        .chart { margin-bottom: 48px; }
+        .chart-bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+        .chart-date { font-size: 11px; color: var(--gray); width: 44px; flex-shrink: 0; text-align: right; }
+        .chart-bar { height: 18px; background: var(--black); min-width: 1px; transition: width 0.3s; }
+        .chart-count { font-size: 11px; color: var(--gray); width: 32px; flex-shrink: 0; }
+
+        .logout { font-size: 12px; color: var(--gray); cursor: pointer; text-decoration: underline; }
+        .logout:hover { color: var(--black); }
+
+        @media (max-width: 480px) {
+            .stats-grid { grid-template-columns: 1fr; }
+            .stat-value { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="container">
+        <div class="logo">Analytics</div>
+        <div class="nav-links">
+            <a href="index.html">Back to site</a>
+        </div>
+    </div>
+</nav>
+
+<div class="login" id="login">
+    <div class="container">
+        <h2>Private Dashboard</h2>
+        <p>Enter your Supabase service_role key</p>
+        <input type="password" id="key-input" placeholder="service_role key">
+        <br>
+        <button onclick="authenticate()">Enter</button>
+        <div class="error" id="login-error">Invalid key — could not read data.</div>
+    </div>
+</div>
+
+<div class="dashboard" id="dashboard">
+    <div class="container">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:48px;">
+            <div class="section-label" style="margin-bottom:0">Overview</div>
+            <span class="logout" onclick="logout()">Logout</span>
+        </div>
+
+        <div class="stats-grid" id="stats-grid"></div>
+
+        <div class="data-section">
+            <div class="section-label">Daily Views — Last 30 Days</div>
+            <div class="chart" id="daily-chart"></div>
+        </div>
+
+        <div class="data-section">
+            <div class="section-label">Copies by Skill</div>
+            <table class="data-table" id="skill-table">
+                <thead><tr><th>Skill</th><th>Copies</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <div class="data-section">
+            <div class="section-label">Top Referrers</div>
+            <table class="data-table" id="referrer-table">
+                <thead><tr><th>Source</th><th>Visits</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    var SUPABASE_URL = 'https://vklhpsdenwuhanjhbtzv.supabase.co';
+    var serviceKey = localStorage.getItem('ia_admin_key') || '';
+
+    if (serviceKey) authenticate(true);
+
+    document.getElementById('key-input').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') authenticate();
+    });
+
+    function authenticate(fromStorage) {
+        if (!fromStorage) {
+            serviceKey = document.getElementById('key-input').value.trim();
+        }
+        if (!serviceKey) return;
+
+        // Test the key by fetching one row
+        fetch(SUPABASE_URL + '/rest/v1/events?limit=1', {
+            headers: {
+                'apikey': serviceKey,
+                'Authorization': 'Bearer ' + serviceKey
+            }
+        }).then(function(r) {
+            if (!r.ok) throw new Error('unauthorized');
+            return r.json();
+        }).then(function() {
+            localStorage.setItem('ia_admin_key', serviceKey);
+            document.getElementById('login').style.display = 'none';
+            document.getElementById('dashboard').classList.add('visible');
+            loadData();
+        }).catch(function() {
+            if (fromStorage) {
+                localStorage.removeItem('ia_admin_key');
+                return;
+            }
+            document.getElementById('login-error').style.display = 'block';
+        });
+    }
+
+    function logout() {
+        localStorage.removeItem('ia_admin_key');
+        serviceKey = '';
+        document.getElementById('dashboard').classList.remove('visible');
+        document.getElementById('login').style.display = '';
+        document.getElementById('key-input').value = '';
+        document.getElementById('login-error').style.display = 'none';
+    }
+
+    function query(params) {
+        return fetch(SUPABASE_URL + '/rest/v1/events?' + params, {
+            headers: {
+                'apikey': serviceKey,
+                'Authorization': 'Bearer ' + serviceKey
+            }
+        }).then(function(r) { return r.json(); });
+    }
+
+    function loadData() {
+        query('select=*&order=created_at.desc&limit=10000').then(function(rows) {
+            var now = new Date();
+            var todayStr = now.toISOString().slice(0, 10);
+            var weekAgo = new Date(now - 7 * 86400000).toISOString();
+
+            var views = rows.filter(function(r) { return r.type === 'pageview'; });
+            var copies = rows.filter(function(r) { return r.type === 'copy'; });
+
+            var viewsToday = views.filter(function(r) { return r.created_at.slice(0, 10) === todayStr; }).length;
+            var views7d = views.filter(function(r) { return r.created_at >= weekAgo; }).length;
+            var copiesToday = copies.filter(function(r) { return r.created_at.slice(0, 10) === todayStr; }).length;
+            var copies7d = copies.filter(function(r) { return r.created_at >= weekAgo; }).length;
+
+            // Stats grid
+            document.getElementById('stats-grid').innerHTML =
+                stat('Pageviews', viewsToday, 'today') +
+                stat('Pageviews', views7d, 'last 7 days') +
+                stat('Copies', copiesToday, 'today') +
+                stat('Copies', copies7d, 'last 7 days') +
+                stat('Total Views', views.length, 'all time') +
+                stat('Total Copies', copies.length, 'all time');
+
+            // Copies by skill
+            var skillCounts = {};
+            copies.forEach(function(r) {
+                var s = (r.data && r.data.skill) || 'unknown';
+                skillCounts[s] = (skillCounts[s] || 0) + 1;
+            });
+            var skillRows = Object.keys(skillCounts).map(function(k) {
+                return { name: k, count: skillCounts[k] };
+            }).sort(function(a, b) { return b.count - a.count; });
+
+            var tbody = document.querySelector('#skill-table tbody');
+            tbody.innerHTML = skillRows.length ? skillRows.map(function(r) {
+                return '<tr><td>' + esc(r.name) + '</td><td>' + r.count + '</td></tr>';
+            }).join('') : '<tr><td colspan="2" style="color:var(--gray);font-style:italic">No copies yet</td></tr>';
+
+            // Top referrers
+            var refCounts = {};
+            views.forEach(function(r) {
+                var ref = r.referrer || '(direct)';
+                try { if (ref !== '(direct)') ref = new URL(ref).hostname; } catch(e) {}
+                refCounts[ref] = (refCounts[ref] || 0) + 1;
+            });
+            var refRows = Object.keys(refCounts).map(function(k) {
+                return { name: k, count: refCounts[k] };
+            }).sort(function(a, b) { return b.count - a.count; }).slice(0, 10);
+
+            var rtbody = document.querySelector('#referrer-table tbody');
+            rtbody.innerHTML = refRows.length ? refRows.map(function(r) {
+                return '<tr><td>' + esc(r.name) + '</td><td>' + r.count + '</td></tr>';
+            }).join('') : '<tr><td colspan="2" style="color:var(--gray);font-style:italic">No data yet</td></tr>';
+
+            // Daily chart (last 30 days)
+            var dayCounts = {};
+            for (var i = 29; i >= 0; i--) {
+                var d = new Date(now - i * 86400000);
+                dayCounts[d.toISOString().slice(0, 10)] = 0;
+            }
+            views.forEach(function(r) {
+                var day = r.created_at.slice(0, 10);
+                if (day in dayCounts) dayCounts[day]++;
+            });
+
+            var days = Object.keys(dayCounts).sort();
+            var maxCount = Math.max.apply(null, days.map(function(d) { return dayCounts[d]; })) || 1;
+            var chartHtml = days.map(function(d) {
+                var c = dayCounts[d];
+                var pct = Math.round((c / maxCount) * 100);
+                var label = d.slice(5); // MM-DD
+                return '<div class="chart-bar-row">' +
+                    '<span class="chart-date">' + label + '</span>' +
+                    '<div class="chart-bar" style="width:' + (pct || 1) + '%"></div>' +
+                    '<span class="chart-count">' + c + '</span>' +
+                    '</div>';
+            }).join('');
+            document.getElementById('daily-chart').innerHTML = chartHtml;
+        });
+    }
+
+    function stat(label, value, sub) {
+        return '<div class="stat"><div class="stat-label">' + label + '</div><div class="stat-value">' + value + '</div><div class="stat-sub">' + sub + '</div></div>';
+    }
+
+    function esc(s) {
+        var d = document.createElement('div');
+        d.textContent = s;
+        return d.innerHTML;
+    }
+</script>
+
+</body>
+</html>
