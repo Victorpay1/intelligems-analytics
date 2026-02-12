@@ -262,6 +262,25 @@ var cachedTests = null;
 var cachedAnalysis = null;
 var loadingTimer = null;
 
+// Deep-link: ?skill=verdict auto-selects that skill pill
+(function() {
+    var params = new URLSearchParams(window.location.search);
+    var skillParam = params.get('skill');
+    if (skillParam) {
+        var found = false;
+        document.querySelectorAll('.pill[data-skill]').forEach(function(p) {
+            if (p.getAttribute('data-skill') === skillParam) { found = true; }
+        });
+        if (found) {
+            document.querySelectorAll('.pill').forEach(function(p) {
+                p.classList.remove('active');
+                if (p.getAttribute('data-skill') === skillParam) p.classList.add('active');
+            });
+            currentSkill = skillParam;
+        }
+    }
+})();
+
 document.getElementById('api-key').addEventListener('keydown', function(e) {
     if (e.key === 'Enter') runPreview();
 });

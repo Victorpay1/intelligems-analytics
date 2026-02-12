@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Intelligems Analytics — Claude Code Skills</title>
-    <meta name="description" content="Turn A/B test data into business decisions. Claude Code skills for Intelligems — verdicts, morning briefs, and profit impact reports.">
+    <meta name="description" content="Turn A/B test data into business decisions. Claude Code skills for Intelligems — verdicts, morning briefs, profit impact reports, and more.">
     <meta property="og:title" content="Intelligems Analytics — Claude Code Skills">
     <meta property="og:description" content="Stop staring at dashboards. Get clear verdicts, financial projections, and prioritized action items from your Intelligems tests.">
     <meta property="og:url" content="https://victorpay1.github.io/intelligems-analytics/">
@@ -24,17 +24,15 @@
         :root {
             --black: #000000;
             --white: #ffffff;
-            --gray: #000000;
+            --gray-mid: #555;
             --gray-light: #e0e0e0;
             --font: 'JetBrains Mono', monospace;
-            --max-width: 720px;
+            --max-width: 760px;
             --ease: 0.25s ease;
         }
 
         /* ── Base ──────────────────────────────────── */
-        html {
-            scroll-behavior: smooth;
-        }
+        html { scroll-behavior: smooth; }
 
         body {
             font-family: var(--font);
@@ -77,26 +75,22 @@
 
         .nav-links a {
             font-size: 14px;
-            color: var(--gray);
+            color: var(--black);
             text-decoration: none;
-            transition: color var(--ease);
+            transition: opacity var(--ease);
         }
 
-        .nav-links a:hover {
-            color: var(--black);
-        }
+        .nav-links a:hover { opacity: 0.5; }
 
         /* ── Hero ──────────────────────────────────── */
-        .hero {
-            padding: 100px 0 80px;
-        }
+        .hero { padding: 100px 0 80px; }
 
         .hero-label {
             font-size: 12px;
             font-weight: 400;
             letter-spacing: 0.2em;
             text-transform: uppercase;
-            color: var(--gray);
+            color: var(--gray-mid);
             margin-bottom: 24px;
         }
 
@@ -110,12 +104,200 @@
 
         .hero-description {
             font-size: 17px;
-            color: var(--gray);
+            color: var(--gray-mid);
             line-height: 1.8;
             margin-bottom: 48px;
         }
 
-        /* ── Install Box ───────────────────────────── */
+        .hero-ctas {
+            display: flex;
+            gap: 12px;
+            align-items: stretch;
+        }
+
+        .cta-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--black);
+            color: var(--white);
+            font-family: var(--font);
+            font-size: 15px;
+            font-weight: 500;
+            padding: 14px 24px;
+            text-decoration: none;
+            border: 1px solid var(--black);
+            transition: opacity var(--ease);
+            cursor: pointer;
+        }
+
+        .cta-primary:hover { opacity: 0.8; }
+
+        .cta-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--white);
+            color: var(--black);
+            font-family: var(--font);
+            font-size: 15px;
+            font-weight: 500;
+            padding: 14px 24px;
+            border: 1px solid var(--black);
+            cursor: pointer;
+            transition: background var(--ease), color var(--ease);
+        }
+
+        .cta-secondary:hover {
+            background: var(--black);
+            color: var(--white);
+        }
+
+        .cta-secondary .copy-label {
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            opacity: 0.5;
+        }
+
+        /* ── Section Labels ───────────────────────── */
+        .section-label {
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--black);
+            margin-bottom: 12px;
+        }
+
+        .section-subtitle {
+            font-size: 15px;
+            color: var(--gray-mid);
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        /* ── Analysis Skills ──────────────────────── */
+        .skills { padding-top: 80px; border-top: 1px solid var(--black); }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .skill-card {
+            border: 1px solid var(--black);
+            padding: 28px 24px;
+            display: flex;
+            flex-direction: column;
+            transition: background 0.15s ease;
+        }
+
+        .skill-card:hover { background: #fafafa; }
+
+        .skill-command {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--gray-mid);
+            margin-bottom: 12px;
+        }
+
+        .skill-name {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            margin-bottom: 4px;
+        }
+
+        .skill-pitch {
+            font-size: 14px;
+            font-style: italic;
+            color: var(--gray-mid);
+            margin-bottom: 16px;
+        }
+
+        .skill-description {
+            font-size: 14px;
+            color: var(--gray-mid);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .skill-features {
+            list-style: none;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .skill-features li {
+            font-size: 13px;
+            color: var(--gray-mid);
+            padding: 2px 0;
+        }
+
+        .skill-features li::before {
+            content: "\2014\00a0\00a0";
+        }
+
+        .try-link {
+            display: inline-block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--black);
+            text-decoration: none;
+            border-bottom: 2px solid var(--black);
+            padding-bottom: 2px;
+            transition: opacity var(--ease);
+            align-self: flex-start;
+        }
+
+        .try-link:hover { opacity: 0.5; }
+
+        /* ── Utility Skills ───────────────────────── */
+        .utilities {
+            padding-top: 60px;
+        }
+
+        .utility-card {
+            border: 1px solid var(--gray-light);
+            padding: 20px 24px;
+            margin-bottom: 8px;
+            transition: border-color var(--ease);
+        }
+
+        .utility-card:hover { border-color: var(--black); }
+
+        .utility-header {
+            display: flex;
+            gap: 16px;
+            align-items: baseline;
+            margin-bottom: 4px;
+        }
+
+        .utility-header .skill-command {
+            margin-bottom: 0;
+        }
+
+        .utility-header .skill-name {
+            font-size: 16px;
+            margin-bottom: 0;
+        }
+
+        .utility-desc {
+            font-size: 14px;
+            color: var(--gray-mid);
+            line-height: 1.6;
+        }
+
+        /* ── Install ──────────────────────────────── */
+        .install-section {
+            padding-top: 80px;
+            border-top: 1px solid var(--black);
+        }
+
         .install-box {
             display: flex;
             align-items: center;
@@ -125,16 +307,12 @@
             cursor: pointer;
             transition: background var(--ease), color var(--ease);
             gap: 16px;
+            margin-bottom: 12px;
         }
 
-        .install-box:hover {
-            background: var(--black);
-        }
-
+        .install-box:hover { background: var(--black); }
         .install-box:hover code,
-        .install-box:hover .copy-label {
-            color: var(--white);
-        }
+        .install-box:hover .copy-label { color: var(--white); }
 
         .install-box code {
             font-size: 15px;
@@ -149,75 +327,22 @@
             font-weight: 500;
             letter-spacing: 0.1em;
             text-transform: uppercase;
-            color: var(--gray);
+            color: var(--gray-mid);
             white-space: nowrap;
             transition: color var(--ease);
         }
 
-        /* ── Search ───────────────────────────────── */
-        .search-wrapper {
-            position: relative;
-            margin-bottom: 48px;
-        }
-
-        .search-input {
-            width: 100%;
-            font-family: var(--font);
-            font-size: 16px;
-            padding: 14px 40px 14px 20px;
-            border: 1px solid var(--gray-light);
-            background: var(--white);
-            color: var(--black);
-            outline: none;
-            transition: border-color var(--ease);
-        }
-
-        .search-input:focus {
-            border-color: var(--black);
-        }
-
-        .search-input::placeholder {
-            color: var(--gray);
+        .install-hint {
+            font-size: 13px;
+            color: var(--gray-mid);
             font-style: italic;
-        }
-
-        .search-clear {
-            position: absolute;
-            right: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 20px;
-            color: var(--gray);
-            cursor: pointer;
-            display: none;
-            transition: color var(--ease);
-            line-height: 1;
-        }
-
-        .search-clear:hover {
-            color: var(--black);
-        }
-
-        .skill-block.hidden {
-            display: none;
-        }
-
-        .roadmap-item.hidden {
-            display: none;
-        }
-
-        .no-results {
-            font-size: 16px;
-            font-style: italic;
-            color: var(--gray);
-            padding: 32px 0;
-            display: none;
         }
 
         /* ── How It Works ─────────────────────────── */
         .how-it-works {
             padding: 60px 0;
             border-top: 1px solid var(--gray-light);
+            margin-top: 80px;
         }
 
         .steps {
@@ -240,215 +365,27 @@
         }
 
         .step-desc {
-            font-size: 15px;
-            color: var(--gray);
+            font-size: 14px;
+            color: var(--gray-mid);
             line-height: 1.6;
         }
 
-        /* ── Skills ────────────────────────────────── */
-        .skills {
-            padding-top: 80px;
-            border-top: 1px solid var(--black);
-        }
-
-        .section-label {
-            font-size: 12px;
-            font-weight: 500;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--gray);
-            margin-bottom: 48px;
-        }
-
-        .skills-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1px;
-            background: var(--black);
-            border: 1px solid var(--black);
-        }
-
-        .skill-block {
-            background: var(--white);
-            padding: 24px;
-            cursor: pointer;
-            transition: background 0.15s ease;
-            position: relative;
-        }
-
-        .skill-block:hover {
-            background: #fafafa;
-        }
-
-        .skill-block.expanded {
-            grid-column: 1 / -1;
-        }
-
-        .skill-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            margin-bottom: 10px;
-        }
-
-        .skill-number {
-            font-size: 13px;
-            color: var(--gray);
-            letter-spacing: 0.1em;
-        }
-
-        .skill-command {
-            font-size: 15px;
-            font-weight: 600;
-        }
-
-        .skill-toggle {
-            font-size: 20px;
-            font-weight: 300;
-            line-height: 1;
-            color: var(--gray);
-            user-select: none;
-        }
-
-        .skill-name {
-            font-size: 20px;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            line-height: 1.2;
-            margin-bottom: 6px;
-        }
-
-        .skill-pitch {
-            font-size: 15px;
-            font-style: italic;
-            color: var(--gray);
-            margin-bottom: 0;
-        }
-
-        .skill-details {
-            display: none;
-            margin-top: 20px;
-            padding-top: 20px;
+        /* ── Coming Soon ──────────────────────────── */
+        .coming-soon {
+            padding: 60px 0 40px;
             border-top: 1px solid var(--gray-light);
-        }
-
-        .skill-block.expanded .skill-details {
-            display: block;
-        }
-
-        .skill-description {
-            font-size: 16px;
-            color: var(--gray);
-            line-height: 1.7;
-            margin-bottom: 20px;
-        }
-
-        .skill-features {
-            list-style: none;
-            margin-bottom: 28px;
-        }
-
-        .skill-features li {
-            font-size: 15px;
-            color: var(--gray);
-            padding: 3px 0;
-        }
-
-        .skill-features li::before {
-            content: "\2014\00a0\00a0";
-        }
-
-        .skill-install {
-            display: inline-flex;
-            align-items: center;
-            justify-content: space-between;
-            border: 1px solid var(--black);
-            padding: 10px 16px;
-            cursor: pointer;
-            transition: background var(--ease), color var(--ease);
-            gap: 16px;
-        }
-
-        .skill-install:hover {
-            background: var(--black);
-        }
-
-        .skill-install:hover code,
-        .skill-install:hover .copy-label {
-            color: var(--white);
-        }
-
-        .skill-install code {
-            font-size: 14px;
-            font-family: var(--font);
-            color: var(--black);
-            transition: color var(--ease);
-        }
-
-        .skill-install .copy-label {
-            font-size: 12px;
-            font-weight: 500;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--gray);
-            white-space: nowrap;
-            transition: color var(--ease);
-        }
-
-        .skill-preview {
-            display: inline-block;
-            margin-top: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            letter-spacing: 0.05em;
-            color: var(--black);
-            text-decoration: none;
-            border-bottom: 2px solid var(--black);
-            padding-bottom: 2px;
-            transition: opacity var(--ease);
-        }
-
-        .skill-preview:hover {
-            opacity: 0.6;
-        }
-
-        /* ── Roadmap ───────────────────────────────── */
-        .roadmap {
-            padding-top: 80px;
-            padding-bottom: 60px;
-            border-top: 1px solid var(--black);
         }
 
         .roadmap-item {
-            margin-bottom: 16px;
-            font-size: 16px;
+            margin-bottom: 12px;
+            font-size: 15px;
             line-height: 1.6;
         }
 
-        .roadmap-item:last-child {
-            margin-bottom: 0;
-        }
+        .roadmap-item:last-child { margin-bottom: 0; }
 
-        .roadmap-command {
-            font-weight: 600;
-        }
-
-        .roadmap-desc {
-            color: var(--gray);
-            font-weight: 400;
-        }
-
-        /* ── Tags ──────────────────────────────────── */
-        .tags {
-            padding: 40px 0;
-            border-top: 1px solid var(--gray-light);
-        }
-
-        .tags-text {
-            font-size: 13px;
-            color: var(--gray);
-            letter-spacing: 0.05em;
-        }
+        .roadmap-command { font-weight: 600; }
+        .roadmap-desc { color: var(--gray-mid); }
 
         /* ── Footer ────────────────────────────────── */
         footer {
@@ -462,34 +399,37 @@
             align-items: center;
         }
 
-        footer span {
-            font-size: 14px;
-            color: var(--gray);
-        }
+        footer span { font-size: 14px; color: var(--gray-mid); }
 
         footer a {
             color: var(--black);
             text-decoration: none;
-            transition: text-decoration var(--ease);
+            transition: opacity var(--ease);
         }
 
-        footer a:hover {
-            text-decoration: underline;
-        }
+        footer a:hover { opacity: 0.5; }
 
         /* ── Mobile 768px ──────────────────────────── */
         @media (max-width: 768px) {
-            .hero {
-                padding: 60px 0 56px;
+            .hero { padding: 60px 0 56px; }
+            .hero h1 { font-size: 30px; }
+            .hero-description { margin-bottom: 36px; }
+
+            .hero-ctas {
+                flex-direction: column;
             }
 
-            .hero h1 {
-                font-size: 30px;
+            .cta-primary, .cta-secondary {
+                width: 100%;
+                justify-content: center;
             }
 
-            .hero-description {
-                margin-bottom: 36px;
-            }
+            .skills-grid { grid-template-columns: 1fr; }
+
+            .steps { grid-template-columns: 1fr; gap: 24px; }
+
+            .how-it-works { padding: 48px 0; margin-top: 56px; }
+            .skills { padding-top: 56px; }
 
             .install-box {
                 flex-direction: column;
@@ -499,54 +439,11 @@
             }
 
             .install-box code {
-                font-size: 14px;
+                font-size: 13px;
                 word-break: break-all;
             }
 
-            .install-box .copy-label {
-                text-align: center;
-            }
-
-            .steps {
-                grid-template-columns: 1fr;
-                gap: 24px;
-            }
-
-            .how-it-works {
-                padding: 48px 0;
-            }
-
-            .skills {
-                padding-top: 56px;
-            }
-
-            .skills-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .skill-block {
-                padding: 20px;
-            }
-
-            .skill-block.expanded {
-                grid-column: 1;
-            }
-
-            .skill-install {
-                width: 100%;
-                justify-content: space-between;
-            }
-
-            .skill-install code {
-                font-size: 13px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-            }
-
-            .roadmap {
-                padding-top: 56px;
-            }
+            .install-box .copy-label { text-align: center; }
 
             footer .container {
                 flex-direction: column;
@@ -556,25 +453,13 @@
 
         /* ── Mobile 480px ──────────────────────────── */
         @media (max-width: 480px) {
-            .hero h1 {
-                font-size: 26px;
-            }
-
-            .section-label {
-                margin-bottom: 32px;
-            }
-
-            .skills, .roadmap {
-                padding-top: 48px;
-            }
-
-            .nav-links {
-                gap: 12px;
-            }
-
-            .nav-links a {
-                font-size: 13px;
-            }
+            .hero h1 { font-size: 26px; }
+            .section-label { margin-bottom: 8px; }
+            .section-subtitle { margin-bottom: 28px; }
+            .skills { padding-top: 48px; }
+            .nav-links { gap: 12px; }
+            .nav-links a { font-size: 13px; }
+            .skill-card { padding: 20px; }
         }
     </style>
 </head>
@@ -585,7 +470,7 @@
         <div class="logo">Intelligems Analytics</div>
         <div class="nav-links">
             <a href="#skills">Skills</a>
-            <a href="#roadmap">Roadmap</a>
+            <a href="preview.html">Live Preview</a>
             <a href="https://github.com/Victorpay1/intelligems-analytics">GitHub</a>
         </div>
     </div>
@@ -596,11 +481,149 @@
         <div class="container">
             <div class="hero-label">Claude Code Skills</div>
             <h1>Turn A/B test data into business decisions</h1>
-            <p class="hero-description">Stop staring at dashboards. Get clear verdicts, financial projections, and prioritized action items from your Intelligems tests — powered by Claude.</p>
+            <p class="hero-description">Stop staring at dashboards. Get clear verdicts, financial projections, and prioritized action items from your Intelligems tests.</p>
+            <div class="hero-ctas">
+                <a href="preview.html" class="cta-primary">Try it with your data &rarr;</a>
+                <div class="cta-secondary" onclick="copyText(this, 'npx skills add Victorpay1/intelligems-analytics')">
+                    <span>Install all skills</span>
+                    <span class="copy-label">Copy</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="skills" id="skills">
+        <div class="container">
+            <div class="section-label">Analysis Skills</div>
+            <p class="section-subtitle">7 skills that analyze your A/B tests and give you answers. Each one works with your live Intelligems data.</p>
+
+            <div class="skills-grid">
+
+                <div class="skill-card">
+                    <div class="skill-command">/test-verdict</div>
+                    <h3 class="skill-name">Test Verdict</h3>
+                    <p class="skill-pitch">"Should I roll this out?"</p>
+                    <p class="skill-description">Analyzes a single test and gives a plain-English verdict with risk assessment and segment nuance.</p>
+                    <ul class="skill-features">
+                        <li>WINNER / LOSER / FLAT / KEEP RUNNING</li>
+                        <li>Risk framing with confidence context</li>
+                        <li>Segment quick-check for hidden risks</li>
+                    </ul>
+                    <a href="preview.html?skill=verdict" class="try-link" onclick="if(window._trackPreviewClick) window._trackPreviewClick('verdict')">Try it live &rarr;</a>
+                </div>
+
+                <div class="skill-card">
+                    <div class="skill-command">/morning-brief</div>
+                    <h3 class="skill-name">Morning Brief</h3>
+                    <p class="skill-pitch">"What's happening with my tests?"</p>
+                    <p class="skill-description">Daily summary of all active tests with health status, run rates, and action items.</p>
+                    <ul class="skill-features">
+                        <li>RED / YELLOW / GREEN health per test</li>
+                        <li>Time-to-verdict estimates</li>
+                        <li>Action items sorted by priority</li>
+                    </ul>
+                    <a href="preview.html?skill=morning-brief" class="try-link" onclick="if(window._trackPreviewClick) window._trackPreviewClick('morning-brief')">Try it live &rarr;</a>
+                </div>
+
+                <div class="skill-card">
+                    <div class="skill-command">/profit-impact</div>
+                    <h3 class="skill-name">Profit Impact</h3>
+                    <p class="skill-pitch">"What is this test worth in dollars?"</p>
+                    <p class="skill-description">Translates lift percentages into annualized revenue projections with confidence ranges.</p>
+                    <ul class="skill-features">
+                        <li>Conservative / Expected / Optimistic projections</li>
+                        <li>Break-even and opportunity-cost analysis</li>
+                        <li>Daily cost of waiting to roll out</li>
+                    </ul>
+                    <a href="preview.html?skill=profit-impact" class="try-link" onclick="if(window._trackPreviewClick) window._trackPreviewClick('profit-impact')">Try it live &rarr;</a>
+                </div>
+
+                <div class="skill-card">
+                    <div class="skill-command">/funnel-diagnosis</div>
+                    <h3 class="skill-name">Funnel Diagnosis</h3>
+                    <p class="skill-pitch">"Where in the funnel does the variant diverge?"</p>
+                    <p class="skill-description">Stage-by-stage funnel comparison. Find exactly where control and variant split.</p>
+                    <ul class="skill-features">
+                        <li>5-stage funnel: Add to Cart &rarr; Purchase</li>
+                        <li>Biggest gain and biggest drop identified</li>
+                        <li>Plain-English diagnosis with next steps</li>
+                    </ul>
+                    <a href="preview.html?skill=funnel" class="try-link" onclick="if(window._trackPreviewClick) window._trackPreviewClick('funnel')">Try it live &rarr;</a>
+                </div>
+
+                <div class="skill-card">
+                    <div class="skill-command">/segment-spotlight</div>
+                    <h3 class="skill-name">Segment Spotlight</h3>
+                    <p class="skill-pitch">"Which segments should I target or exclude?"</p>
+                    <p class="skill-description">Revenue-opportunity-ranked segments across device, visitor type, and traffic source.</p>
+                    <ul class="skill-features">
+                        <li>Revenue opportunity in annual dollars</li>
+                        <li>Contradiction detection vs. overall result</li>
+                        <li>Rollout rec: full, segment-specific, or hold</li>
+                    </ul>
+                    <a href="preview.html?skill=segments" class="try-link" onclick="if(window._trackPreviewClick) window._trackPreviewClick('segments')">Try it live &rarr;</a>
+                </div>
+
+                <div class="skill-card">
+                    <div class="skill-command">/test-debrief</div>
+                    <h3 class="skill-name">Test Debrief</h3>
+                    <p class="skill-pitch">"What happened and what did we learn?"</p>
+                    <p class="skill-description">Post-mortem combining funnel data, segment patterns, and behavior insights.</p>
+                    <ul class="skill-features">
+                        <li>Structured: What, Why, Insights, Next</li>
+                        <li>Auto-generated behavior observations</li>
+                        <li>Specific next-test suggestions</li>
+                    </ul>
+                    <a href="preview.html?skill=debrief" class="try-link" onclick="if(window._trackPreviewClick) window._trackPreviewClick('debrief')">Try it live &rarr;</a>
+                </div>
+
+                <div class="skill-card">
+                    <div class="skill-command">/rollout-brief</div>
+                    <h3 class="skill-name">Rollout Brief</h3>
+                    <p class="skill-pitch">"Give me a doc I can share with my team."</p>
+                    <p class="skill-description">Stakeholder-ready summary combining verdict, financials, segments, and recommendations.</p>
+                    <ul class="skill-features">
+                        <li>Executive summary with business case</li>
+                        <li>Financial projections (annual + monthly)</li>
+                        <li>Clear recommendation and next steps</li>
+                    </ul>
+                    <a href="preview.html?skill=rollout" class="try-link" onclick="if(window._trackPreviewClick) window._trackPreviewClick('rollout')">Try it live &rarr;</a>
+                </div>
+
+            </div>
+
+            <!-- Utility Skills -->
+            <div class="utilities">
+                <div class="section-label">Utility Skills</div>
+
+                <div class="utility-card">
+                    <div class="utility-header">
+                        <div class="skill-command">/intelligems-api</div>
+                        <div class="skill-name">API Docs</div>
+                    </div>
+                    <p class="utility-desc">Full Intelligems API documentation &mdash; endpoints, metrics, Python examples, and health check formulas.</p>
+                </div>
+
+                <div class="utility-card">
+                    <div class="utility-header">
+                        <div class="skill-command">/test-portfolio</div>
+                        <div class="skill-name">Test Portfolio</div>
+                    </div>
+                    <p class="utility-desc">Program-level scorecard &mdash; win rate, test velocity, coverage gaps, and what to test next.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="install-section">
+        <div class="container">
+            <div class="section-label">Install</div>
+            <p class="section-subtitle">All 9 skills with one command. Requires <a href="https://docs.anthropic.com/en/docs/claude-code/overview" style="color:var(--black)">Claude Code</a>.</p>
             <div class="install-box" onclick="copyText(this, 'npx skills add Victorpay1/intelligems-analytics')">
                 <code>npx skills add Victorpay1/intelligems-analytics</code>
                 <span class="copy-label">Copy</span>
             </div>
+            <p class="install-hint">Or install individually: npx skills add ... --skill intelligems-test-verdict</p>
         </div>
     </section>
 
@@ -610,261 +633,38 @@
             <div class="steps">
                 <div class="step">
                     <div class="step-number">1</div>
-                    <div class="step-title">Copy the install command</div>
-                    <div class="step-desc">Grab it from above or from any skill below.</div>
+                    <div class="step-title">Try the preview</div>
+                    <div class="step-desc">See real results from your data before installing anything.</div>
                 </div>
                 <div class="step">
                     <div class="step-number">2</div>
-                    <div class="step-title">Paste into your terminal</div>
-                    <div class="step-desc">Run it where Claude Code is installed. Skills download automatically.</div>
+                    <div class="step-title">Install the skills</div>
+                    <div class="step-desc">One command in your terminal. Skills download automatically.</div>
                 </div>
                 <div class="step">
                     <div class="step-number">3</div>
-                    <div class="step-title">Use the skill</div>
-                    <div class="step-desc">Open Claude Code and type the command (e.g. /morning-brief). That's it.</div>
+                    <div class="step-title">Use any skill</div>
+                    <div class="step-desc">Type /test-verdict in Claude Code. That's it.</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="skills" id="skills">
+    <section class="coming-soon">
         <div class="container">
-            <div class="section-label">Skills</div>
-
-            <div class="search-wrapper">
-                <input type="text" id="skill-search" class="search-input" placeholder="Search skills... try &quot;revenue&quot; or &quot;daily report&quot;">
-                <span class="search-clear" id="search-clear">&times;</span>
-            </div>
-
-            <div class="no-results" id="no-results">No skills match your search.</div>
-
-            <div class="skills-grid" id="skills-grid">
-
-            <div class="skill-block" data-search="01 test verdict /test-verdict should i roll this out analyzes a single test gives plain-english verdict risk assessment segment nuance what to test next winner loser flat keep running too early risk framing confidence context revenue conversion divergence detection segment quick-check hidden risks roll out decision call it ship launch ab test">
-                <div class="skill-top">
-                    <div><span class="skill-number">01</span> <span class="skill-command">/test-verdict</span></div>
-                    <span class="skill-toggle">+</span>
-                </div>
-                <h3 class="skill-name">Test Verdict</h3>
-                <p class="skill-pitch">"Should I roll this out?"</p>
-                <div class="skill-details">
-                    <p class="skill-description">Analyzes a single test and gives a plain-English verdict with risk assessment, segment nuance, and what to test next.</p>
-                    <ul class="skill-features">
-                        <li>WINNER / LOSER / FLAT / KEEP RUNNING / TOO EARLY</li>
-                        <li>Risk framing with confidence context</li>
-                        <li>Revenue vs. conversion divergence detection</li>
-                        <li>Segment quick-check for hidden risks</li>
-                    </ul>
-                    <div class="skill-install" onclick="event.stopPropagation(); copyText(this, 'npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-test-verdict')">
-                        <code>npx skills add ... --skill intelligems-test-verdict</code>
-                        <span class="copy-label">Copy</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="skill-block" data-search="02 morning brief /morning-brief what's happening with my tests prioritized daily summary active tests health status action items designed for daily slack delivery red yellow green health status per test daily run rates time-to-verdict estimates specific action items sorted priority program pulse aggregate traffic stats daily report overview check status slack notification monitoring alert">
-                <div class="skill-top">
-                    <div><span class="skill-number">02</span> <span class="skill-command">/morning-brief</span></div>
-                    <span class="skill-toggle">+</span>
-                </div>
-                <h3 class="skill-name">Morning Brief</h3>
-                <p class="skill-pitch">"What's happening with my tests?"</p>
-                <div class="skill-details">
-                    <p class="skill-description">Prioritized daily summary of all active tests with health status and action items. Designed for daily Slack delivery.</p>
-                    <ul class="skill-features">
-                        <li>RED / YELLOW / GREEN health status per test</li>
-                        <li>Daily run rates and time-to-verdict estimates</li>
-                        <li>Specific action items sorted by priority</li>
-                        <li>Program pulse with aggregate traffic stats</li>
-                    </ul>
-                    <div class="skill-install" onclick="event.stopPropagation(); copyText(this, 'npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-morning-brief')">
-                        <code>npx skills add ... --skill intelligems-morning-brief</code>
-                        <span class="copy-label">Copy</span>
-                    </div>
-                    <a href="preview.html" class="skill-preview" onclick="event.stopPropagation()">Try it live &rarr;</a>
-                </div>
-            </div>
-
-            <div class="skill-block" data-search="03 profit impact /profit-impact what is this test worth in dollars translates lift percentages annualized revenue projections confidence ranges stakeholder-ready business case conservative expected optimistic projections break-even opportunity-cost analysis daily cost waiting roll out stakeholder-ready business case summary money dollars roi financial revenue projection annual value worth how much">
-                <div class="skill-top">
-                    <div><span class="skill-number">03</span> <span class="skill-command">/profit-impact</span></div>
-                    <span class="skill-toggle">+</span>
-                </div>
-                <h3 class="skill-name">Profit Impact</h3>
-                <p class="skill-pitch">"What is this test worth in dollars?"</p>
-                <div class="skill-details">
-                    <p class="skill-description">Translates lift percentages into annualized revenue projections with confidence ranges. Stakeholder-ready business case.</p>
-                    <ul class="skill-features">
-                        <li>Conservative / Expected / Optimistic projections</li>
-                        <li>Break-even and opportunity-cost analysis</li>
-                        <li>Daily cost of waiting to roll out</li>
-                        <li>Stakeholder-ready business case summary</li>
-                    </ul>
-                    <div class="skill-install" onclick="event.stopPropagation(); copyText(this, 'npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-profit-impact')">
-                        <code>npx skills add ... --skill intelligems-profit-impact</code>
-                        <span class="copy-label">Copy</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="skill-block" data-search="04 api docs /intelligems-api what endpoints does intelligems have loads full intelligems external api documentation endpoints metrics python examples health check formulas rate limiting strategies foundation building custom integrations complete api reference 3 endpoints 30+ available metrics documented ready-to-use python code examples health check formulas thresholds endpoint integration build developer reference documentation">
-                <div class="skill-top">
-                    <div><span class="skill-number">04</span> <span class="skill-command">/intelligems-api</span></div>
-                    <span class="skill-toggle">+</span>
-                </div>
-                <h3 class="skill-name">API Docs</h3>
-                <p class="skill-pitch">"What endpoints does Intelligems have?"</p>
-                <div class="skill-details">
-                    <p class="skill-description">Loads the full Intelligems External API documentation — endpoints, metrics, Python examples, health check formulas, and rate limiting strategies. The foundation for building custom integrations.</p>
-                    <ul class="skill-features">
-                        <li>Complete API reference with 3 endpoints</li>
-                        <li>30+ available metrics documented</li>
-                        <li>Ready-to-use Python code examples</li>
-                        <li>Health check formulas and thresholds</li>
-                    </ul>
-                    <div class="skill-install" onclick="event.stopPropagation(); copyText(this, 'npx skills add Victorpay1/intelligems-analytics --skill intelligems-api')">
-                        <code>npx skills add ... --skill intelligems-api</code>
-                        <span class="copy-label">Copy</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="skill-block" data-search="05 funnel diagnosis /funnel-diagnosis where is the variant diverging stage-by-stage funnel comparison find exactly where control cart checkout browse add-to-cart conversion drop-off where losing breakpoint biggest gain biggest drop purchase begin checkout contact info address friction bottleneck">
-                <div class="skill-top">
-                    <div><span class="skill-number">05</span> <span class="skill-command">/funnel-diagnosis</span></div>
-                    <span class="skill-toggle">+</span>
-                </div>
-                <h3 class="skill-name">Funnel Diagnosis</h3>
-                <p class="skill-pitch">"Where in the funnel does the variant diverge?"</p>
-                <div class="skill-details">
-                    <p class="skill-description">Stage-by-stage funnel comparison for any A/B test. Find exactly where the variant diverges from control — Add to Cart through Purchase.</p>
-                    <ul class="skill-features">
-                        <li>5-stage funnel: Add to Cart → Purchase</li>
-                        <li>Biggest gain and biggest drop identification</li>
-                        <li>Breakpoint detection where behavior flips</li>
-                        <li>Plain-English diagnosis with next steps</li>
-                    </ul>
-                    <div class="skill-install" onclick="event.stopPropagation(); copyText(this, 'npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-funnel-diagnosis')">
-                        <code>npx skills add ... --skill intelligems-funnel-diagnosis</code>
-                        <span class="copy-label">Copy</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="skill-block" data-search="06 segment spotlight /segment-spotlight which segments should i target revenue-opportunity-ranked segments per-segment dollar values rollout recommendations audience device mobile desktop visitor type new returning traffic source channel contradiction annual value exclude segment-specific">
-                <div class="skill-top">
-                    <div><span class="skill-number">06</span> <span class="skill-command">/segment-spotlight</span></div>
-                    <span class="skill-toggle">+</span>
-                </div>
-                <h3 class="skill-name">Segment Spotlight</h3>
-                <p class="skill-pitch">"Which segments should I target or exclude?"</p>
-                <div class="skill-details">
-                    <p class="skill-description">Revenue-opportunity-ranked segment analysis with per-segment dollar values and rollout recommendations across device, visitor type, and traffic source.</p>
-                    <ul class="skill-features">
-                        <li>Revenue opportunity in annual dollars per segment</li>
-                        <li>Per-segment verdicts with confidence levels</li>
-                        <li>Contradiction detection vs. overall result</li>
-                        <li>Rollout recommendation: full, segment-specific, or hold</li>
-                    </ul>
-                    <div class="skill-install" onclick="event.stopPropagation(); copyText(this, 'npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-segment-spotlight')">
-                        <code>npx skills add ... --skill intelligems-segment-spotlight</code>
-                        <span class="copy-label">Copy</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="skill-block" data-search="07 test debrief /test-debrief what happened what did we learn post-mortem test outcome extract learnings customer behavior insights next-test suggestions retrospective review analysis why funnel segment patterns new returning mobile desktop">
-                <div class="skill-top">
-                    <div><span class="skill-number">07</span> <span class="skill-command">/test-debrief</span></div>
-                    <span class="skill-toggle">+</span>
-                </div>
-                <h3 class="skill-name">Test Debrief</h3>
-                <p class="skill-pitch">"What happened and what did we learn?"</p>
-                <div class="skill-details">
-                    <p class="skill-description">Post-mortem analysis combining funnel data, segment patterns, and customer behavior insights. Extracts learnings and suggests specific next tests.</p>
-                    <ul class="skill-features">
-                        <li>Structured post-mortem: What, Why, Insights, Next</li>
-                        <li>Auto-generated customer behavior observations</li>
-                        <li>Funnel + segment pattern analysis</li>
-                        <li>Specific next-test suggestions based on findings</li>
-                    </ul>
-                    <div class="skill-install" onclick="event.stopPropagation(); copyText(this, 'npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-test-debrief')">
-                        <code>npx skills add ... --skill intelligems-test-debrief</code>
-                        <span class="copy-label">Copy</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="skill-block" data-search="08 test portfolio /test-portfolio how is our testing program doing program-level scorecard win rate test velocity coverage gaps what to test next overview program summary how many tests performance history winners losers pricing shipping content offer">
-                <div class="skill-top">
-                    <div><span class="skill-number">08</span> <span class="skill-command">/test-portfolio</span></div>
-                    <span class="skill-toggle">+</span>
-                </div>
-                <h3 class="skill-name">Test Portfolio</h3>
-                <p class="skill-pitch">"How is our testing program doing?"</p>
-                <div class="skill-details">
-                    <p class="skill-description">Program-level scorecard across your entire testing history. Win rate, test velocity, coverage gaps, and what to test next.</p>
-                    <ul class="skill-features">
-                        <li>Win/loss record across all ended tests</li>
-                        <li>Test velocity tracking by month</li>
-                        <li>Coverage map: Pricing, Shipping, Offer, Content</li>
-                        <li>Gap analysis with specific recommendations</li>
-                    </ul>
-                    <div class="skill-install" onclick="event.stopPropagation(); copyText(this, 'npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-test-portfolio')">
-                        <code>npx skills add ... --skill intelligems-test-portfolio</code>
-                        <span class="copy-label">Copy</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="skill-block" data-search="09 rollout brief /rollout-brief give me a document share boss team stakeholder-ready summary executive summary results impact next steps presentation report management recommendation financial segment verdict copy-paste email slack meeting">
-                <div class="skill-top">
-                    <div><span class="skill-number">09</span> <span class="skill-command">/rollout-brief</span></div>
-                    <span class="skill-toggle">+</span>
-                </div>
-                <h3 class="skill-name">Rollout Brief</h3>
-                <p class="skill-pitch">"Give me a doc I can share with my team."</p>
-                <div class="skill-details">
-                    <p class="skill-description">Stakeholder-ready summary document combining verdict, financial impact, segment analysis, and recommendations. Copy-paste to Slack, email, or a meeting.</p>
-                    <ul class="skill-features">
-                        <li>Executive summary with business case</li>
-                        <li>Financial projections (annual + monthly)</li>
-                        <li>Segment analysis with contradiction flags</li>
-                        <li>Clear recommendation and next steps</li>
-                    </ul>
-                    <div class="skill-install" onclick="event.stopPropagation(); copyText(this, 'npx skills add Victorpay1/intelligems-analytics --skill intelligems-core --skill intelligems-rollout-brief')">
-                        <code>npx skills add ... --skill intelligems-rollout-brief</code>
-                        <span class="copy-label">Copy</span>
-                    </div>
-                </div>
-            </div>
-
-            </div><!-- /skills-grid -->
-        </div>
-    </section>
-
-    <section class="roadmap" id="roadmap">
-        <div class="container">
-            <div class="section-label">Roadmap</div>
-            <div class="no-results" id="no-results-roadmap" style="display:none">No roadmap items match your search.</div>
-            <div class="roadmap-item" data-search="/trend-tracker temporal day-by-day performance over time trend analysis week-over-week daily metrics seasonality">
+            <div class="section-label">Coming soon</div>
+            <div class="roadmap-item">
                 <span class="roadmap-command">/trend-tracker</span>
-                <span class="roadmap-desc"> — Day-by-day performance trends. Spot seasonality, ramp-up effects, and week-over-week shifts.</span>
+                <span class="roadmap-desc"> &mdash; Day-by-day performance trends. Spot seasonality and week-over-week shifts.</span>
             </div>
-            <div class="roadmap-item" data-search="/test-comparison compare head-to-head two tests side-by-side benchmark compare experiments relative performance">
+            <div class="roadmap-item">
                 <span class="roadmap-command">/test-comparison</span>
-                <span class="roadmap-desc"> — Head-to-head comparison of two tests. Side-by-side metrics, verdicts, and impact.</span>
+                <span class="roadmap-desc"> &mdash; Head-to-head comparison of two tests. Side-by-side metrics and verdicts.</span>
             </div>
-            <div class="roadmap-item" data-search="/landing-page-analysis landing page path url which pages converting best page-level performance attribution">
+            <div class="roadmap-item">
                 <span class="roadmap-command">/landing-page-analysis</span>
-                <span class="roadmap-desc"> — Page-level performance breakdown. Which landing pages drive the most test impact.</span>
+                <span class="roadmap-desc"> &mdash; Page-level performance breakdown. Which pages drive the most impact.</span>
             </div>
-        </div>
-    </section>
-
-    <section class="tags">
-        <div class="container">
-            <span class="tags-text">ecommerce&ensp;&middot;&ensp;a/b-testing&ensp;&middot;&ensp;analytics&ensp;&middot;&ensp;pricing&ensp;&middot;&ensp;cro&ensp;&middot;&ensp;claude-code</span>
         </div>
     </section>
 </main>
@@ -881,88 +681,13 @@
         navigator.clipboard.writeText(text);
         if (window._trackCopy) window._trackCopy(text);
         var label = el.querySelector('.copy-label');
+        if (!label) return;
         var original = label.textContent;
         label.textContent = 'Copied';
         setTimeout(function() {
             label.textContent = original;
         }, 2000);
     }
-
-    // Accordion: click tile to expand/collapse
-    (function() {
-        var grid = document.getElementById('skills-grid');
-        var blocks = grid.querySelectorAll('.skill-block');
-
-        blocks.forEach(function(block) {
-            block.addEventListener('click', function(e) {
-                // Don't toggle if clicking install button
-                if (e.target.closest('.skill-install')) return;
-
-                var wasExpanded = block.classList.contains('expanded');
-
-                // Close all
-                blocks.forEach(function(b) {
-                    b.classList.remove('expanded');
-                    var toggle = b.querySelector('.skill-toggle');
-                    if (toggle) toggle.textContent = '+';
-                });
-
-                // Open this one (if it wasn't already open)
-                if (!wasExpanded) {
-                    block.classList.add('expanded');
-                    var toggle = block.querySelector('.skill-toggle');
-                    if (toggle) toggle.textContent = '\u2212';
-                }
-            });
-        });
-    })();
-
-    // Search
-    (function() {
-        var input = document.getElementById('skill-search');
-        var clearBtn = document.getElementById('search-clear');
-        var noResults = document.getElementById('no-results');
-        var noResultsRoadmap = document.getElementById('no-results-roadmap');
-        var skillBlocks = document.querySelectorAll('.skill-block[data-search]');
-        var roadmapItems = document.querySelectorAll('.roadmap-item[data-search]');
-
-        function doSearch() {
-            var query = input.value.toLowerCase().trim();
-            var words = query ? query.split(/\s+/) : [];
-
-            clearBtn.style.display = query ? 'block' : 'none';
-
-            var skillVisible = 0;
-            skillBlocks.forEach(function(block) {
-                var text = block.getAttribute('data-search');
-                var match = words.length === 0 || words.every(function(w) {
-                    return text.indexOf(w) !== -1;
-                });
-                block.classList.toggle('hidden', !match);
-                if (match) skillVisible++;
-            });
-            noResults.style.display = (words.length > 0 && skillVisible === 0) ? 'block' : 'none';
-
-            var roadmapVisible = 0;
-            roadmapItems.forEach(function(item) {
-                var text = item.getAttribute('data-search');
-                var match = words.length === 0 || words.every(function(w) {
-                    return text.indexOf(w) !== -1;
-                });
-                item.classList.toggle('hidden', !match);
-                if (match) roadmapVisible++;
-            });
-            noResultsRoadmap.style.display = (words.length > 0 && roadmapVisible === 0) ? 'block' : 'none';
-        }
-
-        input.addEventListener('input', doSearch);
-
-        clearBtn.addEventListener('click', function() {
-            input.value = '';
-            doSearch();
-            input.focus();
-        });
-    })();
 
     // ── Analytics ─────────────────────────────────
     (function() {
@@ -993,6 +718,10 @@
         window._trackCopy = function(text) {
             var skill = text.match(/--skill\s+intelligems-(\S+)/);
             send('copy', { command: text, skill: skill ? skill[1] : 'all' });
+        };
+
+        window._trackPreviewClick = function(skill) {
+            send('preview_click', { skill: skill });
         };
     })();
 </script>
