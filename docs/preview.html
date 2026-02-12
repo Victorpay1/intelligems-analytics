@@ -249,133 +249,58 @@
 
         /* ── Test Card ─────────────────────────────── */
         .test-card {
-            border: 1px solid var(--gray-light);
-            border-left: 4px solid var(--gray-light);
-            padding: 24px;
-            margin-bottom: 16px;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--gray-light);
         }
 
-        .test-card.status-RED { border-left-color: var(--red); }
-        .test-card.status-YELLOW { border-left-color: var(--yellow); }
-        .test-card.status-GREEN { border-left-color: var(--green); }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            margin-bottom: 4px;
+        .test-card:last-child {
+            border-bottom: none;
         }
 
         .card-name {
             font-size: 18px;
             font-weight: 700;
             letter-spacing: -0.01em;
+            margin-bottom: 2px;
         }
 
-        .card-status-badge {
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            padding: 2px 8px;
+        .card-emoji {
+            margin-right: 6px;
         }
-
-        .card-status-badge.RED { background: var(--red); color: var(--white); }
-        .card-status-badge.YELLOW { background: var(--yellow); color: var(--black); }
-        .card-status-badge.GREEN { background: var(--green); color: var(--white); }
 
         .card-meta {
             font-size: 13px;
             color: var(--gray-mid);
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
-        .card-metrics {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-
-        .metric-box {
-            text-align: center;
-        }
-
-        .metric-label {
-            font-size: 11px;
-            color: var(--gray-mid);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .metric-value {
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-        .card-variant {
+        .card-stats {
             font-size: 14px;
             margin-bottom: 12px;
             line-height: 1.6;
         }
 
-        .card-variant strong {
+        .card-signal {
+            font-size: 14px;
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .card-signal strong {
             font-weight: 600;
         }
 
         .card-action {
             font-size: 14px;
-            font-weight: 500;
-            padding: 10px 14px;
-            background: #f8f8f8;
-            border-left: 3px solid var(--gray-light);
+            color: var(--gray-mid);
+            line-height: 1.6;
         }
-
-        .test-card.status-RED .card-action { border-left-color: var(--red); }
-        .test-card.status-YELLOW .card-action { border-left-color: var(--yellow); }
-        .test-card.status-GREEN .card-action { border-left-color: var(--green); }
 
         .card-verdict {
             font-size: 13px;
             color: var(--gray-mid);
-            margin-top: 8px;
-        }
-
-        /* ── Program Pulse ─────────────────────────── */
-        .pulse {
-            border: 1px solid var(--black);
-            padding: 24px;
-            margin-top: 32px;
-        }
-
-        .pulse-title {
-            font-size: 14px;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            margin-bottom: 16px;
-        }
-
-        .pulse-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 12px;
-        }
-
-        .pulse-item {
-            text-align: center;
-        }
-
-        .pulse-label {
-            font-size: 11px;
-            color: var(--gray-mid);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .pulse-value {
-            font-size: 20px;
-            font-weight: 700;
+            margin-top: 2px;
+            padding-left: 18px;
         }
 
         /* ── Quiet State ───────────────────────────── */
@@ -466,16 +391,6 @@
                 width: 100%;
             }
 
-            .card-metrics {
-                grid-template-columns: 1fr 1fr;
-                gap: 16px;
-            }
-
-            .pulse-grid {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 16px;
-            }
-
             .nav-links {
                 gap: 12px;
             }
@@ -493,10 +408,6 @@
         @media (max-width: 480px) {
             .hero h1 {
                 font-size: 24px;
-            }
-
-            .pulse-grid {
-                grid-template-columns: 1fr 1fr;
             }
         }
     </style>
@@ -554,7 +465,6 @@
             <div class="results-header">Morning Brief</div>
             <div id="results-date" class="results-date"></div>
             <div id="test-cards"></div>
-            <div id="pulse-section"></div>
             <p class="run-again">Want to check another account? <a href="#" onclick="resetPreview(); return false;">Run with a different key</a></p>
         </div>
     </section>
@@ -673,39 +583,36 @@
         // Test cards
         var cardsHtml = '';
         data.tests.forEach(function(test) {
-            cardsHtml += '<div class="test-card status-' + test.status + '">';
+            var emoji = test.status === 'RED' ? '🔴' : test.status === 'YELLOW' ? '🟡' : '🟢';
 
-            // Header
-            cardsHtml += '<div class="card-header">';
-            cardsHtml += '<span class="card-name">' + esc(test.name) + '</span>';
-            cardsHtml += '<span class="card-status-badge ' + test.status + '">' + test.status + '</span>';
-            cardsHtml += '</div>';
+            cardsHtml += '<div class="test-card">';
+
+            // Name with status emoji
+            cardsHtml += '<div class="card-name"><span class="card-emoji">' + emoji + '</span>' + esc(test.name) + '</div>';
 
             // Meta
             cardsHtml += '<div class="card-meta">' + esc(test.type) + ' &middot; ' + esc(test.runtimeDisplay) + '</div>';
 
-            // Metrics grid
-            cardsHtml += '<div class="card-metrics">';
-            cardsHtml += metricBox('Visitors', fmt(test.visitors));
-            cardsHtml += metricBox('Orders', fmt(test.orders));
-            cardsHtml += metricBox('Daily Visitors', fmt(test.dailyVisitors));
-            cardsHtml += metricBox('Daily Orders', fmt(test.dailyOrders));
+            // Stats line — visitors & orders with daily rates inline
+            cardsHtml += '<div class="card-stats">';
+            cardsHtml += 'Visitors: ' + fmt(test.visitors) + ' (' + fmt(test.dailyVisitors) + '/day)';
+            cardsHtml += ' &middot; Orders: ' + fmt(test.orders) + ' (' + fmt(test.dailyOrders) + '/day)';
             cardsHtml += '</div>';
 
-            // Best variant
+            // Best variant + metrics
             if (test.bestVariant) {
-                cardsHtml += '<div class="card-variant">';
-                cardsHtml += '<strong>' + esc(test.bestVariant) + '</strong> &mdash; ';
+                cardsHtml += '<div class="card-signal">';
+                cardsHtml += 'Best variant: <strong>' + esc(test.bestVariant) + '</strong><br>';
                 cardsHtml += esc(test.primaryMetricLabel) + ' ' + esc(test.primaryLift);
                 cardsHtml += ' (' + esc(test.primaryConfidence) + ' confidence)';
-                cardsHtml += '<br>Conversion: ' + esc(test.convLift) + ' (' + esc(test.convConfidence) + ')';
+                cardsHtml += ' &middot; Conversion ' + esc(test.convLift) + ' (' + esc(test.convConfidence) + ')';
                 cardsHtml += '</div>';
             }
 
-            // Action
-            cardsHtml += '<div class="card-action">' + esc(test.action) + '</div>';
+            // Action with ▸ prefix
+            cardsHtml += '<div class="card-action">&#9656; ' + esc(test.action) + '</div>';
 
-            // Days to verdict
+            // Days to verdict (tucks under action)
             if (test.daysToVerdict !== null && test.daysToVerdict !== undefined) {
                 if (test.daysToVerdict === 0) {
                     cardsHtml += '<div class="card-verdict">Ready to call</div>';
@@ -718,30 +625,7 @@
         });
 
         document.getElementById('test-cards').innerHTML = cardsHtml;
-
-        // Program Pulse
-        var pulse = data.pulse;
-        var pulseHtml = '<div class="pulse">';
-        pulseHtml += '<div class="pulse-title">Program Pulse</div>';
-        pulseHtml += '<div class="pulse-grid">';
-        pulseHtml += pulseItem('Active Tests', pulse.activeTests);
-        pulseHtml += pulseItem('Daily Visitors', fmt(pulse.dailyVisitors));
-        pulseHtml += pulseItem('Daily Orders', fmt(pulse.dailyOrders));
-        pulseHtml += pulseItem('Ready to Call', pulse.readyToCall);
-        pulseHtml += pulseItem('Need More Time', pulse.needMoreTime);
-        pulseHtml += '</div></div>';
-
-        document.getElementById('pulse-section').innerHTML = pulseHtml;
-
         show('results');
-    }
-
-    function metricBox(label, value) {
-        return '<div class="metric-box"><div class="metric-label">' + label + '</div><div class="metric-value">' + value + '</div></div>';
-    }
-
-    function pulseItem(label, value) {
-        return '<div class="pulse-item"><div class="pulse-label">' + label + '</div><div class="pulse-value">' + value + '</div></div>';
     }
 
     function fmt(n) {
