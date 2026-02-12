@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morning Brief Preview — Intelligems Analytics</title>
+    <meta name="description" content="Try the Morning Brief skill live — enter your Intelligems API key and see your test health at a glance.">
+    <meta http-equiv="Cache-Control" content="no-store">
+    <meta name="referrer" content="no-referrer">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        /* ── Reset ─────────────────────────────────── */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ── Variables ─────────────────────────────── */
+        :root {
+            --black: #000000;
+            --white: #ffffff;
+            --gray: #000000;
+            --gray-light: #e0e0e0;
+            --gray-mid: #888888;
+            --red: #dc3545;
+            --yellow: #ffc107;
+            --green: #28a745;
+            --font: 'JetBrains Mono', monospace;
+            --max-width: 720px;
+            --ease: 0.25s ease;
+        }
+
+        /* ── Base ──────────────────────────────────── */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--white);
+            color: var(--black);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ── Nav ───────────────────────────────────── */
+        nav {
+            padding: 20px 0;
+            border-bottom: 1px solid var(--black);
+        }
+
+        nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: var(--black);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .nav-links a {
+            font-size: 14px;
+            color: var(--gray);
+            text-decoration: none;
+            transition: color var(--ease);
+        }
+
+        .nav-links a:hover {
+            color: var(--black);
+        }
+
+        /* ── Hero ──────────────────────────────────── */
+        .hero {
+            padding: 80px 0 48px;
+        }
+
+        .hero-label {
+            font-size: 12px;
+            font-weight: 400;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--gray);
+            margin-bottom: 24px;
+        }
+
+        .hero h1 {
+            font-size: 34px;
+            font-weight: 700;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
+            margin-bottom: 16px;
+        }
+
+        .hero-description {
+            font-size: 16px;
+            color: var(--gray-mid);
+            line-height: 1.7;
+        }
+
+        /* ── Input Area ────────────────────────────── */
+        .input-area {
+            padding: 0 0 48px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .api-input {
+            flex: 1;
+            font-family: var(--font);
+            font-size: 15px;
+            padding: 14px 18px;
+            border: 1px solid var(--gray-light);
+            background: var(--white);
+            color: var(--black);
+            outline: none;
+            transition: border-color var(--ease);
+        }
+
+        .api-input:focus {
+            border-color: var(--black);
+        }
+
+        .api-input::placeholder {
+            color: #aaa;
+            font-style: italic;
+        }
+
+        .run-btn {
+            font-family: var(--font);
+            font-size: 14px;
+            font-weight: 600;
+            padding: 14px 24px;
+            border: 1px solid var(--black);
+            background: var(--black);
+            color: var(--white);
+            cursor: pointer;
+            transition: background var(--ease), color var(--ease);
+            white-space: nowrap;
+        }
+
+        .run-btn:hover {
+            background: var(--white);
+            color: var(--black);
+        }
+
+        .run-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .run-btn:disabled:hover {
+            background: var(--black);
+            color: var(--white);
+        }
+
+        .helper-text {
+            font-size: 12px;
+            color: var(--gray-mid);
+            margin-top: 10px;
+            line-height: 1.5;
+        }
+
+        /* ── Loading ───────────────────────────────── */
+        .loading {
+            display: none;
+            padding: 48px 0;
+            text-align: center;
+        }
+
+        .loading.visible {
+            display: block;
+        }
+
+        .loading-text {
+            font-size: 16px;
+            color: var(--gray-mid);
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        /* ── Error ─────────────────────────────────── */
+        .error-msg {
+            display: none;
+            padding: 20px;
+            border: 1px solid var(--red);
+            border-left: 4px solid var(--red);
+            margin-bottom: 32px;
+            font-size: 15px;
+            color: var(--red);
+        }
+
+        .error-msg.visible {
+            display: block;
+        }
+
+        /* ── Results ───────────────────────────────── */
+        .results {
+            display: none;
+            padding-bottom: 64px;
+        }
+
+        .results.visible {
+            display: block;
+        }
+
+        .results-header {
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--gray-mid);
+            margin-bottom: 8px;
+        }
+
+        .results-date {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 32px;
+        }
+
+        /* ── Test Card ─────────────────────────────── */
+        .test-card {
+            border: 1px solid var(--gray-light);
+            border-left: 4px solid var(--gray-light);
+            padding: 24px;
+            margin-bottom: 16px;
+        }
+
+        .test-card.status-RED { border-left-color: var(--red); }
+        .test-card.status-YELLOW { border-left-color: var(--yellow); }
+        .test-card.status-GREEN { border-left-color: var(--green); }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 4px;
+        }
+
+        .card-name {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+
+        .card-status-badge {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 2px 8px;
+        }
+
+        .card-status-badge.RED { background: var(--red); color: var(--white); }
+        .card-status-badge.YELLOW { background: var(--yellow); color: var(--black); }
+        .card-status-badge.GREEN { background: var(--green); color: var(--white); }
+
+        .card-meta {
+            font-size: 13px;
+            color: var(--gray-mid);
+            margin-bottom: 16px;
+        }
+
+        .card-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .metric-box {
+            text-align: center;
+        }
+
+        .metric-label {
+            font-size: 11px;
+            color: var(--gray-mid);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .metric-value {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .card-variant {
+            font-size: 14px;
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .card-variant strong {
+            font-weight: 600;
+        }
+
+        .card-action {
+            font-size: 14px;
+            font-weight: 500;
+            padding: 10px 14px;
+            background: #f8f8f8;
+            border-left: 3px solid var(--gray-light);
+        }
+
+        .test-card.status-RED .card-action { border-left-color: var(--red); }
+        .test-card.status-YELLOW .card-action { border-left-color: var(--yellow); }
+        .test-card.status-GREEN .card-action { border-left-color: var(--green); }
+
+        .card-verdict {
+            font-size: 13px;
+            color: var(--gray-mid);
+            margin-top: 8px;
+        }
+
+        /* ── Program Pulse ─────────────────────────── */
+        .pulse {
+            border: 1px solid var(--black);
+            padding: 24px;
+            margin-top: 32px;
+        }
+
+        .pulse-title {
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .pulse-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+        }
+
+        .pulse-item {
+            text-align: center;
+        }
+
+        .pulse-label {
+            font-size: 11px;
+            color: var(--gray-mid);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .pulse-value {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        /* ── Quiet State ───────────────────────────── */
+        .quiet-state {
+            display: none;
+            padding: 48px 0;
+            text-align: center;
+        }
+
+        .quiet-state.visible {
+            display: block;
+        }
+
+        .quiet-text {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .quiet-sub {
+            font-size: 14px;
+            color: var(--gray-mid);
+        }
+
+        /* ── Run Again ─────────────────────────────── */
+        .run-again {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid var(--gray-light);
+            font-size: 14px;
+            color: var(--gray-mid);
+        }
+
+        .run-again a {
+            color: var(--black);
+            font-weight: 600;
+            text-decoration: none;
+            border-bottom: 1px solid var(--black);
+            padding-bottom: 1px;
+        }
+
+        .run-again a:hover {
+            opacity: 0.6;
+        }
+
+        /* ── Footer ────────────────────────────────── */
+        footer {
+            padding: 32px 0 80px;
+            border-top: 1px solid var(--black);
+        }
+
+        footer .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        footer span {
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        footer a {
+            color: var(--black);
+            text-decoration: none;
+            transition: text-decoration var(--ease);
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ── Mobile ────────────────────────────────── */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 60px 0 36px;
+            }
+
+            .hero h1 {
+                font-size: 28px;
+            }
+
+            .input-group {
+                flex-direction: column;
+            }
+
+            .run-btn {
+                width: 100%;
+            }
+
+            .card-metrics {
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+            }
+
+            .pulse-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 16px;
+            }
+
+            .nav-links {
+                gap: 12px;
+            }
+
+            .nav-links a {
+                font-size: 13px;
+            }
+
+            footer .container {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 24px;
+            }
+
+            .pulse-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="container">
+        <a href="index.html" class="logo">Intelligems Analytics</a>
+        <div class="nav-links">
+            <a href="index.html#skills">Skills</a>
+            <a href="https://github.com/Victorpay1/intelligems-analytics">GitHub</a>
+        </div>
+    </div>
+</nav>
+
+<main>
+    <section class="hero">
+        <div class="container">
+            <div class="hero-label">Live Preview</div>
+            <h1>Try Morning Brief</h1>
+            <p class="hero-description">See your test health at a glance. Enter your API key below and get a real Morning Brief rendered from your live Intelligems data.</p>
+        </div>
+    </section>
+
+    <section class="input-area">
+        <div class="container">
+            <div class="input-group">
+                <input type="password" id="api-key" class="api-input" placeholder="Paste your Intelligems API key..." autocomplete="off">
+                <button id="run-btn" class="run-btn" onclick="runPreview()">Run Preview</button>
+            </div>
+            <p class="helper-text">&#128274; Your key is sent directly to the Intelligems API and is never stored. Find it in the Intelligems dashboard under Settings &rarr; API.</p>
+        </div>
+    </section>
+
+    <div class="container">
+        <div id="error" class="error-msg"></div>
+    </div>
+
+    <div id="loading" class="loading">
+        <div class="container">
+            <p id="loading-text" class="loading-text">Connecting to Intelligems...</p>
+        </div>
+    </div>
+
+    <div id="quiet" class="quiet-state">
+        <div class="container">
+            <p class="quiet-text">All quiet!</p>
+            <p class="quiet-sub">No active experiments found. Start a test in Intelligems and come back.</p>
+        </div>
+    </div>
+
+    <section id="results" class="results">
+        <div class="container">
+            <div class="results-header">Morning Brief</div>
+            <div id="results-date" class="results-date"></div>
+            <div id="test-cards"></div>
+            <div id="pulse-section"></div>
+            <p class="run-again">Want to check another account? <a href="#" onclick="resetPreview(); return false;">Run with a different key</a></p>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <div class="container">
+        <span>Built for the <a href="https://intelligems.io">Intelligems</a> community</span>
+        <span><a href="https://github.com/Victorpay1/intelligems-analytics">GitHub</a></span>
+    </div>
+</footer>
+
+<script>
+    var SUPABASE_URL = 'https://vklhpsdenwuhanjhbtzv.supabase.co';
+    var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrbGhwc2Rlbnd1aGFuamhidHp2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA3NTA0OTMsImV4cCI6MjA4NjMyNjQ5M30.1B35fNXBD8B6af54TmMdcmft2PvnSO3_G9osINcX7GE';
+
+    // Allow Enter key to trigger preview
+    document.getElementById('api-key').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') runPreview();
+    });
+
+    function runPreview() {
+        var keyInput = document.getElementById('api-key');
+        var apiKey = keyInput.value.trim();
+
+        // Reset UI
+        hide('error');
+        hide('loading');
+        hide('results');
+        hide('quiet');
+
+        if (!apiKey) {
+            showError('Please enter your API key.');
+            return;
+        }
+
+        // Show loading with progressive messages
+        show('loading');
+        startLoadingProgress();
+        document.getElementById('run-btn').disabled = true;
+
+        // Build request body, then immediately wipe the key from memory
+        var requestBody = JSON.stringify({ apiKey: apiKey });
+        apiKey = '';
+        keyInput.value = '';
+
+        fetch(SUPABASE_URL + '/functions/v1/morning-brief-proxy', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + SUPABASE_ANON_KEY
+            },
+            body: requestBody
+        })
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+            stopLoadingProgress();
+            hide('loading');
+            document.getElementById('run-btn').disabled = false;
+
+            if (data.error) {
+                // "All quiet" is a success state
+                if (data.error.indexOf('No active experiments') !== -1) {
+                    show('quiet');
+                } else {
+                    showError(data.error);
+                }
+                return;
+            }
+
+            renderResults(data);
+        })
+        .catch(function() {
+            stopLoadingProgress();
+            hide('loading');
+            document.getElementById('run-btn').disabled = false;
+            showError('Could not connect to the server. Please try again.');
+        });
+    }
+
+    // Wipe API key input on page unload
+    window.addEventListener('beforeunload', function() {
+        document.getElementById('api-key').value = '';
+    });
+
+    // Progressive loading messages
+    var loadingTimer = null;
+    function startLoadingProgress() {
+        var messages = ['Connecting to Intelligems...', 'Fetching experiments...', 'Analyzing test health...'];
+        var i = 0;
+        var el = document.getElementById('loading-text');
+        el.textContent = messages[0];
+        loadingTimer = setInterval(function() {
+            i++;
+            if (i < messages.length) el.textContent = messages[i];
+        }, 2000);
+    }
+
+    function stopLoadingProgress() {
+        if (loadingTimer) { clearInterval(loadingTimer); loadingTimer = null; }
+    }
+
+    // Reset to input state
+    function resetPreview() {
+        hide('results');
+        hide('quiet');
+        hide('error');
+        document.getElementById('api-key').focus();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderResults(data) {
+        // Date
+        document.getElementById('results-date').textContent = data.date;
+
+        // Test cards
+        var cardsHtml = '';
+        data.tests.forEach(function(test) {
+            cardsHtml += '<div class="test-card status-' + test.status + '">';
+
+            // Header
+            cardsHtml += '<div class="card-header">';
+            cardsHtml += '<span class="card-name">' + esc(test.name) + '</span>';
+            cardsHtml += '<span class="card-status-badge ' + test.status + '">' + test.status + '</span>';
+            cardsHtml += '</div>';
+
+            // Meta
+            cardsHtml += '<div class="card-meta">' + esc(test.type) + ' &middot; ' + esc(test.runtimeDisplay) + '</div>';
+
+            // Metrics grid
+            cardsHtml += '<div class="card-metrics">';
+            cardsHtml += metricBox('Visitors', fmt(test.visitors));
+            cardsHtml += metricBox('Orders', fmt(test.orders));
+            cardsHtml += metricBox('Daily Visitors', fmt(test.dailyVisitors));
+            cardsHtml += metricBox('Daily Orders', fmt(test.dailyOrders));
+            cardsHtml += '</div>';
+
+            // Best variant
+            if (test.bestVariant) {
+                cardsHtml += '<div class="card-variant">';
+                cardsHtml += '<strong>' + esc(test.bestVariant) + '</strong> &mdash; ';
+                cardsHtml += esc(test.primaryMetricLabel) + ' ' + esc(test.primaryLift);
+                cardsHtml += ' (' + esc(test.primaryConfidence) + ' confidence)';
+                cardsHtml += '<br>Conversion: ' + esc(test.convLift) + ' (' + esc(test.convConfidence) + ')';
+                cardsHtml += '</div>';
+            }
+
+            // Action
+            cardsHtml += '<div class="card-action">' + esc(test.action) + '</div>';
+
+            // Days to verdict
+            if (test.daysToVerdict !== null && test.daysToVerdict !== undefined) {
+                if (test.daysToVerdict === 0) {
+                    cardsHtml += '<div class="card-verdict">Ready to call</div>';
+                } else {
+                    cardsHtml += '<div class="card-verdict">Est. ' + test.daysToVerdict + ' days to verdict</div>';
+                }
+            }
+
+            cardsHtml += '</div>';
+        });
+
+        document.getElementById('test-cards').innerHTML = cardsHtml;
+
+        // Program Pulse
+        var pulse = data.pulse;
+        var pulseHtml = '<div class="pulse">';
+        pulseHtml += '<div class="pulse-title">Program Pulse</div>';
+        pulseHtml += '<div class="pulse-grid">';
+        pulseHtml += pulseItem('Active Tests', pulse.activeTests);
+        pulseHtml += pulseItem('Daily Visitors', fmt(pulse.dailyVisitors));
+        pulseHtml += pulseItem('Daily Orders', fmt(pulse.dailyOrders));
+        pulseHtml += pulseItem('Ready to Call', pulse.readyToCall);
+        pulseHtml += pulseItem('Need More Time', pulse.needMoreTime);
+        pulseHtml += '</div></div>';
+
+        document.getElementById('pulse-section').innerHTML = pulseHtml;
+
+        show('results');
+    }
+
+    function metricBox(label, value) {
+        return '<div class="metric-box"><div class="metric-label">' + label + '</div><div class="metric-value">' + value + '</div></div>';
+    }
+
+    function pulseItem(label, value) {
+        return '<div class="pulse-item"><div class="pulse-label">' + label + '</div><div class="pulse-value">' + value + '</div></div>';
+    }
+
+    function fmt(n) {
+        if (n === null || n === undefined) return '\u2014';
+        return Number(n).toLocaleString('en-US');
+    }
+
+    function esc(str) {
+        if (!str) return '\u2014';
+        var div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    }
+
+    function show(id) {
+        document.getElementById(id).classList.add('visible');
+    }
+
+    function hide(id) {
+        document.getElementById(id).classList.remove('visible');
+    }
+
+    function showError(msg) {
+        var el = document.getElementById('error');
+        el.textContent = msg;
+        el.classList.add('visible');
+    }
+</script>
+
+</body>
+</html>
