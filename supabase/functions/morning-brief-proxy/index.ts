@@ -396,7 +396,16 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const body = await req.json();
+    let body: Record<string, unknown>;
+    try {
+      body = await req.json();
+    } catch {
+      return new Response(
+        JSON.stringify({ error: "Please send a JSON body with your API key." }),
+        { status: 400, headers: CORS_HEADERS }
+      );
+    }
+
     const apiKey = body.apiKey;
 
     if (!apiKey || typeof apiKey !== "string" || apiKey.trim().length === 0) {
@@ -406,7 +415,7 @@ Deno.serve(async (req) => {
       );
     }
 
-    if (apiKey.trim().length < 10) {
+    if (apiKey.trim().length < 10 || apiKey.trim().length > 500) {
       return new Response(
         JSON.stringify({ error: "That doesn't look like a valid API key. Check your key in the Intelligems dashboard under Settings \u2192 API." }),
         { status: 400, headers: CORS_HEADERS }
