@@ -258,10 +258,12 @@ function computeHealth(
   bestConvLift: number | null,
   bestConvConf: number | null
 ): { status: string; action: string } {
-  if (runtime < 3) {
+  // 1. RED: Just started — only if BOTH young AND low data
+  if (runtime < 3 && totalOrders < 100) {
     return { status: "RED", action: "Just started \u2014 verify test setup is correct" };
   }
 
+  // 2. RED: Zero orders after enough time
   if (runtime >= 3 && totalOrders === 0) {
     return {
       status: "RED",
@@ -269,6 +271,7 @@ function computeHealth(
     };
   }
 
+  // 3. RED: Conversion dropping hard
   if (bestConvLift !== null && bestConvConf !== null) {
     if (bestConvLift < -0.2 && bestConvConf >= 0.8) {
       return {
@@ -278,13 +281,7 @@ function computeHealth(
     }
   }
 
-  if (runtime < MIN_RUNTIME_DAYS) {
-    return {
-      status: "YELLOW",
-      action: `Only ${runtime} days in \u2014 needs more data (min ${MIN_RUNTIME_DAYS})`,
-    };
-  }
-
+  // 4. YELLOW: Trending negative (real problem beats positive signals)
   if (bestPrimaryLift !== null && bestPrimaryConf !== null) {
     if (bestPrimaryLift < 0 && bestPrimaryConf >= 0.6 && bestPrimaryConf < 0.8) {
       return {
@@ -294,13 +291,7 @@ function computeHealth(
     }
   }
 
-  if (dailyVisRate < 50) {
-    return {
-      status: "YELLOW",
-      action: `Low traffic (${Math.round(dailyVisRate)} visitors/day) \u2014 will take longer`,
-    };
-  }
-
+  // 5. GREEN: Strong signal — data speaks louder than time
   if (
     bestPrimaryConf !== null &&
     bestPrimaryConf >= 0.8 &&
@@ -314,6 +305,7 @@ function computeHealth(
     };
   }
 
+  // 6. GREEN: Emerging winner — positive trend beats mild warnings
   if (
     bestPrimaryConf !== null &&
     bestPrimaryConf >= 0.6 &&
@@ -326,6 +318,23 @@ function computeHealth(
     };
   }
 
+  // 7. YELLOW: Low traffic — only if no signal detected above
+  if (dailyVisRate < 50) {
+    return {
+      status: "YELLOW",
+      action: `Low traffic (${Math.round(dailyVisRate)} visitors/day) \u2014 will take longer`,
+    };
+  }
+
+  // 8. YELLOW: Short runtime — only if nothing more meaningful to say
+  if (runtime < MIN_RUNTIME_DAYS) {
+    return {
+      status: "YELLOW",
+      action: `Only ${runtime} days in \u2014 needs more data (min ${MIN_RUNTIME_DAYS})`,
+    };
+  }
+
+  // 9. GREEN: Default — on track
   return { status: "GREEN", action: "Gathering data on track" };
 }
 

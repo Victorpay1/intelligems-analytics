@@ -3,412 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Morning Brief Preview — Intelligems Analytics</title>
-    <meta name="description" content="Try the Morning Brief skill live — enter your Intelligems API key and see your test health at a glance.">
+    <title>Live Preview — Intelligems Analytics</title>
+    <meta name="description" content="Try any Intelligems Analytics skill live — enter your API key and see real results from your data.">
     <meta http-equiv="Cache-Control" content="no-store">
     <meta name="referrer" content="no-referrer">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
     <style>
-        /* ── Reset ─────────────────────────────────── */
-        *, *::before, *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        /* ── Variables ─────────────────────────────── */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
-            --black: #000000;
-            --white: #ffffff;
-            --gray: #000000;
-            --gray-light: #e0e0e0;
-            --gray-mid: #888888;
-            --red: #dc3545;
-            --yellow: #ffc107;
-            --green: #28a745;
-            --font: 'JetBrains Mono', monospace;
-            --max-width: 720px;
-            --ease: 0.25s ease;
+            --black: #000; --white: #fff; --gray-light: #e0e0e0;
+            --gray-mid: #888; --red: #dc3545; --green: #28a745;
+            --font: 'JetBrains Mono', monospace; --max-width: 780px; --ease: 0.25s ease;
         }
+        html { scroll-behavior: smooth; }
+        body { font-family: var(--font); background: var(--white); color: var(--black); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+        .container { max-width: var(--max-width); margin: 0 auto; padding: 0 24px; }
 
-        /* ── Base ──────────────────────────────────── */
-        html {
-            scroll-behavior: smooth;
-        }
+        /* Nav */
+        nav { padding: 20px 0; border-bottom: 1px solid var(--black); }
+        nav .container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 13px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; color: var(--black); }
+        .nav-links { display: flex; gap: 24px; }
+        .nav-links a { font-size: 14px; color: var(--black); text-decoration: none; }
 
-        body {
-            font-family: var(--font);
-            background: var(--white);
-            color: var(--black);
-            line-height: 1.7;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
+        /* Hero */
+        .hero { padding: 64px 0 32px; }
+        .hero-label { font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray-mid); margin-bottom: 20px; }
+        .hero h1 { font-size: 32px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 12px; }
+        .hero-desc { font-size: 15px; color: var(--gray-mid); }
 
-        .container {
-            max-width: var(--max-width);
-            margin: 0 auto;
-            padding: 0 24px;
-        }
+        /* Input */
+        .input-area { padding: 0 0 24px; }
+        .input-group { display: flex; gap: 8px; }
+        .api-input { flex: 1; font-family: var(--font); font-size: 15px; padding: 14px 18px; border: 1px solid var(--gray-light); background: var(--white); color: var(--black); outline: none; }
+        .api-input:focus { border-color: var(--black); }
+        .api-input::placeholder { color: #aaa; font-style: italic; }
+        .run-btn { font-family: var(--font); font-size: 14px; font-weight: 600; padding: 14px 24px; border: 1px solid var(--black); background: var(--black); color: var(--white); cursor: pointer; white-space: nowrap; }
+        .run-btn:hover { background: var(--white); color: var(--black); }
+        .run-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .run-btn:disabled:hover { background: var(--black); color: var(--white); }
+        .helper-text { font-size: 12px; color: var(--gray-mid); margin-top: 10px; }
 
-        /* ── Nav ───────────────────────────────────── */
-        nav {
-            padding: 20px 0;
-            border-bottom: 1px solid var(--black);
-        }
+        /* Skill Picker */
+        .skill-picker { padding: 0 0 32px; }
+        .pill-row { display: flex; flex-wrap: wrap; gap: 8px; }
+        .pill { font-family: var(--font); font-size: 13px; font-weight: 500; padding: 8px 16px; border: 1px solid var(--gray-light); background: var(--white); color: var(--gray-mid); cursor: pointer; transition: all var(--ease); }
+        .pill:hover { border-color: var(--black); color: var(--black); }
+        .pill.active { background: var(--black); color: var(--white); border-color: var(--black); }
 
-        nav .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        /* Test Picker */
+        .test-picker { display: none; padding: 0 0 32px; }
+        .test-picker.visible { display: block; }
+        .test-picker label { font-size: 13px; font-weight: 500; display: block; margin-bottom: 8px; }
+        .test-select { font-family: var(--font); font-size: 14px; width: 100%; padding: 12px 16px; border: 1px solid var(--gray-light); background: var(--white); color: var(--black); cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%23888' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; }
+        .analyze-btn { font-family: var(--font); font-size: 14px; font-weight: 600; padding: 12px 24px; border: 1px solid var(--black); background: var(--black); color: var(--white); cursor: pointer; margin-top: 12px; }
+        .analyze-btn:hover { background: var(--white); color: var(--black); }
+        .analyze-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        .logo {
-            font-size: 13px;
-            font-weight: 500;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            text-decoration: none;
-            color: var(--black);
-        }
+        /* Loading */
+        .loading { display: none; padding: 48px 0; text-align: center; }
+        .loading.visible { display: block; }
+        .loading-text { font-size: 15px; color: var(--gray-mid); animation: pulse 1.5s ease-in-out infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
-        .nav-links {
-            display: flex;
-            gap: 24px;
-        }
+        /* Error */
+        .error-msg { display: none; padding: 16px 20px; border: 1px solid var(--red); border-left: 4px solid var(--red); margin-bottom: 24px; font-size: 14px; color: var(--red); }
+        .error-msg.visible { display: block; }
 
-        .nav-links a {
-            font-size: 14px;
-            color: var(--gray);
-            text-decoration: none;
-            transition: color var(--ease);
-        }
+        /* Tab Bar */
+        .tab-bar { display: flex; flex-wrap: wrap; gap: 0; border-bottom: 2px solid var(--black); margin-bottom: 24px; }
+        .tab { font-family: var(--font); font-size: 13px; font-weight: 500; padding: 10px 16px; border: none; background: none; color: var(--gray-mid); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all var(--ease); }
+        .tab:hover { color: var(--black); }
+        .tab.active { color: var(--black); border-bottom-color: var(--black); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
 
-        .nav-links a:hover {
-            color: var(--black);
-        }
+        /* Results */
+        .results { display: none; padding-bottom: 64px; }
+        .results.visible { display: block; }
+        .results-header { font-size: 12px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray-mid); margin-bottom: 8px; }
+        .results-date { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 24px; }
 
-        /* ── Hero ──────────────────────────────────── */
-        .hero {
-            padding: 80px 0 48px;
-        }
+        /* Test cards (morning brief) */
+        .test-card { padding: 20px 0; border-bottom: 1px solid var(--gray-light); }
+        .test-card:last-child { border-bottom: none; }
+        .card-name { font-size: 17px; font-weight: 700; margin-bottom: 2px; }
+        .card-emoji { margin-right: 6px; }
+        .card-meta { font-size: 13px; color: var(--gray-mid); margin-bottom: 10px; }
+        .card-stats { font-size: 14px; margin-bottom: 10px; }
+        .card-signal { font-size: 14px; margin-bottom: 10px; line-height: 1.6; }
+        .card-signal strong { font-weight: 600; }
+        .card-action { font-size: 14px; color: var(--gray-mid); }
+        .card-verdict { font-size: 13px; color: var(--gray-mid); margin-top: 2px; padding-left: 18px; }
 
-        .hero-label {
-            font-size: 12px;
-            font-weight: 400;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--gray);
-            margin-bottom: 24px;
-        }
+        /* Analysis sections */
+        .section-title { font-size: 14px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; margin: 24px 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--gray-light); }
+        .section-title:first-child { margin-top: 0; }
+        .analysis-line { font-size: 14px; line-height: 1.8; padding: 2px 0; }
+        .analysis-line.indent { padding-left: 20px; }
+        .analysis-label { font-weight: 600; }
+        .verdict-badge { display: inline-block; font-size: 13px; font-weight: 700; padding: 4px 12px; margin: 8px 0 16px; }
+        .verdict-badge.winner { background: #e6f4ea; color: #1e7e34; }
+        .verdict-badge.loser { background: #fde8e8; color: #c0392b; }
+        .verdict-badge.flat { background: #f5f5f5; color: #555; }
+        .verdict-badge.keep-running { background: #fff8e1; color: #f57f17; }
+        .verdict-badge.too-early { background: #f5f5f5; color: #888; }
+        .analysis-block { margin: 16px 0; padding: 16px; border: 1px solid var(--gray-light); font-size: 14px; line-height: 1.7; }
+        .analysis-block p { margin-bottom: 8px; }
+        .analysis-block p:last-child { margin-bottom: 0; }
+        .stage-row { display: flex; font-size: 13px; padding: 6px 0; border-bottom: 1px solid #f0f0f0; }
+        .stage-row:last-child { border-bottom: none; }
+        .stage-row.header { font-weight: 600; border-bottom: 1px solid var(--gray-light); }
+        .stage-label { flex: 2; }
+        .stage-val { flex: 1; text-align: right; }
+        .seg-row { display: flex; font-size: 13px; padding: 6px 0; border-bottom: 1px solid #f0f0f0; }
+        .seg-row:last-child { border-bottom: none; }
+        .seg-row.header { font-weight: 600; border-bottom: 1px solid var(--gray-light); }
+        .seg-name { flex: 2; }
+        .seg-val { flex: 1; text-align: right; }
+        .contradiction { color: var(--red); font-weight: 600; }
+        .insight-item { font-size: 14px; padding: 4px 0; line-height: 1.6; }
+        .insight-num { font-weight: 600; margin-right: 4px; }
 
-        .hero h1 {
-            font-size: 34px;
-            font-weight: 700;
-            line-height: 1.15;
-            letter-spacing: -0.03em;
-            margin-bottom: 16px;
-        }
+        /* Summary box for test header */
+        .test-summary { margin-bottom: 24px; padding: 20px; border: 1px solid var(--black); }
+        .test-summary-name { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+        .test-summary-meta { font-size: 13px; color: var(--gray-mid); margin-bottom: 8px; }
+        .test-summary-stats { font-size: 14px; line-height: 1.8; }
 
-        .hero-description {
-            font-size: 16px;
-            color: var(--gray-mid);
-            line-height: 1.7;
-        }
+        /* Run again */
+        .run-again { margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--gray-light); font-size: 14px; color: var(--gray-mid); }
+        .run-again a { color: var(--black); font-weight: 600; text-decoration: none; border-bottom: 1px solid var(--black); }
 
-        /* ── Input Area ────────────────────────────── */
-        .input-area {
-            padding: 0 0 48px;
-        }
+        /* Footer */
+        footer { padding: 32px 0 80px; border-top: 1px solid var(--black); }
+        footer .container { display: flex; justify-content: space-between; align-items: center; }
+        footer span { font-size: 14px; color: var(--black); }
+        footer a { color: var(--black); text-decoration: none; }
 
-        .input-group {
-            display: flex;
-            gap: 8px;
-        }
-
-        .api-input {
-            flex: 1;
-            font-family: var(--font);
-            font-size: 15px;
-            padding: 14px 18px;
-            border: 1px solid var(--gray-light);
-            background: var(--white);
-            color: var(--black);
-            outline: none;
-            transition: border-color var(--ease);
-        }
-
-        .api-input:focus {
-            border-color: var(--black);
-        }
-
-        .api-input::placeholder {
-            color: #aaa;
-            font-style: italic;
-        }
-
-        .run-btn {
-            font-family: var(--font);
-            font-size: 14px;
-            font-weight: 600;
-            padding: 14px 24px;
-            border: 1px solid var(--black);
-            background: var(--black);
-            color: var(--white);
-            cursor: pointer;
-            transition: background var(--ease), color var(--ease);
-            white-space: nowrap;
-        }
-
-        .run-btn:hover {
-            background: var(--white);
-            color: var(--black);
-        }
-
-        .run-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .run-btn:disabled:hover {
-            background: var(--black);
-            color: var(--white);
-        }
-
-        .helper-text {
-            font-size: 12px;
-            color: var(--gray-mid);
-            margin-top: 10px;
-            line-height: 1.5;
-        }
-
-        /* ── Loading ───────────────────────────────── */
-        .loading {
-            display: none;
-            padding: 48px 0;
-            text-align: center;
-        }
-
-        .loading.visible {
-            display: block;
-        }
-
-        .loading-text {
-            font-size: 16px;
-            color: var(--gray-mid);
-            animation: pulse 1.5s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
-        }
-
-        /* ── Error ─────────────────────────────────── */
-        .error-msg {
-            display: none;
-            padding: 20px;
-            border: 1px solid var(--red);
-            border-left: 4px solid var(--red);
-            margin-bottom: 32px;
-            font-size: 15px;
-            color: var(--red);
-        }
-
-        .error-msg.visible {
-            display: block;
-        }
-
-        /* ── Results ───────────────────────────────── */
-        .results {
-            display: none;
-            padding-bottom: 64px;
-        }
-
-        .results.visible {
-            display: block;
-        }
-
-        .results-header {
-            font-size: 12px;
-            font-weight: 500;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--gray-mid);
-            margin-bottom: 8px;
-        }
-
-        .results-date {
-            font-size: 24px;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            margin-bottom: 32px;
-        }
-
-        /* ── Test Card ─────────────────────────────── */
-        .test-card {
-            padding: 20px 0;
-            border-bottom: 1px solid var(--gray-light);
-        }
-
-        .test-card:last-child {
-            border-bottom: none;
-        }
-
-        .card-name {
-            font-size: 18px;
-            font-weight: 700;
-            letter-spacing: -0.01em;
-            margin-bottom: 2px;
-        }
-
-        .card-emoji {
-            margin-right: 6px;
-        }
-
-        .card-meta {
-            font-size: 13px;
-            color: var(--gray-mid);
-            margin-bottom: 12px;
-        }
-
-        .card-stats {
-            font-size: 14px;
-            margin-bottom: 12px;
-            line-height: 1.6;
-        }
-
-        .card-signal {
-            font-size: 14px;
-            margin-bottom: 12px;
-            line-height: 1.6;
-        }
-
-        .card-signal strong {
-            font-weight: 600;
-        }
-
-        .card-action {
-            font-size: 14px;
-            color: var(--gray-mid);
-            line-height: 1.6;
-        }
-
-        .card-verdict {
-            font-size: 13px;
-            color: var(--gray-mid);
-            margin-top: 2px;
-            padding-left: 18px;
-        }
-
-        /* ── Quiet State ───────────────────────────── */
-        .quiet-state {
-            display: none;
-            padding: 48px 0;
-            text-align: center;
-        }
-
-        .quiet-state.visible {
-            display: block;
-        }
-
-        .quiet-text {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .quiet-sub {
-            font-size: 14px;
-            color: var(--gray-mid);
-        }
-
-        /* ── Run Again ─────────────────────────────── */
-        .run-again {
-            margin-top: 32px;
-            padding-top: 24px;
-            border-top: 1px solid var(--gray-light);
-            font-size: 14px;
-            color: var(--gray-mid);
-        }
-
-        .run-again a {
-            color: var(--black);
-            font-weight: 600;
-            text-decoration: none;
-            border-bottom: 1px solid var(--black);
-            padding-bottom: 1px;
-        }
-
-        .run-again a:hover {
-            opacity: 0.6;
-        }
-
-        /* ── Footer ────────────────────────────────── */
-        footer {
-            padding: 32px 0 80px;
-            border-top: 1px solid var(--black);
-        }
-
-        footer .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        footer span {
-            font-size: 14px;
-            color: var(--gray);
-        }
-
-        footer a {
-            color: var(--black);
-            text-decoration: none;
-            transition: text-decoration var(--ease);
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
-
-        /* ── Mobile ────────────────────────────────── */
+        /* Mobile */
         @media (max-width: 768px) {
-            .hero {
-                padding: 60px 0 36px;
-            }
-
-            .hero h1 {
-                font-size: 28px;
-            }
-
-            .input-group {
-                flex-direction: column;
-            }
-
-            .run-btn {
-                width: 100%;
-            }
-
-            .nav-links {
-                gap: 12px;
-            }
-
-            .nav-links a {
-                font-size: 13px;
-            }
-
-            footer .container {
-                flex-direction: column;
-                gap: 8px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero h1 {
-                font-size: 24px;
-            }
+            .hero { padding: 48px 0 24px; }
+            .hero h1 { font-size: 26px; }
+            .input-group { flex-direction: column; }
+            .run-btn { width: 100%; }
+            .pill { font-size: 12px; padding: 6px 12px; }
+            .tab { font-size: 12px; padding: 8px 10px; }
+            footer .container { flex-direction: column; gap: 8px; }
         }
     </style>
 </head>
@@ -428,8 +171,8 @@
     <section class="hero">
         <div class="container">
             <div class="hero-label">Live Preview</div>
-            <h1>Try Morning Brief</h1>
-            <p class="hero-description">See your test health at a glance. Enter your API key below and get a real Morning Brief rendered from your live Intelligems data.</p>
+            <h1>Try Any Skill</h1>
+            <p class="hero-desc">Enter your API key, pick a skill, and see real results from your live Intelligems data.</p>
         </div>
     </section>
 
@@ -439,9 +182,33 @@
                 <input type="password" id="api-key" class="api-input" placeholder="Paste your Intelligems API key..." autocomplete="off">
                 <button id="run-btn" class="run-btn" onclick="runPreview()">Run Preview</button>
             </div>
-            <p class="helper-text">&#128274; Your key is sent directly to the Intelligems API and is never stored. Find it in the Intelligems dashboard under Settings &rarr; API.</p>
+            <p class="helper-text">&#128274; Your key is sent directly to the Intelligems API and is never stored.</p>
         </div>
     </section>
+
+    <section class="skill-picker">
+        <div class="container">
+            <div class="pill-row">
+                <button class="pill active" data-skill="morning-brief" onclick="pickSkill(this)">Morning Brief</button>
+                <button class="pill" data-skill="verdict" onclick="pickSkill(this)">Verdict</button>
+                <button class="pill" data-skill="profit-impact" onclick="pickSkill(this)">Profit Impact</button>
+                <button class="pill" data-skill="funnel" onclick="pickSkill(this)">Funnel</button>
+                <button class="pill" data-skill="segments" onclick="pickSkill(this)">Segments</button>
+                <button class="pill" data-skill="debrief" onclick="pickSkill(this)">Debrief</button>
+                <button class="pill" data-skill="rollout" onclick="pickSkill(this)">Rollout</button>
+            </div>
+        </div>
+    </section>
+
+    <div id="test-picker" class="test-picker">
+        <div class="container">
+            <label>Select a test to analyze:</label>
+            <select id="test-select" class="test-select">
+                <option value="">Loading tests...</option>
+            </select>
+            <button id="analyze-btn" class="analyze-btn" onclick="analyzeTest()" disabled>Analyze Test</button>
+        </div>
+    </div>
 
     <div class="container">
         <div id="error" class="error-msg"></div>
@@ -453,19 +220,28 @@
         </div>
     </div>
 
-    <div id="quiet" class="quiet-state">
-        <div class="container">
-            <p class="quiet-text">All quiet!</p>
-            <p class="quiet-sub">No active experiments found. Start a test in Intelligems and come back.</p>
-        </div>
-    </div>
-
-    <section id="results" class="results">
+    <!-- Morning Brief Results -->
+    <section id="results-brief" class="results">
         <div class="container">
             <div class="results-header">Morning Brief</div>
             <div id="results-date" class="results-date"></div>
             <div id="test-cards"></div>
-            <p class="run-again">Want to check another account? <a href="#" onclick="resetPreview(); return false;">Run with a different key</a></p>
+            <p class="run-again"><a href="#" onclick="resetAll(); return false;">Run with a different key</a></p>
+        </div>
+    </section>
+
+    <!-- Single-Test Analysis Results -->
+    <section id="results-analysis" class="results">
+        <div class="container">
+            <div id="analysis-summary" class="test-summary"></div>
+            <div id="analysis-tabs" class="tab-bar"></div>
+            <div id="tab-verdict" class="tab-content"></div>
+            <div id="tab-profit" class="tab-content"></div>
+            <div id="tab-funnel" class="tab-content"></div>
+            <div id="tab-segments" class="tab-content"></div>
+            <div id="tab-debrief" class="tab-content"></div>
+            <div id="tab-rollout" class="tab-content"></div>
+            <p class="run-again"><a href="#" onclick="backToTests(); return false;">Analyze another test</a> &middot; <a href="#" onclick="resetAll(); return false;">Change API key</a></p>
         </div>
     </section>
 </main>
@@ -478,181 +254,455 @@
 </footer>
 
 <script>
-    var SUPABASE_URL = 'https://vklhpsdenwuhanjhbtzv.supabase.co';
-    var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrbGhwc2Rlbnd1aGFuamhidHp2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA3NTA0OTMsImV4cCI6MjA4NjMyNjQ5M30.1B35fNXBD8B6af54TmMdcmft2PvnSO3_G9osINcX7GE';
+var SUPABASE_URL = 'https://vklhpsdenwuhanjhbtzv.supabase.co';
+var SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrbGhwc2Rlbnd1aGFuamhidHp2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA3NTA0OTMsImV4cCI6MjA4NjMyNjQ5M30.1B35fNXBD8B6af54TmMdcmft2PvnSO3_G9osINcX7GE';
+var currentSkill = 'morning-brief';
+var cachedApiKey = '';
+var cachedTests = null;
+var cachedAnalysis = null;
+var loadingTimer = null;
 
-    // Allow Enter key to trigger preview
-    document.getElementById('api-key').addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') runPreview();
-    });
+document.getElementById('api-key').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') runPreview();
+});
 
-    function runPreview() {
-        var keyInput = document.getElementById('api-key');
-        var apiKey = keyInput.value.trim();
+// ── Skill Picker ────────────────────────────────────────────────
 
-        // Reset UI
-        hide('error');
-        hide('loading');
-        hide('results');
-        hide('quiet');
+function pickSkill(el) {
+    document.querySelectorAll('.pill').forEach(function(p) { p.classList.remove('active'); });
+    el.classList.add('active');
+    currentSkill = el.getAttribute('data-skill');
+}
 
-        if (!apiKey) {
-            showError('Please enter your API key.');
+// ── Run Preview ─────────────────────────────────────────────────
+
+function runPreview() {
+    var keyInput = document.getElementById('api-key');
+    var apiKey = keyInput.value.trim();
+    hideAll();
+
+    if (!apiKey) { showError('Please enter your API key.'); return; }
+
+    cachedApiKey = apiKey;
+    keyInput.value = '';
+    document.getElementById('run-btn').disabled = true;
+
+    if (currentSkill === 'morning-brief') {
+        runMorningBrief(apiKey);
+    } else {
+        fetchTestList(apiKey);
+    }
+}
+
+// ── Morning Brief ───────────────────────────────────────────────
+
+function runMorningBrief(apiKey) {
+    showLoading(['Connecting to Intelligems...', 'Fetching experiments...', 'Analyzing test health...']);
+
+    callFunction('morning-brief-proxy', { apiKey: apiKey }, function(data) {
+        document.getElementById('run-btn').disabled = false;
+        if (data.error) {
+            if (data.error.indexOf('No active experiments') !== -1) {
+                showError('All quiet! No active experiments found.');
+            } else { showError(data.error); }
             return;
         }
+        renderMorningBrief(data);
+    });
+}
 
-        // Show loading with progressive messages
-        show('loading');
-        startLoadingProgress();
-        document.getElementById('run-btn').disabled = true;
+function renderMorningBrief(data) {
+    document.getElementById('results-date').textContent = data.date;
+    var html = '';
+    data.tests.forEach(function(t) {
+        var emoji = t.status === 'RED' ? '\uD83D\uDD34' : t.status === 'YELLOW' ? '\uD83D\uDFE1' : '\uD83D\uDFE2';
+        html += '<div class="test-card">';
+        html += '<div class="card-name"><span class="card-emoji">' + emoji + '</span>' + esc(t.name) + '</div>';
+        html += '<div class="card-meta">' + esc(t.type) + ' &middot; ' + esc(t.runtimeDisplay) + '</div>';
+        html += '<div class="card-stats">Visitors: ' + fmt(t.visitors) + ' (' + fmt(t.dailyVisitors) + '/day) &middot; Orders: ' + fmt(t.orders) + ' (' + fmt(t.dailyOrders) + '/day)</div>';
+        if (t.bestVariant) {
+            html += '<div class="card-signal">Best variant: <strong>' + esc(t.bestVariant) + '</strong><br>';
+            html += esc(t.primaryMetricLabel) + ' ' + esc(t.primaryLift) + ' (' + esc(t.primaryConfidence) + ' conf) &middot; Conversion ' + esc(t.convLift) + ' (' + esc(t.convConfidence) + ')</div>';
+        }
+        html += '<div class="card-action">&#9656; ' + esc(t.action) + '</div>';
+        if (t.daysToVerdict !== null && t.daysToVerdict !== undefined) {
+            html += '<div class="card-verdict">' + (t.daysToVerdict === 0 ? 'Ready to call' : 'Est. ' + t.daysToVerdict + ' days to verdict') + '</div>';
+        }
+        html += '</div>';
+    });
+    document.getElementById('test-cards').innerHTML = html;
+    show('results-brief');
+}
 
-        // Build request body, then immediately wipe the key from memory
-        var requestBody = JSON.stringify({ apiKey: apiKey });
-        apiKey = '';
-        keyInput.value = '';
+// ── Test List ───────────────────────────────────────────────────
 
-        fetch(SUPABASE_URL + '/functions/v1/morning-brief-proxy', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + SUPABASE_ANON_KEY
-            },
-            body: requestBody
-        })
-        .then(function(res) { return res.json(); })
-        .then(function(data) {
-            stopLoadingProgress();
-            hide('loading');
-            document.getElementById('run-btn').disabled = false;
+function fetchTestList(apiKey) {
+    showLoading(['Connecting to Intelligems...', 'Fetching your tests...']);
 
-            if (data.error) {
-                // "All quiet" is a success state
-                if (data.error.indexOf('No active experiments') !== -1) {
-                    show('quiet');
-                } else {
-                    showError(data.error);
-                }
-                return;
-            }
+    callFunction('test-analysis-proxy', { apiKey: apiKey, action: 'list-tests' }, function(data) {
+        document.getElementById('run-btn').disabled = false;
+        if (data.error) { showError(data.error); return; }
+        if (!data.tests || data.tests.length === 0) {
+            showError('No active experiments found. Start a test in Intelligems and come back.');
+            return;
+        }
+        cachedTests = data.tests;
+        showTestPicker(data.tests);
+    });
+}
 
-            renderResults(data);
-        })
-        .catch(function() {
-            stopLoadingProgress();
-            hide('loading');
-            document.getElementById('run-btn').disabled = false;
-            showError('Could not connect to the server. Please try again.');
-        });
+function showTestPicker(tests) {
+    var sel = document.getElementById('test-select');
+    sel.innerHTML = '';
+    tests.forEach(function(t) {
+        var opt = document.createElement('option');
+        opt.value = t.id;
+        opt.textContent = t.name + ' (' + t.type + ' \u00B7 ' + t.runtimeDisplay + ')';
+        sel.appendChild(opt);
+    });
+    document.getElementById('analyze-btn').disabled = false;
+    show('test-picker');
+}
+
+// ── Analyze Test ────────────────────────────────────────────────
+
+function analyzeTest() {
+    var testId = document.getElementById('test-select').value;
+    if (!testId) return;
+
+    hide('test-picker');
+    document.getElementById('analyze-btn').disabled = true;
+    showLoading([
+        'Fetching test details...',
+        'Analyzing performance...',
+        'Checking segments...',
+        'Running funnel analysis...',
+        'Generating insights...'
+    ]);
+
+    callFunction('test-analysis-proxy', {
+        apiKey: cachedApiKey, action: 'analyze-test', testId: testId
+    }, function(data) {
+        if (data.error) { showError(data.error); show('test-picker'); return; }
+        cachedAnalysis = data;
+        renderAnalysis(data);
+    });
+}
+
+// ── Render Analysis ─────────────────────────────────────────────
+
+var SKILL_TABS = [
+    { key: 'verdict', label: 'Verdict' },
+    { key: 'profit', label: 'Profit Impact' },
+    { key: 'funnel', label: 'Funnel' },
+    { key: 'segments', label: 'Segments' },
+    { key: 'debrief', label: 'Debrief' },
+    { key: 'rollout', label: 'Rollout' }
+];
+
+var SKILL_TO_TAB = {
+    'verdict': 'verdict', 'profit-impact': 'profit', 'funnel': 'funnel',
+    'segments': 'segments', 'debrief': 'debrief', 'rollout': 'rollout'
+};
+
+function renderAnalysis(data) {
+    var t = data.test;
+
+    // Test summary header
+    document.getElementById('analysis-summary').innerHTML =
+        '<div class="test-summary-name">' + esc(t.name) + '</div>' +
+        '<div class="test-summary-meta">' + esc(t.type) + ' &middot; ' + esc(t.runtimeDisplay) + ' &middot; ' + (t.hasCOGS ? 'GPV' : 'RPV') + '</div>' +
+        '<div class="test-summary-stats">' +
+        'Visitors: ' + fmt(t.visitors) + ' (' + fmt(t.dailyVisitors) + '/day) &middot; Orders: ' + fmt(t.orders) + ' (' + fmt(t.dailyOrders) + '/day)<br>' +
+        'Best variant: <strong>' + esc(t.bestVariant) + '</strong> &middot; ' + esc(t.primaryMetric) + ': ' + esc(t.uplift) + ' (' + esc(t.confidence) + ' conf)' +
+        '</div>';
+
+    // Tabs
+    var tabHtml = '';
+    SKILL_TABS.forEach(function(tab) {
+        var cls = tab.key === SKILL_TO_TAB[currentSkill] ? ' active' : '';
+        tabHtml += '<button class="tab' + cls + '" data-tab="' + tab.key + '" onclick="switchTab(this)">' + tab.label + '</button>';
+    });
+    document.getElementById('analysis-tabs').innerHTML = tabHtml;
+
+    // Render all tab contents
+    document.getElementById('tab-verdict').innerHTML = renderVerdict(data.verdict, data.test);
+    document.getElementById('tab-profit').innerHTML = renderProfitImpact(data.profitImpact);
+    document.getElementById('tab-funnel').innerHTML = renderFunnel(data.funnelDiagnosis);
+    document.getElementById('tab-segments').innerHTML = renderSegments(data.segmentSpotlight);
+    document.getElementById('tab-debrief').innerHTML = renderDebrief(data.testDebrief, data.test);
+    document.getElementById('tab-rollout').innerHTML = renderRollout(data.rolloutBrief);
+
+    // Activate default tab
+    var defaultTab = SKILL_TO_TAB[currentSkill] || 'verdict';
+    activateTab(defaultTab);
+    show('results-analysis');
+}
+
+function switchTab(el) {
+    document.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('active'); });
+    el.classList.add('active');
+    activateTab(el.getAttribute('data-tab'));
+}
+
+function activateTab(key) {
+    SKILL_TABS.forEach(function(tab) {
+        var el = document.getElementById('tab-' + tab.key);
+        if (tab.key === key) el.classList.add('active');
+        else el.classList.remove('active');
+    });
+}
+
+// ── Tab Renderers ───────────────────────────────────────────────
+
+function verdictBadge(v) {
+    var cls = v === 'WINNER' ? 'winner' : v === 'LOSER' ? 'loser' : v === 'FLAT' ? 'flat' : v === 'KEEP RUNNING' ? 'keep-running' : 'too-early';
+    return '<span class="verdict-badge ' + cls + '">' + esc(v) + '</span>';
+}
+
+function renderVerdict(v, t) {
+    var h = '<div class="section-title">Verdict</div>';
+    h += verdictBadge(v.overall);
+
+    if (v.maturityIssues.length > 0) {
+        h += '<div class="analysis-block"><p><strong>Maturity Issues:</strong></p>';
+        v.maturityIssues.forEach(function(i) { h += '<p>&bull; ' + esc(i) + '</p>'; });
+        h += '</div>';
     }
 
-    // Wipe API key input on page unload
-    window.addEventListener('beforeunload', function() {
-        document.getElementById('api-key').value = '';
+    // Variations
+    v.variations.forEach(function(r, idx) {
+        h += '<div class="section-title">' + esc(r.name) + (v.variations.length > 1 && idx === 0 ? ' (Best)' : '') + '</div>';
+        h += line('Verdict', r.verdict);
+        h += line(esc(t.primaryMetric), r.uplift + ' (' + r.confidence + ' confidence)');
+        if (r.ciLow) h += line('CI Range', r.ciLow + ' to ' + r.ciHigh);
+        h += line('RPV Lift', r.rpvUplift);
+        h += line('CR Lift', r.crUplift);
     });
 
-    // Progressive loading messages
-    var loadingTimer = null;
-    function startLoadingProgress() {
-        var messages = ['Connecting to Intelligems...', 'Fetching experiments...', 'Analyzing test health...'];
-        var i = 0;
-        var el = document.getElementById('loading-text');
-        el.textContent = messages[0];
-        loadingTimer = setInterval(function() {
-            i++;
-            if (i < messages.length) el.textContent = messages[i];
-        }, 2000);
+    // Reasoning (best)
+    if (v.variations.length > 0) {
+        h += '<div class="section-title">Reasoning</div>';
+        h += '<div class="analysis-block"><p>' + esc(v.variations[0].reasoning) + '</p></div>';
+        h += '<div class="section-title">Risk Assessment</div>';
+        h += '<div class="analysis-block">' + esc(v.variations[0].risk).split('\n').map(function(l) { return '<p>' + l + '</p>'; }).join('') + '</div>';
+        if (v.variations[0].divergence) {
+            h += '<div class="section-title">Revenue vs Conversion</div>';
+            h += '<div class="analysis-block"><p>' + esc(v.variations[0].divergence) + '</p></div>';
+        }
     }
 
-    function stopLoadingProgress() {
-        if (loadingTimer) { clearInterval(loadingTimer); loadingTimer = null; }
-    }
-
-    // Reset to input state
-    function resetPreview() {
-        hide('results');
-        hide('quiet');
-        hide('error');
-        document.getElementById('api-key').focus();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function renderResults(data) {
-        // Date
-        document.getElementById('results-date').textContent = data.date;
-
-        // Test cards
-        var cardsHtml = '';
-        data.tests.forEach(function(test) {
-            var emoji = test.status === 'RED' ? '🔴' : test.status === 'YELLOW' ? '🟡' : '🟢';
-
-            cardsHtml += '<div class="test-card">';
-
-            // Name with status emoji
-            cardsHtml += '<div class="card-name"><span class="card-emoji">' + emoji + '</span>' + esc(test.name) + '</div>';
-
-            // Meta
-            cardsHtml += '<div class="card-meta">' + esc(test.type) + ' &middot; ' + esc(test.runtimeDisplay) + '</div>';
-
-            // Stats line — visitors & orders with daily rates inline
-            cardsHtml += '<div class="card-stats">';
-            cardsHtml += 'Visitors: ' + fmt(test.visitors) + ' (' + fmt(test.dailyVisitors) + '/day)';
-            cardsHtml += ' &middot; Orders: ' + fmt(test.orders) + ' (' + fmt(test.dailyOrders) + '/day)';
-            cardsHtml += '</div>';
-
-            // Best variant + metrics
-            if (test.bestVariant) {
-                cardsHtml += '<div class="card-signal">';
-                cardsHtml += 'Best variant: <strong>' + esc(test.bestVariant) + '</strong><br>';
-                cardsHtml += esc(test.primaryMetricLabel) + ' ' + esc(test.primaryLift);
-                cardsHtml += ' (' + esc(test.primaryConfidence) + ' confidence)';
-                cardsHtml += ' &middot; Conversion ' + esc(test.convLift) + ' (' + esc(test.convConfidence) + ')';
-                cardsHtml += '</div>';
-            }
-
-            // Action with ▸ prefix
-            cardsHtml += '<div class="card-action">&#9656; ' + esc(test.action) + '</div>';
-
-            // Days to verdict (tucks under action)
-            if (test.daysToVerdict !== null && test.daysToVerdict !== undefined) {
-                if (test.daysToVerdict === 0) {
-                    cardsHtml += '<div class="card-verdict">Ready to call</div>';
-                } else {
-                    cardsHtml += '<div class="card-verdict">Est. ' + test.daysToVerdict + ' days to verdict</div>';
-                }
-            }
-
-            cardsHtml += '</div>';
+    // Segments
+    if (v.segments.length > 0) {
+        h += '<div class="section-title">Segment Check (Device)</div>';
+        v.segments.forEach(function(s) {
+            var flag = s.contradiction ? ' <span class="contradiction">CONTRADICTION</span>' : '';
+            h += '<div class="analysis-line">' + esc(s.segment) + ': ' + esc(s.verdict) + ' (' + esc(s.uplift) + ', ' + esc(s.confidence) + ' conf)' + flag + '</div>';
         });
-
-        document.getElementById('test-cards').innerHTML = cardsHtml;
-        show('results');
     }
 
-    function fmt(n) {
-        if (n === null || n === undefined) return '\u2014';
-        return Number(n).toLocaleString('en-US');
+    h += '<div class="section-title">What to Test Next</div>';
+    h += '<div class="analysis-block"><p>' + esc(v.nextTest) + '</p></div>';
+    return h;
+}
+
+function renderProfitImpact(p) {
+    var h = '<div class="section-title">Annual Revenue Impact</div>';
+    h += line('Expected Annual', p.expectedAnnual);
+    h += line('Expected Monthly', p.expectedMonthly);
+    if (p.conservativeAnnual) h += line('Conservative', p.conservativeAnnual);
+    if (p.optimisticAnnual) h += line('Optimistic', p.optimisticAnnual);
+
+    h += '<div class="section-title">Break-Even Analysis</div>';
+    h += '<div class="analysis-block">';
+    p.breakEven.forEach(function(b) { h += '<p>' + esc(b) + '</p>'; });
+    h += '</div>';
+
+    if (p.opportunityCost) {
+        h += '<div class="section-title">Opportunity Cost</div>';
+        h += line('Daily', p.opportunityCost.daily);
+        h += line('Weekly', p.opportunityCost.weekly);
+        h += line('Monthly', p.opportunityCost.monthly);
     }
 
-    function esc(str) {
-        if (!str) return '\u2014';
-        var div = document.createElement('div');
-        div.textContent = str;
-        return div.innerHTML;
+    if (p.cacEquivalence) {
+        h += '<div class="section-title">Marketing Equivalence</div>';
+        h += '<div class="analysis-line">Equivalent to acquiring ~' + fmt(p.cacEquivalence.monthlyCustomers) + ' additional customers/month (at $' + p.cacEquivalence.assumedCAC + ' CAC)</div>';
     }
 
-    function show(id) {
-        document.getElementById(id).classList.add('visible');
+    h += '<div class="section-title">Business Case Summary</div>';
+    h += '<div class="analysis-block"><p>' + esc(p.summary) + '</p></div>';
+    return h;
+}
+
+function renderFunnel(f) {
+    var h = '<div class="section-title">Funnel Stages</div>';
+    h += '<div class="stage-row header"><span class="stage-label">Stage</span><span class="stage-val">Control</span><span class="stage-val">Variant</span><span class="stage-val">Lift</span><span class="stage-val">Conf</span></div>';
+    f.stages.forEach(function(s) {
+        if (!s.hasData) return;
+        h += '<div class="stage-row"><span class="stage-label">' + esc(s.label) + '</span><span class="stage-val">' + esc(s.control) + '</span><span class="stage-val">' + esc(s.variant) + '</span><span class="stage-val">' + esc(s.uplift) + '</span><span class="stage-val">' + esc(s.confidence) + '</span></div>';
+    });
+
+    h += '<div class="section-title">Key Findings</div>';
+    if (f.biggestGain) h += '<div class="analysis-line"><span class="analysis-label">Biggest gain:</span> ' + esc(f.biggestGain.label) + ' (' + esc(f.biggestGain.uplift) + ')</div>';
+    else h += '<div class="analysis-line"><span class="analysis-label">Biggest gain:</span> None</div>';
+    if (f.biggestDrop) h += '<div class="analysis-line"><span class="analysis-label">Biggest drop:</span> ' + esc(f.biggestDrop.label) + ' (' + esc(f.biggestDrop.uplift) + ')</div>';
+    else h += '<div class="analysis-line"><span class="analysis-label">Biggest drop:</span> None</div>';
+    if (f.breakpoint) h += '<div class="analysis-line"><span class="analysis-label">Breakpoint:</span> ' + esc(f.breakpoint.label) + '</div>';
+    else h += '<div class="analysis-line"><span class="analysis-label">Breakpoint:</span> None (consistent direction)</div>';
+
+    h += '<div class="section-title">Diagnosis</div>';
+    h += '<div class="analysis-block"><p>' + esc(f.diagnosis) + '</p></div>';
+    return h;
+}
+
+function renderSegments(s) {
+    var h = '<div class="section-title">Revenue-Ranked Segments</div>';
+    h += '<div class="seg-row header"><span class="seg-name">Segment</span><span class="seg-val">Verdict</span><span class="seg-val">Lift</span><span class="seg-val">Annual $</span></div>';
+    s.segments.forEach(function(seg) {
+        var flag = seg.contradiction ? ' <span class="contradiction">***</span>' : '';
+        h += '<div class="seg-row"><span class="seg-name">' + esc(seg.name) + ' <small>(' + esc(seg.type) + ')</small></span><span class="seg-val">' + esc(seg.verdict) + '</span><span class="seg-val">' + esc(seg.uplift) + '</span><span class="seg-val">' + esc(seg.revenueOpportunity) + flag + '</span></div>';
+    });
+
+    if (s.segments.some(function(seg) { return seg.contradiction; })) {
+        h += '<div class="analysis-line" style="margin-top:8px;color:var(--red);">*** = contradicts overall result</div>';
     }
 
-    function hide(id) {
-        document.getElementById(id).classList.remove('visible');
+    h += '<div class="section-title">Rollout Recommendation</div>';
+    h += verdictBadge(s.recommendation.action);
+    h += '<div class="analysis-block"><p>' + esc(s.recommendation.reason) + '</p></div>';
+    return h;
+}
+
+function renderDebrief(d, t) {
+    var h = '<div class="section-title">What Happened</div>';
+    h += verdictBadge(d.verdict);
+
+    if (d.funnelHighlights.length > 0) {
+        h += '<div class="section-title">Funnel Analysis</div>';
+        d.funnelHighlights.forEach(function(f) {
+            h += '<div class="analysis-line"><span class="analysis-label">' + esc(f.label) + ':</span> ' + esc(f.control) + ' &rarr; ' + esc(f.variant) + ' (' + esc(f.uplift) + ')</div>';
+        });
     }
 
-    function showError(msg) {
-        var el = document.getElementById('error');
-        el.textContent = msg;
-        el.classList.add('visible');
+    if (d.insights.length > 0) {
+        h += '<div class="section-title">Customer Behavior Insights</div>';
+        d.insights.forEach(function(ins, i) {
+            h += '<div class="insight-item"><span class="insight-num">' + (i + 1) + '.</span> ' + esc(ins) + '</div>';
+        });
     }
+
+    h += '<div class="section-title">What to Test Next</div>';
+    d.nextTests.forEach(function(s, i) {
+        h += '<div class="insight-item"><span class="insight-num">' + (i + 1) + '.</span> ' + esc(s) + '</div>';
+    });
+    return h;
+}
+
+function renderRollout(r) {
+    var h = '<div class="section-title">Executive Summary</div>';
+    h += '<div class="analysis-block"><p>' + esc(r.executiveSummary) + '</p></div>';
+
+    h += '<div class="section-title">Financial Impact</div>';
+    h += line('Expected Annual', r.financials.expectedAnnual);
+    h += line('Expected Monthly', r.financials.expectedMonthly);
+    if (r.financials.conservativeAnnual) h += line('Conservative', r.financials.conservativeAnnual);
+    if (r.financials.optimisticAnnual) h += line('Optimistic', r.financials.optimisticAnnual);
+    if (r.financials.dailyCostOfWaiting) h += line('Daily Cost of Waiting', r.financials.dailyCostOfWaiting);
+
+    if (r.segments.length > 0) {
+        h += '<div class="section-title">Segment Analysis</div>';
+        r.segments.forEach(function(s) {
+            var flag = s.contradiction ? ' <span class="contradiction">CONTRADICTION</span>' : '';
+            h += '<div class="analysis-line">' + esc(s.name) + ' (' + esc(s.type) + '): ' + esc(s.uplift) + ' (' + esc(s.confidence) + ')' + flag + '</div>';
+        });
+    }
+
+    h += '<div class="section-title">Recommendation</div>';
+    h += verdictBadge(r.recommendation.action);
+    h += '<div class="analysis-block"><p>' + esc(r.recommendation.reason) + '</p></div>';
+
+    h += '<div class="section-title">Next Steps</div>';
+    r.nextSteps.forEach(function(s, i) {
+        h += '<div class="insight-item"><span class="insight-num">' + (i + 1) + '.</span> ' + esc(s) + '</div>';
+    });
+    return h;
+}
+
+// ── Helpers ─────────────────────────────────────────────────────
+
+function line(label, value) {
+    return '<div class="analysis-line"><span class="analysis-label">' + esc(label) + ':</span> ' + esc(value) + '</div>';
+}
+
+function callFunction(name, body, cb) {
+    fetch(SUPABASE_URL + '/functions/v1/' + name, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + SUPABASE_ANON },
+        body: JSON.stringify(body)
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) { stopLoading(); cb(data); })
+    .catch(function() { stopLoading(); showError('Could not connect. Please try again.'); document.getElementById('run-btn').disabled = false; });
+}
+
+function showLoading(msgs) {
+    show('loading');
+    var i = 0;
+    var el = document.getElementById('loading-text');
+    el.textContent = msgs[0];
+    loadingTimer = setInterval(function() { i++; if (i < msgs.length) el.textContent = msgs[i]; }, 2000);
+}
+
+function stopLoading() {
+    hide('loading');
+    if (loadingTimer) { clearInterval(loadingTimer); loadingTimer = null; }
+}
+
+function resetAll() {
+    hideAll();
+    cachedApiKey = '';
+    cachedTests = null;
+    cachedAnalysis = null;
+    document.getElementById('run-btn').disabled = false;
+    document.getElementById('api-key').focus();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function backToTests() {
+    hide('results-analysis');
+    if (cachedTests) showTestPicker(cachedTests);
+}
+
+function hideAll() {
+    hide('error'); hide('loading'); hide('results-brief');
+    hide('results-analysis'); hide('test-picker');
+}
+
+function show(id) { document.getElementById(id).classList.add('visible'); }
+function hide(id) { document.getElementById(id).classList.remove('visible'); }
+
+function showError(msg) {
+    var el = document.getElementById('error');
+    el.textContent = msg;
+    el.classList.add('visible');
+    document.getElementById('run-btn').disabled = false;
+}
+
+function fmt(n) {
+    if (n === null || n === undefined) return '\u2014';
+    return Number(n).toLocaleString('en-US');
+}
+
+function esc(str) {
+    if (str === null || str === undefined) return '\u2014';
+    str = String(str);
+    var d = document.createElement('div');
+    d.textContent = str;
+    return d.innerHTML;
+}
+
+window.addEventListener('beforeunload', function() { document.getElementById('api-key').value = ''; });
 </script>
 
 </body>
