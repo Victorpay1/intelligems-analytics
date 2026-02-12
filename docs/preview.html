@@ -258,6 +258,7 @@ var SUPABASE_URL = 'https://vklhpsdenwuhanjhbtzv.supabase.co';
 var SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrbGhwc2Rlbnd1aGFuamhidHp2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA3NTA0OTMsImV4cCI6MjA4NjMyNjQ5M30.1B35fNXBD8B6af54TmMdcmft2PvnSO3_G9osINcX7GE';
 var currentSkill = 'morning-brief';
 var cachedApiKey = '';
+var keyTimeout = null;
 var cachedTests = null;
 var cachedAnalysis = null;
 var loadingTimer = null;
@@ -303,6 +304,8 @@ function runPreview() {
     if (!apiKey) { showError('Please enter your API key.'); return; }
 
     cachedApiKey = apiKey;
+    if (keyTimeout) clearTimeout(keyTimeout);
+    keyTimeout = setTimeout(function() { cachedApiKey = ''; }, 15 * 60 * 1000);
     keyInput.value = '';
     document.getElementById('run-btn').disabled = true;
 
@@ -681,6 +684,7 @@ function stopLoading() {
 function resetAll() {
     hideAll();
     cachedApiKey = '';
+    if (keyTimeout) { clearTimeout(keyTimeout); keyTimeout = null; }
     cachedTests = null;
     cachedAnalysis = null;
     document.getElementById('run-btn').disabled = false;

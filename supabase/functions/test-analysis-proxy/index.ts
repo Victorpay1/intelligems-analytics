@@ -1139,11 +1139,15 @@ Deno.serve(async (req) => {
     }
 
     const apiKey = body.apiKey as string;
-    if (!apiKey || apiKey.trim().length < 10) {
+    if (!apiKey || typeof apiKey !== "string" || apiKey.trim().length < 10 || apiKey.trim().length > 500) {
       return new Response(JSON.stringify({ error: "Please provide a valid Intelligems API key." }), { status: 400, headers: CORS_HEADERS });
     }
 
     const action = body.action as string;
+    const VALID_ACTIONS = ["list-tests", "analyze-test"];
+    if (!action || !VALID_ACTIONS.includes(action)) {
+      return new Response(JSON.stringify({ error: "Invalid action." }), { status: 400, headers: CORS_HEADERS });
+    }
 
     // ── Action: list-tests ──────────────────────────────────────
 
@@ -1179,14 +1183,15 @@ Deno.serve(async (req) => {
 
     if (action === "analyze-test") {
       const testId = body.testId as string;
-      if (!testId) {
-        return new Response(JSON.stringify({ error: "Please provide a testId." }), { status: 400, headers: CORS_HEADERS });
+      if (!testId || !/^[a-f0-9-]{20,50}$/i.test(testId)) {
+        return new Response(JSON.stringify({ error: "Invalid test ID format." }), { status: 400, headers: CORS_HEADERS });
       }
 
       // 1. Fetch experiment detail
       let experiment: Experiment;
       try {
-        experiment = await apiFetch(`${API_BASE}/experiences/${testId}`, apiKey) as unknown as Experiment;
+        const expDetail = await apiFetch(`${API_BASE}/experiences/${testId}`, apiKey) as Record<string, unknown>;
+        experiment = ((expDetail as any).experience || expDetail) as Experiment;
       } catch (e: unknown) {
         const msg = e instanceof Error ? e.message : "";
         if (msg === "INVALID_KEY") return new Response(JSON.stringify({ error: "Invalid API key." }), { status: 401, headers: CORS_HEADERS });
